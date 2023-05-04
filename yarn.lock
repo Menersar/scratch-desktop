@@ -3055,7 +3055,7 @@ cli-truncate@^2.1.0:
     slice-ansi "^3.0.0"
     string-width "^4.2.0"
 
-clipcc-extension@../modules/scratch-extension:
+clipcc-extension@../sidekick-modules/scratch-extension:
   version "0.2.0"
 
 clipcc-gui@../clipcc-gui:
@@ -3115,15 +3115,15 @@ clipcc-gui@../clipcc-gui:
     redux "4.1.2"
     redux-throttle "0.1.1"
     scratch-audio "^0.1.0-prerelease.20200528195344"
-    scratch-block "../modules/scratch-block"
-    scratch-extension "../modules/scratch-extension"
-    scratch-l10n "../modules/scratch-l10n"
-    scratch-paint "../modules/scratch-paint"
-    scratch-render "../modules/scratch-render"
+    scratch-block "../sidekick-modules/scratch-block"
+    scratch-extension "../sidekick-modules/scratch-extension"
+    scratch-l10n "../sidekick-modules/scratch-l10n"
+    scratch-paint "../sidekick-modules/scratch-paint"
+    scratch-render "../sidekick-modules/scratch-render"
     scratch-render-fonts "1.0.0-prerelease.20210401210003"
     scratch-storage "2.0.2"
     scratch-svg-renderer "^0.2.0-prerelease.20220912180225"
-    scratch-vm "../modules/scratch-vm"
+    scratch-vm "../sidekick-modules/scratch-vm"
     startaudiocontext "1.2.1"
     style-loader "^0.23.0"
     terser-webpack-plugin v4
@@ -9369,7 +9369,7 @@ scratch-audio@^0.1.0-prerelease.20200528195344:
     minilog "^3.0.1"
     startaudiocontext "1.2.1"
 
-scratch-block@../modules/scratch-block:
+scratch-block@../sidekick-modules/scratch-block:
   version "3.1.8"
   dependencies:
     exports-loader "0.6.3"
@@ -9382,10 +9382,10 @@ scratch-block@../modules/scratch-block:
     google-closure-compiler-osx "^20200112.0.0"
     google-closure-compiler-windows "^20200112.0.0"
 
-scratch-extension@../modules/scratch-extension:
+scratch-extension@../sidekick-modules/scratch-extension:
   version "0.2.0"
 
-scratch-l10n@../modules/scratch-l10n:
+scratch-l10n@../sidekick-modules/scratch-l10n:
   version "3.1.9"
   dependencies:
     "@babel/cli" "^7.1.2"
@@ -9395,7 +9395,7 @@ scratch-l10n@../modules/scratch-l10n:
     form-data "^4.0.0"
     poeditor-api "^1.0.0"
 
-scratch-paint@../modules/scratch-paint:
+scratch-paint@../sidekick-modules/scratch-paint:
   version "3.1.4"
   dependencies:
     "@scratch/paper" "0.11.20200728195508"
@@ -9423,7 +9423,7 @@ scratch-render-fonts@1.0.0-prerelease.20210401210003:
   dependencies:
     base64-loader "1.0.0"
 
-scratch-render@../modules/scratch-render:
+scratch-render@../sidekick-modules/scratch-render:
   version "3.0.0"
   dependencies:
     grapheme-breaker "0.3.2"
@@ -9497,7 +9497,7 @@ scratch-translate-extension-languages@0.0.20191118205314:
   resolved "https://registry.yarnpkg.com/scratch-translate-extension-languages/-/scratch-translate-extension-languages-0.0.20191118205314.tgz#9f781cc0c89785faba8ae86775a4915225676284"
   integrity sha512-r0lvpgQjPMjbhI2wROrgoXzBhCvWJdkbAqJMfl2CdNqrwBpUXqLvNNtI3VtNLPJAcp9VfxEylkU9lVZ0gvU46Q==
 
-scratch-vm@../modules/scratch-vm:
+scratch-vm@../sidekick-modules/scratch-vm:
   version "3.1.13"
   dependencies:
     "@vernier/godirect" "1.5.0"
