@@ -26,12 +26,12 @@ module.exports = defaultConfig =>
                     to: 'static'
                 }]),
                 new CopyWebpackPlugin([{
-                    from: path.join(getModulePath('clipcc-block'), 'media'),
+                    from: path.join(getModulePath('scratch-block'), 'media'),
                     to: 'static/blocks-media'
                 }]),
                 new CopyWebpackPlugin([{
                     from: 'extension-worker.{js,js.map}',
-                    context: path.join(getModulePath('clipcc-vm'), 'dist', 'web')
+                    context: path.join(getModulePath('scratch-vm'), 'dist', 'web')
                 }]),
                 new CopyWebpackPlugin([{
                     from: path.join(getModulePath('clipcc-gui'), 'src', 'lib', 'libraries', '*.json'),
