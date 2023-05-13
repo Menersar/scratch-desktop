@@ -16,7 +16,6 @@ module.exports = defaultConfig =>
             babelPaths: [
                 path.resolve(__dirname, 'src', 'renderer'),
                 /node_modules[\\/]+scratch-[^\\/]+[\\/]+src/,
-                /node_modules[\\/]+clipcc-[^\\/]+[\\/]+src/,
                 /node_modules[\\/]+pify/,
                 /node_modules[\\/]+@vernier[\\/]+godirect/
             ],
@@ -34,7 +33,7 @@ module.exports = defaultConfig =>
                     context: path.join(getModulePath('scratch-vm'), 'dist', 'web')
                 }]),
                 new CopyWebpackPlugin([{
-                    from: path.join(getModulePath('clipcc-gui'), 'src', 'lib', 'libraries', '*.json'),
+                    from: path.join(getModulePath('scratch-gui'), 'src', 'lib', 'libraries', '*.json'),
                     to: 'static/libraries',
                     flatten: true
                 }])

@@ -257,10 +257,10 @@ const createLoadingWindow = () => {
     });
     return window;
 };
-const createExtensionStoneWindow = () => {
+const createExtensionsWindow = () => {
     const window = createWindow({
-        url: 'https://codingclip.com/extension?desktop=1',
-        title: 'ClipCC Extension Store',
+        url: 'https://github.com/Menersar/sidekick-extensions.git',
+        title: 'Scratch Extension Store',
         parent: _windows.main,
         width: _windows.main.width * 1.8,
         height: _windows.main.height * 0.8
@@ -352,7 +352,7 @@ const createMainWindow = () => {
     webContents.on('will-prevent-unload', ev => {
         const choice = dialog.showMessageBoxSync(window, {
             type: 'question',
-            message: 'Leave ClipCC?',
+            message: 'Leave Sidekick?',
             detail: 'Any unsaved changes will be lost.',
             buttons: ['Stay', 'Leave'],
             cancelId: 0, // closing the dialog means "stay"
@@ -443,16 +443,16 @@ app.on('ready', () => {
         delete _windows.loading;
         app.quit();
     });
-    _windows.extensionStore = createExtensionStoneWindow();
-    _windows.extensionStore.on('close', event => {
+    _windows.extensions = createExtensionsWindow();
+    _windows.extensions.on('close', event => {
         event.preventDefault();
-        _windows.extensionStore.hide();
+        _windows.extensions.hide();
     });
     const filter = {
-        urls: ['*://codingclip.com/*']
+        urls: ['*://scratch.mit.edu/*']
     };
     session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
-        details.requestHeaders['User-Agent'] = `ClipCCDesktop/${app.getVersion()}`;
+        details.requestHeaders['User-Agent'] = `ScratchDesktop/${app.getVersion()}`;
         details.requestHeaders.Origin = null;
         callback({requestHeaders: details.requestHeaders});
     });
@@ -533,7 +533,7 @@ const loadLocalExtensionFile = (async () => {
     const extensions = fs.readdirSync('./extensions');
     const extensionData = [];
     for (const file of extensions) {
-        if (path.extname(file) === '.ccx') {
+        if (path.extname(file) === '.skx') {
             console.log(`[extension] Loading ${file}`);
             const data = fs.readFileSync(path.join('./extensions', file), {encoding: 'binary'});
             extensionData.push(data);
@@ -553,8 +553,8 @@ ipcMain.on('open-extension-store', () => {
             type: 'info'
         });
     }
-    _windows.extensionStore.loadURL('https://codingclip.com/extension/?desktop=1');
-    _windows.extensionStore.show();
+    _windows.extensions.loadURL('https://github.com/Menersar/sidekick-extensions.git');
+    _windows.extensions.show();
 });
 ipcMain.handle('get-extension', async () => {
     await _windows.main.webContents.send('getExtension');

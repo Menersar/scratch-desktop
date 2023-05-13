@@ -70,7 +70,7 @@ const makeConfig = function (defaultConfig, options) {
                     loader: 'babel-loader',
                     options: babelOptions
                 },
-                { // coped from clipcc-gui
+                { // coped from scratch-gui
                     test: /\.css$/,
                     use: [{
                         loader: 'style-loader'
@@ -114,11 +114,11 @@ const makeConfig = function (defaultConfig, options) {
             cacheWithContext: false,
             symlinks: false,
             alias: {
-                // act like clipcc-gui has this line in its package.json:
+                // act like scratch-gui has this line in its package.json:
                 //   "browser": "./src/index.js"
                 'react-redux$': path.resolve(__dirname, 'node_modules', 'react-redux'),
                 'react$': path.resolve(__dirname, 'node_modules', 'react'),
-                'clipcc-gui$': path.resolve(__dirname, 'node_modules', 'clipcc-gui', 'src', 'index.js')
+                'scratch-gui$': path.resolve(__dirname, 'node_modules', 'scratch-gui', 'src', 'index.js')
             }
         },
         optimization: {
@@ -128,7 +128,7 @@ const makeConfig = function (defaultConfig, options) {
                     parallel: true,
                     include: /\.js$/,
                     extractComments: {
-                        banner: `Copyright © ${new Date().getFullYear()} Clip Team`
+                        banner: `Copyright (c) ${new Date().getFullYear()} Scratch Foundation`
                     }
                 })
             ]

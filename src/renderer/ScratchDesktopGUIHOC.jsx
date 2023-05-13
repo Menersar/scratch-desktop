@@ -4,7 +4,7 @@ import omit from 'lodash.omit';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
-import {loadExtensionFromFile} from 'clipcc-gui/src/index';
+import {loadExtensionFromFile} from 'scratch-gui/src/index';
 import './filesystem-api';
 
 import {
@@ -15,12 +15,12 @@ import {
     requestNewProject,
     requestProjectUpload,
     setProjectId
-} from 'clipcc-gui/src/reducers/project-state';
+} from 'scratch-gui/src/reducers/project-state';
 import {
     openLoadingProject,
     closeLoadingProject,
     openTelemetryModal
-} from 'clipcc-gui/src/reducers/modals';
+} from 'scratch-gui/src/reducers/modals';
 
 import ElectronStorageHelper from '../common/ElectronStorageHelper';
 
@@ -77,7 +77,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             });
             ipcRenderer.invoke('get-local-extension-files').then(extensionFiles => {
                 for (const file of extensionFiles) {
-                    this.props.loadExtensionFromFile(file, 'ccx');
+                    this.props.loadExtensionFromFile(file, 'skx');
                 }
             });
         }
@@ -102,7 +102,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             this.handleUpdateProjectTitle(args.title);
         }
         handleLoadExtension (event, args) {
-            this.props.loadExtensionFromFile(args.extension, 'ccx');
+            this.props.loadExtensionFromFile(args.extension, 'skx');
         }
         handleGetExtension () {
             ipcRenderer.invoke('set-extension', this.props.extension);

@@ -1,13 +1,12 @@
 {
-  "name": "clipcc-desktop",
-  "productName": "ClipCC",
-  "description": "ClipCC as a self-contained desktop application",
+  "name": "scratch-desktop",
+  "productName": "Scratch",
+  "description": "Scratch as a self-contained desktop application",
   "author": {
-    "name": "Clip Team",
-    "email": "cuizhihui030925@outlook.com"
+    "name": "Scratch Foundation"
   },
-  "version": "3.1.4",
-  "license": "AGPL-3.0",
+  "version": "3.29.1",
+  "license": "BSD-3-Clause",
   "scripts": {
     "clean": "rimraf ./dist ./static/assets",
     "start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
@@ -25,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Clipteam/clipcc-desktop.git"
+    "url": "git+ssh://git@github.com/LLK/scratch-desktop.git"
   },
   "dependencies": {
     "@electron/remote": "^2.0.4",
     "autoprefixer": "9.0.1",
     "axios": "^0.25.0",
     "broadcast-channel": "^4.11.0",
-    "clipcc-extension": "../sidekick-modules/scratch-extension",
+    "scratch-extension": "../sidekick-modules/scratch-extension",
     "css-loader": "1.0.0",
     "jszip": "^3.6.0",
     "lodash.omit": "^4.5.0",
@@ -53,7 +52,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-react-intl": "^7.5.7",
-    "clipcc-gui": "../sidekick-gui",
+    "scratch-gui": "../sidekick-gui",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^7.0.3",
     "electron": "15.3.1",

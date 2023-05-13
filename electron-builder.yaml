@@ -1,10 +1,10 @@
 directories:
   buildResources: buildResources
   output: dist
-appId: com.codingclip.clipcc3
-productName: ClipCC
-artifactName: clipcc-${version}-${os}-${arch}.${ext}
-copyright: Copyright © 2019-2022 Clip Team.
+appId: edu.mit.scratch.scratch-desktop
+productName: Scratch 3
+artifactName: scratch-${version}-${os}-${arch}.${ext}
+copyright: Copyright (c) 2019, Scratch Foundation.
 compression: maximum
 extraResources:
   - from: buildResources/icon
@@ -14,22 +14,22 @@ publish: # empty provider list = don't publish
 #  - ext: sb2
 #    description: Scratch 2.0 Project.
 #    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/cc3.ico
+#    icon: buildResources/icon/sk.ico
 #    role: Editor
 #  - ext: sb3
 #    description: Scratch 3.0 Project.
 #    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/cc3.ico
+#    icon: buildResources/icon/sk.ico
 #    role: Editor
-#  - ext: ccproj
-#    description: ClipCC 3.0 Project.
+#  - ext: skproj
+#    description: Sidekick Project.
 #    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/cc3.ico
+#    icon: buildResources/icon/sk.ico
 #    role: Editor
-#  - ext: ccx
-#    description: ClipCC 3 Extension.
+#  - ext: skx
+#    description: Sidekick Extension.
 #    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/cc3.ico
+#    icon: buildResources/icon/sk.ico
 #    role: Editor
 mac:
  category: public.app-category.education
@@ -45,7 +45,7 @@ mac:
  provisioningProfile: embedded.provisionprofile
  target: [ dmg ]
 dmg:
-  title: "ClipCC ${version}"
+  title: "Scratch ${version}"
 #mas:
 #  category: public.app-category.education
 #  entitlements: buildResources/entitlements.mas.plist

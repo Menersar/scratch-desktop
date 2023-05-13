@@ -1,11 +1,11 @@
 #!/bin/bash
-SRC=../src/icon/app.png
-SRC_MAC=../src/icon/app.png
-SRC_CC3=../src/icon/cc3.png
-OUT_ICONSET=app.iconset
-OUT_ICNS=app.icns
-OUT_ICO=app.ico
-OUT_CC3=./icon/cc3.ico
+SRC=../src/icon/ScratchDesktop.svg
+SRC_MAC=../src/icon/ScratchDesktop.png
+SRC_SK=../src/icon/sk.png
+OUT_ICONSET=ScratchDesktop.iconset
+OUT_ICNS=ScratchDesktop.icns
+OUT_ICO=ScratchDesktop.ico
+OUT_SK=./icon/sk.ico
 TMP_ICO=tmp
 
 ICO_BASIC_SIZES="16 24 32 48 256"
@@ -44,7 +44,7 @@ if command -v convert >/dev/null 2>&1; then
         done
         iconutil -c icns --output "${OUT_ICNS}" "${SRC_MAC}"
     else
-        echo "iconutil is not available - skipping ICNS and ICONSET"
+        echo "iconutil is not available — skipping ICNS and ICONSET"
     fi
 
     # Windows ICO
@@ -52,11 +52,11 @@ if command -v convert >/dev/null 2>&1; then
     mkdir -p icon
     for SIZE in ${ICO_BASIC_SIZES} ${ICO_EXTRA_SIZES}; do
         resize "${SIZE}" "${SIZE}" "${SRC}" "${TMP_ICO}/icon_${SIZE}x${SIZE}.png"
-        resize "${SIZE}" "${SIZE}" "${SRC_CC3}" "${TMP_ICO}/cc3_${SIZE}x${SIZE}.png"
+        resize "${SIZE}" "${SIZE}" "${SRC_SK}" "${TMP_ICO}/sk_${SIZE}x${SIZE}.png"
     done
     # Asking for "Zip" compression actually results in PNG compression
     convert "${TMP_ICO}"/icon_*.png -colorspace sRGB -compress Zip "${OUT_ICO}"
-    convert "${TMP_ICO}"/cc3_*.png -colorspace sRGB -compress Zip "${OUT_CC3}"
+    convert "${TMP_ICO}"/sk_*.png -colorspace sRGB -compress Zip "${OUT_SK}"
 
     # Windows AppX
     mkdir -p "appx"
