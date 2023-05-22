@@ -4,34 +4,63 @@
 <head>
     <meta charset="utf-8">
 
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+
+
+
+        <!-- <svg id="loading-icon" class="loading-icon" width="128" height="128" viewBox="0 0 128 128" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path id="icon-animation"
+                d="M58.3431 49.955L37.9785 70.3196C23.2707 85.0274 41.3726 103.129 56.0804 88.4216L96.8097 47.6922C114.912 29.5903 87.7588 2.43739 69.6568 20.5393L28.9275 61.2687C1.77464 88.4215 37.9785 124.625 65.1314 97.4725L85.496 77.1079"
+                stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" class="icon-animation"></path>
+        </svg> -->
+
+
     <style scoped>
         @-webkit-keyframes animate-icon {}
 
         @keyframes animate-icon {
             0% {
-                stroke-dashoffset: 367.1521911621094px;
-                stroke-dasharray: 367.1521911621094px;
+                stroke-dashoffset: 420px;
+                stroke-dasharray: 420px;
                 stroke-width: 0;
             }
 
             5% {
-                stroke-width: 6.4;
+                stroke-width: 1.0;
             }
 
             25% {
                 stroke-dashoffset: 0;
-                stroke-dasharray: 367.1521911621094px;
+                stroke-dasharray: 420px;
+                stroke-width: 1.0;
+
             }
 
             75% {
                 stroke-dashoffset: 0;
-                stroke-dasharray: 367.1521911621094px;
+                stroke-dasharray: 420px;
+                stroke-width: 2.0;
+
+            }
+
+            85% {
+                stroke-width: 2.0;
+
+            }
+            90% {
+                stroke-width: 2.0;
+
+            }
+            98% {
+                stroke-width: 1;
+
             }
 
             100% {
-                stroke-dashoffset: -367.1521911621094px;
-                stroke-dasharray: 367.1521911621094px;
-                stroke-width: 6.4;
+                stroke-dashoffset: -420px;
+                stroke-dasharray: 420px ;
+                stroke-width: 0.0;
             }
         }
 
@@ -257,13 +286,12 @@
         style="z-index:-100;left:0;top:0;position:absolute;display:flex;justify-content:center;align-items:center;width:100%;height:100%;user-select: none;">
 
 
-
-        <!-- <svg id="loading-icon" class="loading-icon" width="128" height="128" viewBox="0 0 128 128" fill="none"
+        <svg id="loading-icon" class="loading-icon" width="400" height="400" viewBox="200 200 200 200" fill="none"
             xmlns="http://www.w3.org/2000/svg">
-            <path id="icon-animation"
-                d="M58.3431 49.955L37.9785 70.3196C23.2707 85.0274 41.3726 103.129 56.0804 88.4216L96.8097 47.6922C114.912 29.5903 87.7588 2.43739 69.6568 20.5393L28.9275 61.2687C1.77464 88.4215 37.9785 124.625 65.1314 97.4725L85.496 77.1079"
-                stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" class="icon-animation"></path>
-        </svg> -->
+            <path id="icon-animation" stroke="rgb(182, 213, 151)" stroke-linecap="round" stroke-linejoin="round"
+                class="icon-animation"
+                d="M351.601 245.266 320.977 270.739 307.238 312.501 329.578 295.119 324.558 327.547 299.067 358.013 296.512 376.645 300.575 359.452 328.962 334.324 345.538 271.707 319.607 294.672 326.33 274.686 351.601 245.266" />
+        </svg>
 
 
         <div id="block-animation" class="block-animation">
@@ -277,24 +305,38 @@
 
 
     </div>
-    <div
+    <!-- <div
         style="z-index:-100;left:0;top:0;position:absolute;display:flex;justify-content:right;align-items:center;width:100%;height:100%;user-select: none;">
         <svg id="loading-text" class="loading-text" width="50%" height="50%" viewBox="0 0 100% 100%" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <text x="112px" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Verdana"
                 fill="333333" stroke="#FFFFFF">
                 Loading
-            </text>
+            </text> -->
 
-            <!-- <text x="15%" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Verdana" fill="333333"
+    <!-- <text x="15%" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Verdana" fill="333333"
                 stroke="#FFFFFF">
                 Loading
             </text> -->
 
-            <!-- <text x="31% + 232px" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Verdana" -->
-            <text x="232px" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Verdana"
+    <!-- <text x="31% + 232px" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Verdana" -->
+    <!-- <text x="232px" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Verdana"
                 stroke="#B6D597">
                 Sidekick
+            </text> -->
+    <!-- <path>Scratch is loading...</path> -->
+    <!-- </svg>
+    </div> -->
+
+
+
+    <div
+        style="z-index:-100;left:0;top:0;position:absolute;display:flex;justify-content:right;align-items:center;width:100%;height:100%;user-select: none;">
+        <svg id="loading-text" class="loading-text" width="50%" height="50%" viewBox="0 0 100% 100%" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <text x="15%" y="50%" id="text-animation" class="text-animation" font-size="175%" font-family="Open Sans"
+                fill="333333" stroke="#FFFFFF">
+                Loading SIDEKICK
             </text>
             <!-- <path>Scratch is loading...</path> -->
         </svg>
@@ -303,9 +345,9 @@
 
     <script>
         var l = document.getElementById("loading-screen");
-        // var i = document.getElementById("loading-icon");
+        var i = document.getElementById("loading-icon");
         var t = document.getElementById("loading-text");
-        // var ia = document.getElementById("icon-animation");
+        var ia = document.getElementById("icon-animation");
         var ta = document.getElementById("text-animation");
         var ba = document.getElementById("block-animation");
         var dataEl = document.querySelectorAll("img[data-src]");
@@ -317,19 +359,19 @@
         //     l.parentNode.removeChild(l);
         // });
 
-        // ia.addEventListener("animationend", function (evt) {
-        //     i.style.display = "none";
-        //     setTimeout(function () {
-        //         ba.style.display = "block";
-        //     }, 250);
-        // });
-
-        ta.addEventListener("animationend", function (evt) {
-            // t.style.display = "none";
+        ia.addEventListener("animationend", function (evt) {
+            i.style.display = "none";
             setTimeout(function () {
                 ba.style.display = "block";
             }, 250);
         });
+
+        // ta.addEventListener("animationend", function (evt) {
+        //     // t.style.display = "none";
+        //     setTimeout(function () {
+        //         ba.style.display = "block";
+        //     }, 250);
+        // });
 
         switch (darkMode) {
             case "light":
