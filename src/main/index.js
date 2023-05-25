@@ -53,7 +53,7 @@ const devToolKey = ((process.platform === 'darwin') ?
 const _windows = {};
 let _extension = {};
 
-// enable connecting to Scratch Link even if we DNS / Internet access is not available
+// enable connecting to Sidekick Link even if we DNS / Internet access is not available
 // this must happen BEFORE the app ready event!
 app.commandLine.appendSwitch('host-resolver-rules', 'MAP device-manager.scratch.mit.edu 127.0.0.1');
 
@@ -64,12 +64,12 @@ const displayPermissionDeniedWarning = (browserWindow, permissionType) => {
     case 'camera':
         title = 'Camera Permission Denied';
         message = 'Permission to use the camera has been denied. ' +
-            'Scratch will not be able to take a photo or use video sensing blocks.';
+            'Sidekick will not be able to take a photo or use video sensing blocks.';
         break;
     case 'microphone':
         title = 'Microphone Permission Denied';
         message = 'Permission to use the microphone has been denied. ' +
-            'Scratch will not be able to record sounds or detect loudness.';
+            'Sidekick will not be able to record sounds or detect loudness.';
         break;
     default: // shouldn't ever happen...
         title = 'Permission Denied';
@@ -79,10 +79,10 @@ const displayPermissionDeniedWarning = (browserWindow, permissionType) => {
     let instructions;
     switch (process.platform) {
     case 'darwin':
-        instructions = 'To change Scratch permissions, please check "Security & Privacy" in System Preferences.';
+        instructions = 'To change Sidekick permissions, please check "Security & Privacy" in System Preferences.';
         break;
     default:
-        instructions = 'To change Scratch permissions, please check your system settings and restart Scratch.';
+        instructions = 'To change Sidekick permissions, please check your system settings and restart Sidekick.';
         break;
     }
     message = `${message}\n\n${instructions}`;
@@ -260,7 +260,7 @@ const createLoadingWindow = () => {
 const createExtensionsWindow = () => {
     const window = createWindow({
         url: 'https://github.com/Menersar/sidekick-extensions.git',
-        title: 'Scratch Extension Store',
+        title: 'Sidekick Extension Store',
         parent: _windows.main,
         width: _windows.main.width * 1.8,
         height: _windows.main.height * 0.8
@@ -271,7 +271,7 @@ const createExtensionsWindow = () => {
 
 const getIsProjectSave = downloadItem => {
     switch (downloadItem.getMimeType()) {
-    case 'application/x.scratch.sb3':
+    case 'application/x.sidekick.sb3':
         return true;
     }
     return false;
@@ -281,7 +281,7 @@ const createMainWindow = () => {
     const window = createWindow({
         width: defaultSize.width,
         height: defaultSize.height,
-        title: `${productName} ${version}` // something like "Scratch 3.14"
+        title: `${productName} ${version}` // something like "Sidekick 3.14"
     });
     const webContents = window.webContents;
 
@@ -452,7 +452,7 @@ app.on('ready', () => {
         urls: ['*://scratch.mit.edu/*']
     };
     session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
-        details.requestHeaders['User-Agent'] = `ScratchDesktop/${app.getVersion()}`;
+        details.requestHeaders['User-Agent'] = `SidekickDesktop/${app.getVersion()}`;
         details.requestHeaders.Origin = null;
         callback({requestHeaders: details.requestHeaders});
     });

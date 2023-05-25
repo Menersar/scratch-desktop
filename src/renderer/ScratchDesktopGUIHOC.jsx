@@ -31,8 +31,8 @@ import showPrivacyPolicy from './showPrivacyPolicy';
  * @param {Component} WrappedComponent - a GUI-like component to wrap.
  * @returns {Component} - a component similar to GUI with desktop-specific logic added.
  */
-const ScratchDesktopGUIHOC = function (WrappedComponent) {
-    class ScratchDesktopGUIComponent extends React.Component {
+const SidekickDesktopGUIHOC = function (WrappedComponent) {
+    class SidekickDesktopGUIComponent extends React.Component {
         constructor (props) {
             super(props);
             bindAll(this, [
@@ -114,14 +114,14 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             this.setState({projectTitle: newTitle});
         }
         render () {
-            const childProps = omit(this.props, Object.keys(ScratchDesktopGUIComponent.propTypes));
+            const childProps = omit(this.props, Object.keys(SidekickDesktopGUIComponent.propTypes));
 
             return (<WrappedComponent
                 canEditTitle
                 canModifyCloudData={false}
                 canSave={false}
                 isStandalone
-                isScratchDesktop
+                isSidekickDesktop
                 onClickAbout={[
                     {
                         title: 'About',
@@ -147,7 +147,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         }
     }
 
-    ScratchDesktopGUIComponent.propTypes = {
+    SidekickDesktopGUIComponent.propTypes = {
         extension: PropTypes.shape({
             extensionId: PropTypes.string,
             iconURL: PropTypes.string,
@@ -174,11 +174,11 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         vm: PropTypes.shape({})
     };
     const mapStateToProps = state => {
-        const loadingState = state.scratchGui.projectState.loadingState;
+        const loadingState = state.sidekickGui.projectState.loadingState;
         return {
             loadingState: loadingState,
-            vm: state.scratchGui.vm,
-            extension: state.scratchGui.extension.extension
+            vm: state.sidekickGui.vm,
+            extension: state.sidekickGui.extension.extension
         };
     };
     const mapDispatchToProps = dispatch => ({
@@ -205,7 +205,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         loadExtensionFromFile: (file, type) => loadExtensionFromFile(dispatch, file, type)
     });
 
-    return connect(mapStateToProps, mapDispatchToProps)(ScratchDesktopGUIComponent);
+    return connect(mapStateToProps, mapDispatchToProps)(SidekickDesktopGUIComponent);
 };
 
-export default ScratchDesktopGUIHOC;
+export default SidekickDesktopGUIHOC;

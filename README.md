@@ -1,6 +1,6 @@
-# scratch-desktop
+# Sidekick-desktop
 
-Scratch 3.0 as a standalone desktop application
+Sidekick as a standalone desktop application
 
 ## Developer Instructions
 

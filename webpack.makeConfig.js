@@ -70,7 +70,7 @@ const makeConfig = function (defaultConfig, options) {
                     loader: 'babel-loader',
                     options: babelOptions
                 },
-                { // coped from scratch-gui
+                { // coped from sidekick-gui
                     test: /\.css$/,
                     use: [{
                         loader: 'style-loader'
@@ -114,7 +114,7 @@ const makeConfig = function (defaultConfig, options) {
             cacheWithContext: false,
             symlinks: false,
             alias: {
-                // act like scratch-gui has this line in its package.json:
+                // act like sidekick-gui has this line in its package.json:
                 //   "browser": "./src/index.js"
                 'react-redux$': path.resolve(__dirname, 'node_modules', 'react-redux'),
                 'react$': path.resolve(__dirname, 'node_modules', 'react'),
@@ -128,7 +128,7 @@ const makeConfig = function (defaultConfig, options) {
                     parallel: true,
                     include: /\.js$/,
                     extractComments: {
-                        banner: `Copyright (c) ${new Date().getFullYear()} Scratch Foundation`
+                        banner: `Copyright (c) ${new Date().getFullYear()} Sidekick Foundation`
                     }
                 })
             ]

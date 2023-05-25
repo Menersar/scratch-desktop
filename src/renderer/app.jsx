@@ -4,8 +4,8 @@ import {compose} from 'redux';
 import GUI from 'scratch-gui/src/index';
 import AppStateHOC from 'scratch-gui/src/lib/app-state-hoc.jsx';
 
-import ScratchDesktopAppStateHOC from './ScratchDesktopAppStateHOC.jsx';
-import ScratchDesktopGUIHOC from './ScratchDesktopGUIHOC.jsx';
+import SidekickDesktopAppStateHOC from './ScratchDesktopAppStateHOC.jsx';
+import SidekickDesktopGUIHOC from './ScratchDesktopGUIHOC.jsx';
 import styles from './app.css';
 
 const appTarget = document.getElementById('app');
@@ -17,9 +17,9 @@ GUI.setAppElement(appTarget);
 // the hierarchy of HOC constructor calls clearer here; it has nothing to do with redux's
 // ability to compose reducers.
 const WrappedGui = compose(
-    ScratchDesktopAppStateHOC,
+    SidekickDesktopAppStateHOC,
     AppStateHOC,
-    ScratchDesktopGUIHOC
+    SidekickDesktopGUIHOC
 )(GUI);
 
 export default <WrappedGui />;

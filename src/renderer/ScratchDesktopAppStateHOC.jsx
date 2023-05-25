@@ -7,8 +7,8 @@ import React from 'react';
  * @param {Component} WrappedComponent - an AppStateHOC-like component to wrap.
  * @returns {Component} - a component similar to AppStateHOC with desktop-specific logic added.
  */
-const ScratchDesktopAppStateHOC = function (WrappedComponent) {
-    class ScratchDesktopAppStateComponent extends React.Component {
+const SidekickDesktopAppStateHOC = function (WrappedComponent) {
+    class SidekickDesktopAppStateComponent extends React.Component {
         constructor (props) {
             super(props);
             bindAll(this, [
@@ -47,7 +47,7 @@ const ScratchDesktopAppStateHOC = function (WrappedComponent) {
         }
     }
 
-    return ScratchDesktopAppStateComponent;
+    return SidekickDesktopAppStateComponent;
 };
 
-export default ScratchDesktopAppStateHOC;
+export default SidekickDesktopAppStateHOC;

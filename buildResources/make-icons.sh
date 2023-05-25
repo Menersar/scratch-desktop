@@ -1,10 +1,10 @@
 #!/bin/bash
-SRC=../src/icon/ScratchDesktop.svg
-SRC_MAC=../src/icon/ScratchDesktop.png
+SRC=../src/icon/SidekickDesktop.svg
+SRC_MAC=../src/icon/SidekickDesktop.png
 SRC_SK=../src/icon/sk.png
-OUT_ICONSET=ScratchDesktop.iconset
-OUT_ICNS=ScratchDesktop.icns
-OUT_ICO=ScratchDesktop.ico
+OUT_ICONSET=SidekickDesktop.iconset
+OUT_ICNS=SidekickDesktop.icns
+OUT_ICO=SidekickDesktop.ico
 OUT_SK=./icon/sk.ico
 TMP_ICO=tmp
 

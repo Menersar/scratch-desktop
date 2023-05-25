@@ -60,10 +60,10 @@ const platform = [
 
 
 /**
- * Client interface for the Scratch telemetry service.
+ * Client interface for the Sidekick telemetry service.
  *
  * This class supports delivering generic telemetry events and is designed to be used by any application or service
- * in the Scratch family.
+ * in the Sidekick family.
  */
 class TelemetryClient {
     /**

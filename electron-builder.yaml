@@ -1,10 +1,10 @@
 directories:
   buildResources: buildResources
   output: dist
-appId: edu.mit.scratch.scratch-desktop
-productName: Scratch 3
-artifactName: scratch-${version}-${os}-${arch}.${ext}
-copyright: Copyright (c) 2019, Scratch Foundation.
+appId: sidekickteam.sidekick.sidekick-desktop
+productName: Sidekick
+artifactName: sidekick-${version}-${os}-${arch}.${ext}
+copyright: Copyright (c) 2023, Sidekick Team.
 compression: maximum
 extraResources:
   - from: buildResources/icon
@@ -45,24 +45,24 @@ mac:
  provisioningProfile: embedded.provisionprofile
  target: [ dmg ]
 dmg:
-  title: "Scratch ${version}"
+  title: "Sidekick ${version}"
 #mas:
 #  category: public.app-category.education
 #  entitlements: buildResources/entitlements.mas.plist
 #  entitlementsInherit: buildResources/entitlements.mas.inherit.plist
 #  hardenedRuntime: false
-#  icon: buildResources/ScratchDesktop.icns
+#  icon: buildResources/SidekickDesktop.icns
 #masDev:
 #  type: development
 #  provisioningProfile: mas-dev.provisionprofile
 win:
-  icon: buildResources/app.ico
+  icon: buildResources/SidekickDesktop.ico
   target: [ zip, nsis ]
 #appx:
-#  identityName: ScratchFoundation.ScratchDesktop
-#  publisherDisplayName: "Scratch Foundation"
+#  identityName: SidekickTeam.SidekickDesktop
+#  publisherDisplayName: "Sidekick Team"
 #  publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
-#  artifactName: "Scratch ${version} ${arch}.${ext}"
+#  artifactName: "Sidekick ${version} ${arch}.${ext}"
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowElevation: true

@@ -3,7 +3,7 @@ const {ipcRenderer} = require('electron');
 const axios = require('axios');
 const Channel = require('broadcast-channel').BroadcastChannel;
 
-window.Scratch = {
+window.Sidekick = {
     addExtension: async url => {
         const content = await axios.get(url, {responseType: 'arraybuffer'});
         await ipcRenderer.invoke('load-extension', content.data);

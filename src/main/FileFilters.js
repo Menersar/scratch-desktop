@@ -23,6 +23,14 @@ const saveFilters = {
         name: 'Scratch 3 Project',
         extensions: ['sb3']
     },
+    SK: {
+        name: 'Sidekick Project',
+        extensions: ['sk']
+    },
+    SKX: {
+        name: 'Sidekick Project Extension',
+        extensions: ['skx']
+    },
     Sprite2: {
         name: 'Scratch 2 Sprite',
         extensions: ['sprite2']
@@ -59,11 +67,12 @@ const loadFilters = {
         ]
     },
     AllProjects: {
-        name: 'All Scratch Projects',
+        name: 'All Projects',
         extensions: [
             ...saveFilters.SB3.extensions,
             ...saveFilters.SB2.extensions,
-            ...saveFilters.SB.extensions
+            ...saveFilters.SB.extensions,
+            ...saveFilters.SK.extensions
         ]
     },
     AllSounds: {

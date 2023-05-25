@@ -1,9 +1,9 @@
 {
   "name": "scratch-desktop",
-  "productName": "Scratch",
-  "description": "Scratch as a self-contained desktop application",
+  "productName": "Sidekick",
+  "description": "Sidekick as a self-contained desktop application",
   "author": {
-    "name": "Scratch Foundation"
+    "name": "Sidekick Team"
   },
   "version": "3.29.1",
   "license": "BSD-3-Clause",
@@ -20,7 +20,8 @@
     "dist": "yarn run clean && yarn run compile && yarn run fetch && yarn run doBuild -- --mode=dist",
     "distDev": "yarn run clean && yarn run compile && yarn run fetch && yarn run doBuild -- --mode=dev",
     "test": "yarn run test:lint",
-    "test:lint": "eslint --cache --color --ext .jsx,.js ."
+    "test:lint": "eslint --cache --color --ext .jsx,.js .",
+    "make:icons": "bash ./buildResources/make-icons.sh"
   },
   "repository": {
     "type": "git",
