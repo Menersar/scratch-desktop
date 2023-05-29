@@ -38,7 +38,7 @@
         "testbuild6": "electron-builder",
         "testbuild7": "electron-builder -- --linux arm7l --dir",
         "build_linux_unpacked": "node ./scripts/electron-builder-wrapper.js && electron-builder --dir --armv7l",
-        "build_linux_debianpackage": "node ./scripts/electron-builder-wrapper.js && electron-builder --linux deb:armv7l",
+        "build_linux_debianpackage": "node ./scripts/electron-builder-wrapper.js && electron-builder --linux deb:armv7l"
     },
     "repository": {
         "type": "git",
@@ -55,6 +55,7 @@
         "jszip": "^3.6.0",
         "lodash.omit": "^4.5.0",
         "mime-types": "^2.1.31",
+        "pngcrush": "^3.0.0",
         "postcss-import": "12.0.0",
         "postcss-loader": "3.0.0",
         "postcss-simple-vars": "5.0.1",

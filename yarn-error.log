@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add bash
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add pngcrush
 
 PATH: 
-  C:\Program Files\AdoptOpenJDK\jdk-11.0.9.101-hotspot\bin;C:\Users\mener\Documents\Studium\Medieninformatik\Semester 1\Softwareentwicklung\Abgabe 6\apache-ant-1.10.9\bin;C:\Program Files\apache-maven-3.6.3\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Selenium;C:\Program Files\MATLAB\R2019a\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Users\mener\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\Scripts;;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\nodejs\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Users\mener\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\mener\AppData\Local\Programs\Python\Python311\;C:\Users\mener\scoop\shims;C:\Users\mener\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\PyCharm Community Edition 2020.2.3\bin;C:\Users\mener\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\mener\AppData\Local\GitHubDesktop\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.3\bin;C:\Users\mener\AppData\Local\Yarn\bin;C:\Users\mener\AppData\Roaming\npm
+  C:\Program Files\AdoptOpenJDK\jdk-11.0.9.101-hotspot\bin;C:\Users\mener\Documents\Studium\Medieninformatik\Semester 1\Softwareentwicklung\Abgabe 6\apache-ant-1.10.9\bin;C:\Program Files\apache-maven-3.6.3\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Selenium;C:\Program Files\MATLAB\R2019a\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Users\mener\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\Scripts;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\nodejs\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\Git\bin;C:\Users\mener\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\mener\AppData\Local\Programs\Python\Python311\;C:\Users\mener\scoop\shims;C:\Users\mener\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\PyCharm Community Edition 2020.2.3\bin;C:\Users\mener\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\mener\AppData\Local\GitHubDesktop\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.3\bin;C:\Users\mener\AppData\Local\Yarn\bin;C:\Users\mener\AppData\Roaming\npm
 
 Yarn version: 
   1.22.19
@@ -14,13 +14,13 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: ENOSPC: no space left on device, copyfile 'C:\Users\mener\Documents\GitHub\sidekick\sidekick-gui\node_modules\rxjs\_esm2015\internal\scheduled\scheduleObservable.js.map' -> 'C:\Users\mener\AppData\Local\Yarn\Cache\v6\npm-scratch-gui-3.1.15-9927d1bc-0769-4e93-a420-9d6f22ea433f-1685156376887\node_modules\scratch-gui\node_modules\rxjs\_esm2015\internal\scheduled\scheduleObservable.js.map'
+  Error: EPERM: operation not permitted, unlink 'C:\Users\mener\AppData\Local\Yarn\Cache\v6\npm-scratch-svg-renderer-0.2.0-prerelease.20210727023023-2e2207c93f805c68e50b83c7016a6e569cd37ffc-integrity\node_modules\scratch-svg-renderer\.yarn-tarball.tgz'
 
 npm manifest: 
   {
       "name": "scratch-desktop",
       "productName": "Sidekick",
-      "description": "Sidekick as a self-contained desktop application",
+      "description": "Sidekick programming environment",
       "author": {
           "name": "Sidekick Team",
           "email": "mail@mail.com"
@@ -41,15 +41,23 @@ npm manifest:
           "distDev": "yarn run clean && yarn run compile && yarn run fetch && yarn run doBuild -- --mode=dev",
           "test": "yarn run test:lint",
           "test:lint": "eslint --cache --color --ext .jsx,.js .",
-          "make:icons": "cd buildResources && sh make-icons.sh",
-          "roonnii": "electron-builder --dir --arm64 --linux deb",
+          "make:icons": "cd buildResources && bash make-icons.sh",
+          "testbuild1": "electron-builder --dir --arm64 --linux deb",
           "linuxbuild1": "electron-builder --dir --zip --linux deb",
           "linuxbuild2": "electron-builder -wl",
           "build_default": "electron-builder build",
           "build_all": "electron-builder build -lmw",
           "build_linux": "electron-builder build -l",
           "build_mac": "electron-builder build -m",
-          "build_win": "electron-builder build -w"
+          "build_win": "electron-builder build -w",
+          "testbuild2": "electron-builder --dir --arm64 --linux",
+          "testbuild3": "electron-builder -l",
+          "testbuild4": "electron-builder --linux --armv7l --deb",
+          "testbuild5": "electron-builder --linux deb:ia32",
+          "testbuild6": "electron-builder",
+          "testbuild7": "electron-builder -- --linux arm7l --dir",
+          "build_linux_unpacked": "node ./scripts/electron-builder-wrapper.js && electron-builder --dir --armv7l",
+          "build_linux_debianpackage": "node ./scripts/electron-builder-wrapper.js && electron-builder --linux deb:armv7l"
       },
       "repository": {
           "type": "git",
@@ -59,15 +67,17 @@ npm manifest:
           "@electron/remote": "^2.0.4",
           "autoprefixer": "9.0.1",
           "axios": "^0.25.0",
+          "bash": "^0.0.1",
           "broadcast-channel": "^4.11.0",
-          "scratch-extension": "../sidekick-modules/scratch-extension",
           "css-loader": "1.0.0",
+          "iconutil": "^1.0.2",
           "jszip": "^3.6.0",
           "lodash.omit": "^4.5.0",
           "mime-types": "^2.1.31",
           "postcss-import": "12.0.0",
           "postcss-loader": "3.0.0",
           "postcss-simple-vars": "5.0.1",
+          "scratch-extension": "../sidekick-modules/scratch-extension",
           "source-map-support": "^0.5.19"
       },
       "devDependencies": {
@@ -81,7 +91,7 @@ npm manifest:
           "babel-eslint": "^10.1.0",
           "babel-loader": "^8.1.0",
           "babel-plugin-react-intl": "^7.5.7",
-          "scratch-gui": "../sidekick-gui",
+          "bash": "^0.0.1",
           "copy-webpack-plugin": "^5.1.1",
           "cross-env": "^7.0.3",
           "electron": "15.3.1",
@@ -108,6 +118,7 @@ npm manifest:
           "react-redux": "7.2.6",
           "redux": "4.1.2",
           "rimraf": "^3.0.2",
+          "scratch-gui": "../sidekick-gui",
           "terser-webpack-plugin": "4",
           "uuid": "^8.0.0",
           "webpack": "^4.43.0"
@@ -2535,6 +2546,11 @@ Lockfile:
       isobject "^3.0.1"
       mixin-deep "^1.2.0"
       pascalcase "^0.1.1"
+  
+  bash@^0.0.1:
+    version "0.0.1"
+    resolved "https://registry.yarnpkg.com/bash/-/bash-0.0.1.tgz#9ee0e7a752bc5eef168bc48719556a74548aae0c"
+    integrity sha512-5hOttlJ2LXV7XmahX/cYwoezrqEGMdy5Uie4dj4yvw4scR0WrJmlQfufqPf24Mt6Bk6SbE9j87k02yBMfoQqVQ==
   
   batch@0.6.1:
     version "0.6.1"
@@ -6102,6 +6118,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.4.tgz#691879af8e220aea5750e8827db4ef62a54e361d"
     integrity sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==
   
+  iconutil@^1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/iconutil/-/iconutil-1.0.2.tgz#b0e7a29a4fda6a09eb674e098418031a149caef2"
+    integrity sha512-JkAuuw/c5fNgdFjSLesoeWv/g/6hw6y0qO7S/J1VSFpbp8vJvw0anEULrAXRXGsvUewmB9Ob7vXB5n3UzK24Pg==
+    dependencies:
+      uuid "^2.0.1"
+  
   iconv-corefoundation@^1.1.7:
     version "1.1.7"
     resolved "https://registry.yarnpkg.com/iconv-corefoundation/-/iconv-corefoundation-1.1.7.tgz#31065e6ab2c9272154c8b0821151e2c88f1b002a"
@@ -9577,11 +9600,11 @@ Lockfile:
       redux "4.1.2"
       redux-throttle "0.1.1"
       scratch-audio "^0.1.0-prerelease.20200528195344"
-      scratch-block "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-166bdf9c-b2b6-42dd-93af-f6a683b07379-1684921477459/node_modules/sidekick-modules/scratch-block"
-      scratch-extension "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-166bdf9c-b2b6-42dd-93af-f6a683b07379-1684921477459/node_modules/sidekick-modules/scratch-extension"
-      scratch-l10n "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-166bdf9c-b2b6-42dd-93af-f6a683b07379-1684921477459/node_modules/sidekick-modules/scratch-l10n"
-      scratch-paint "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-166bdf9c-b2b6-42dd-93af-f6a683b07379-1684921477459/node_modules/sidekick-modules/scratch-paint"
-      scratch-render "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-166bdf9c-b2b6-42dd-93af-f6a683b07379-1684921477459/node_modules/sidekick-modules/scratch-render"
+      scratch-block "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-af87e10b-d693-49a9-a0d7-aa85593eb98b-1685158758240/node_modules/sidekick-modules/scratch-block"
+      scratch-extension "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-af87e10b-d693-49a9-a0d7-aa85593eb98b-1685158758240/node_modules/sidekick-modules/scratch-extension"
+      scratch-l10n "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-af87e10b-d693-49a9-a0d7-aa85593eb98b-1685158758240/node_modules/sidekick-modules/scratch-l10n"
+      scratch-paint "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-af87e10b-d693-49a9-a0d7-aa85593eb98b-1685158758240/node_modules/sidekick-modules/scratch-paint"
+      scratch-render "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-af87e10b-d693-49a9-a0d7-aa85593eb98b-1685158758240/node_modules/sidekick-modules/scratch-render"
       scratch-render-fonts "1.0.0-prerelease.20210401210003"
       scratch-storage "2.0.2"
       scratch-svg-renderer "^0.2.0-prerelease.20220912180225"
@@ -11087,6 +11110,11 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
     integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
+  
+  uuid@^2.0.1:
+    version "2.0.3"
+    resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
+    integrity sha512-FULf7fayPdpASncVy4DLh3xydlXEJJpvIELjYjNeQWYUZ9pclcpvCZSr2gkmN2FrrGcI7G/cJsIEwk5/8vfXpg==
   
   uuid@^3.3.2:
     version "3.4.0"
