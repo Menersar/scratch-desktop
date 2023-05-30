@@ -4381,6 +4381,15 @@ electron-builder@22.13.1:
     update-notifier "^5.1.0"
     yargs "^17.0.1"
 
+electron-context-menu@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-3.6.1.tgz#42f117e15309687b22283e6f8f7a0d95a19afe84"
+  integrity sha512-lcpO6tzzKUROeirhzBjdBWNqayEThmdW+2I2s6H6QMrwqTVyT3EK47jW3Nxm60KTxl5/bWfEoIruoUNn57/QkQ==
+  dependencies:
+    cli-truncate "^2.1.0"
+    electron-dl "^3.2.1"
+    electron-is-dev "^2.0.0"
+
 electron-devtools-installer@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-2.2.4.tgz#261a50337e37121d338b966f07922eb4939a8763"
@@ -4400,6 +4409,20 @@ electron-devtools-installer@^3.2.0:
     semver "^7.2.1"
     tslib "^2.1.0"
     unzip-crx-3 "^0.2.0"
+
+electron-dl@^3.2.1:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/electron-dl/-/electron-dl-3.5.0.tgz#7a80bf13f168f7e5204774eee89dbc7c86de957b"
+  integrity sha512-Oj+VSuScVx8hEKM2HEvTQswTX6G3MLh7UoAz/oZuvKyNDfudNi1zY6PK/UnFoK1nCl9DF6k+3PFwElKbtZlDig==
+  dependencies:
+    ext-name "^5.0.0"
+    pupa "^2.0.1"
+    unused-filename "^2.1.0"
+
+electron-is-dev@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-2.0.0.tgz#833487a069b8dad21425c67a19847d9064ab19bd"
+  integrity sha512-3X99K852Yoqu9AcW50qz3ibYBWY79/pBhlMCab8ToEWS48R0T9tyxRiQhwylE7zQdXrMnx2JKqUJyMPmt5FBqA==
 
 electron-notarize@^1.1.1:
   version "1.2.2"
@@ -7935,6 +7958,11 @@ mocha@^6.2.2:
     yargs-parser "13.1.2"
     yargs-unparser "1.6.0"
 
+modify-filename@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/modify-filename/-/modify-filename-1.1.0.tgz#9a2dec83806fbb2d975f22beec859ca26b393aa1"
+  integrity sha512-EickqnKq3kVVaZisYuCxhtKbZjInCuwgwZWyAmRIp1NTMhri7r3380/uqwrUHfaDiPzLVTuoNy4whX66bxPVog==
+
 moment@^2.29.1:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
@@ -9158,7 +9186,7 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.0.tgz#f67fa67c94da8f4d0cfff981aee4118064199b8f"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
 
-pupa@^2.1.1:
+pupa@^2.0.1, pupa@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/pupa/-/pupa-2.1.1.tgz#f5e8fd4afc2c5d97828faa523549ed8744a20d62"
   integrity sha512-l1jNAspIBSFqbT+y+5FosojNpVpF94nlI+wDUpqP9enwOTfHx9f0gh5nB96vl+6yTpsJsypeNrwfzPrKuHB41A==
@@ -9997,11 +10025,11 @@ scratch-gui@../sidekick-gui:
     redux "4.1.2"
     redux-throttle "0.1.1"
     scratch-audio "^0.1.0-prerelease.20200528195344"
-    scratch-block "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-eac8c8bf-b44f-40b6-b993-8247b8e94910-1685172526011/node_modules/sidekick-modules/scratch-block"
-    scratch-extension "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-eac8c8bf-b44f-40b6-b993-8247b8e94910-1685172526011/node_modules/sidekick-modules/scratch-extension"
-    scratch-l10n "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-eac8c8bf-b44f-40b6-b993-8247b8e94910-1685172526011/node_modules/sidekick-modules/scratch-l10n"
-    scratch-paint "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-eac8c8bf-b44f-40b6-b993-8247b8e94910-1685172526011/node_modules/sidekick-modules/scratch-paint"
-    scratch-render "file:../../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-eac8c8bf-b44f-40b6-b993-8247b8e94910-1685172526011/node_modules/sidekick-modules/scratch-render"
+    scratch-block "file:../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-cb1a300d-1896-472d-b0cf-38686da42a96-1685409430923/node_modules/sidekick-modules/scratch-block"
+    scratch-extension "file:../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-cb1a300d-1896-472d-b0cf-38686da42a96-1685409430923/node_modules/sidekick-modules/scratch-extension"
+    scratch-l10n "file:../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-cb1a300d-1896-472d-b0cf-38686da42a96-1685409430923/node_modules/sidekick-modules/scratch-l10n"
+    scratch-paint "file:../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-cb1a300d-1896-472d-b0cf-38686da42a96-1685409430923/node_modules/sidekick-modules/scratch-paint"
+    scratch-render "file:../../../AppData/Local/Yarn/Cache/v6/npm-scratch-gui-3.1.15-cb1a300d-1896-472d-b0cf-38686da42a96-1685409430923/node_modules/sidekick-modules/scratch-render"
     scratch-render-fonts "1.0.0-prerelease.20210401210003"
     scratch-storage "2.0.2"
     scratch-svg-renderer "^0.2.0-prerelease.20220912180225"
@@ -11470,6 +11498,14 @@ unset-value@^1.0.0:
   dependencies:
     has-value "^0.3.1"
     isobject "^3.0.0"
+
+unused-filename@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/unused-filename/-/unused-filename-2.1.0.tgz#33719c4e8d9644f32d2dec1bc8525c6aaeb4ba51"
+  integrity sha512-BMiNwJbuWmqCpAM1FqxCTD7lXF97AvfQC8Kr/DIeA6VtvhJaMDupZ82+inbjl5yVP44PcxOuCSxye1QMS0wZyg==
+  dependencies:
+    modify-filename "^1.1.0"
+    path-exists "^4.0.0"
 
 unzip-crx-3@^0.2.0:
   version "0.2.0"
