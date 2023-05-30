@@ -95,8 +95,10 @@ linux:
         - Type: Application
         - Terminal: false
     target:
-        # - zip
-        - deb
-        # - rpm
+     - target: deb
+       arch:
+         - armv7l
+    #  - target: zip
+    #  - target: rpm
 deb:
     depends: ["libnotify4", "libxtst6", "libnss3"]
