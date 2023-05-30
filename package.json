@@ -16,11 +16,11 @@
         "start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
         "compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
         "fetch": "rimraf ./static/assets/ && mkdirp ./static/assets/ && node ./scripts/fetchMediaLibraryAssets.js",
-        "build": "SNAPCRAFT_BUILD_ENVIRONMENT=hostexport USE_SYSTEM_FPM=true yarn run build:dev",
+        "build": "yarn run build:dev",
         "build:dev": "yarn run compile && yarn run doBuild -- --mode=dev",
         "build:dir": "yarn run compile && yarn run doBuild -- --mode=dir",
         "build:dist": "cross-env NODE_ENV='production' yarn run compile && yarn run doBuild -- --mode=dist",
-        "doBuild": "node ./scripts/electron-builder-wrapper.js",
+        "doBuild": "SNAPCRAFT_BUILD_ENVIRONMENT=host USE_SYSTEM_FPM=true node ./scripts/electron-builder-wrapper.js",
         "dist": "yarn run clean && yarn run compile && yarn run fetch && yarn run doBuild -- --mode=dist",
         "distDev": "yarn run clean && yarn run compile && yarn run fetch && yarn run doBuild -- --mode=dev",
         "test": "yarn run test:lint",
@@ -50,7 +50,7 @@
         "build_linux": "electron-builder build -l",
         "build_mac": "electron-builder build -m",
         "build_win": "electron-builder build -w",
-        "build:raspberrypi4": "SNAPCRAFT_BUILD_ENVIRONMENT=hostexport USE_SYSTEM_FPM=true yarn run electron-builder build --armv7l",
+        "build:raspberrypi4": "SNAPCRAFT_BUILD_ENVIRONMENT=host USE_SYSTEM_FPM=true yarn run electron-builder --armv7l",
         "install:raspberrypi4": "sudo dpkg -i --force-overwrite ${PWD}/dist/sidekick-3.29.1-linux-armv7l.deb && sudo apt -f install && sudo apt-get install ./sidekick-3.29.1-linux-armv7l.deb"
     },
     "repository": {
