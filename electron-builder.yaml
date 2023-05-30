@@ -1,76 +1,102 @@
 directories:
-  buildResources: buildResources
-  output: dist
+    buildResources: buildResources
+    output: dist
 appId: sidekickteam.sidekick.sidekick-desktop
-productName: Sidekick
+productName: "Sidekick"
 artifactName: sidekick-${version}-${os}-${arch}.${ext}
 copyright: Copyright (c) 2023, Sidekick Team.
 compression: maximum
 extraResources:
-  - from: buildResources/icon
-    to: icon
+    - from: buildResources/icon
+      to: icon
 publish: # empty provider list = don't publish
-#fileAssociations:
-#  - ext: sb2
-#    description: Scratch 2.0 Project.
-#    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/sk.ico
-#    role: Editor
-#  - ext: sb3
-#    description: Scratch 3.0 Project.
-#    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/sk.ico
-#    role: Editor
-#  - ext: skproj
-#    description: Sidekick Project.
-#    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/sk.ico
-#    role: Editor
-#  - ext: skx
-#    description: Sidekick Extension.
-#    mimeType: application/x-zip-compressed
-#    icon: buildResources/icon/sk.ico
-#    role: Editor
+fileAssociations:
+    - ext: sb2
+      description: Scratch 2.0 Project.
+      mimeType: application/x-zip-compressed
+      icon: buildResources/icon/sk.ico
+      role: Editor
+    - ext: sb3
+      description: Scratch 3.0 Project.
+      mimeType: application/x-zip-compressed
+      icon: buildResources/icon/sk.ico
+      role: Editor
+    - ext: skproj
+      description: Sidekick Project.
+      mimeType: application/x-zip-compressed
+      icon: buildResources/icon/sk.ico
+      role: Editor
+    - ext: skx
+      description: Sidekick Extension.
+      mimeType: application/x-zip-compressed
+      icon: buildResources/icon/sk.ico
+      role: Editor
 mac:
- category: public.app-category.education
- entitlements: buildResources/entitlements.mac.plist
- extendInfo:
-   NSCameraUsageDescription: >-
-       This app requires camera access when using the video sensing blocks.
-   NSMicrophoneUsageDescription: >-
-       This app requires microphone access when recording sounds or detecting loudness.
- gatekeeperAssess: true
- hardenedRuntime: true
- icon: buildResources/app.icns
- provisioningProfile: embedded.provisionprofile
- target: [ dmg ]
+    category: public.app-category.education
+    entitlements: buildResources/entitlements.mac.plist
+    extendInfo:
+        NSCameraUsageDescription: >-
+            This app requires camera access when using the video sensing blocks.
+        NSMicrophoneUsageDescription: >-
+            This app requires microphone access when recording sounds or detecting loudness.
+    gatekeeperAssess: true
+    hardenedRuntime: true
+    icon: buildResources/SidekickDesktop.icns
+    # provisioningProfile: embedded.provisionprofile
+    provisioningProfile: build/AppStore_sidekickteam.sidekick.sidekick-desktop.provisionprofile
+    artifactName: "Sidekick ${version}.${ext}"
+    # target: [dmg]
+    target:
+        - dmg
+        - mas
 dmg:
-  title: "Sidekick ${version}"
-#mas:
-#  category: public.app-category.education
-#  entitlements: buildResources/entitlements.mas.plist
-#  entitlementsInherit: buildResources/entitlements.mas.inherit.plist
-#  hardenedRuntime: false
-#  icon: buildResources/SidekickDesktop.icns
+    title: "Sidekick ${version}"
+mas:
+    category: public.app-category.education
+    entitlements: buildResources/entitlements.mas.plist
+    entitlementsInherit: buildResources/entitlements.mas.inherit.plist
+    hardenedRuntime: false
+    icon: buildResources/SidekickDesktop.icns
 #masDev:
 #  type: development
 #  provisioningProfile: mas-dev.provisionprofile
+masDev:
+    type: development
+    provisioningProfile: build/Development_sidekickteam.sidekick.sidekick-desktop.provisionprofile
 win:
-  icon: buildResources/SidekickDesktop.ico
-  target: [ zip, nsis ]
-#appx:
-#  identityName: SidekickTeam.SidekickDesktop
-#  publisherDisplayName: "Sidekick Team"
-#  publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
-#  artifactName: "Sidekick ${version} ${arch}.${ext}"
+    icon: buildResources/SidekickDesktop.ico
+    # target: [zip, nsis]
+    target:
+        - appx
+        - nsis
+        - zip
+appx:
+    identityName: SidekickTeam.SidekickDesktop
+    publisherDisplayName: "Sidekick Team"
+    publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
+    artifactName: "Sidekick ${version} ${arch}.${ext}"
 nsis:
-  oneClick: false # allow user to choose per-user or per-machine
-  allowElevation: true
-  allowToChangeInstallationDirectory: true
-  createDesktopShortcut: true
-  createStartMenuShortcut: true
-  license: LICENSE
-  include: buildResources/install.nsh
+    oneClick: false # allow user to choose per-user or per-machine
+    allowElevation: true
+    allowToChangeInstallationDirectory: true
+    createDesktopShortcut: true
+    createStartMenuShortcut: true
+    license: LICENSE
+    include: buildResources/install.nsh
+    artifactName: "Sidekick ${version} Setup.${ext}"
 linux:
-  category: Development
-  target: [ zip, deb, rpm ]
+    category: Development
+    # target: [zip, deb, rpm]
+    icon: buildResources/linux
+    desktop:
+        - Encoding: UTF-8
+        - Name: SidekickDesktop
+        - Icon: sidekick-desktop
+        - Type: Application
+        - Terminal: false
+    target:
+        # - zip
+        - deb
+        # - rpm
+deb:
+    depends: ["libnotify4", "libxtst6", "libnss3"]
