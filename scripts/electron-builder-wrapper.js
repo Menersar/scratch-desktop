@@ -208,12 +208,12 @@
 //          - Is used by the snapcraft binaryused to build snap packages.
 // - Fix:
 //      - Set the (also undocumented (https://forum.snapcraft.io/t/the-snapcraft-build-environment-environment-variable/9110)) environment variable SNAPCRAFT_BUILD_ENVIRONMENT to host:
-//          export SNAPCRAFT_BUILD_ENVIRONMENT=hostexport USE_SYSTEM_FPM=trueyarn run electron:build --arm64 --armv7l --linux
+//          export SNAPCRAFT_BUILD_ENVIRONMENT=hostexport USE_SYSTEM_FPM=true yarn run electron:build --arm64 --armv7l --linux
 //              - Tell the snapcraft binary to just build the snap on the local host (not spin up a VM).
 //
 //  CREATE ALL LINUX ARM PACKAGES
 // - Combine all flags together (see: DEB AND RPM BUILDS FOR ARM, SNAP BUILDS FOR ARM):
-//      export SNAPCRAFT_BUILD_ENVIRONMENT=hostexport USE_SYSTEM_FPM=true yarn run electron:build --arm64 --armv7l --linux
+//      export SNAPCRAFT_BUILD_ENVIRONMENT=host export USE_SYSTEM_FPM=true yarn run electron:build --arm64 --armv7l --linux
 //      - Results:
 //          - Snaps are uploadable to Snapcraft.
 //          - Apt and Yum repos are creatable.
@@ -311,22 +311,22 @@ const runBuilder = function (wrapperConfig, target) {
         }
     }
 
-    if (target.platform === "linux") {
-        allArgs.push(
-            `--c.mac.type=${
-                wrapperConfig.mode === "dist" ? "distribution" : "development"
-            }`
-        );
-        if (target.name === "armhf:x64") {
-            allArgs.push(`--c.mac.provisioningProfile=${masDevProfile}`);
-        }
-        if (wrapperConfig.doSign) {
-            // really this is "notarize only if we also sign"
-            allArgs.push("--c.afterSign=scripts/afterSign.js");
-        } else {
-            allArgs.push("--c.mac.identity=null");
-        }
-    }
+    // if (target.platform === "linux") {
+    //     allArgs.push(
+    //         `--c.mac.type=${
+    //             wrapperConfig.mode === "dist" ? "distribution" : "development"
+    //         }`
+    //     );
+    //     if (target.name === "armhf:x64") {
+    //         allArgs.push(`--c.mac.provisioningProfile=${masDevProfile}`);
+    //     }
+    //     if (wrapperConfig.doSign) {
+    //         // really this is "notarize only if we also sign"
+    //         allArgs.push("--c.afterSign=scripts/afterSign.js");
+    //     } else {
+    //         allArgs.push("--c.mac.identity=null");
+    //     }
+    // }
 
     if (!wrapperConfig.doPackage) {
         allArgs.push("--dir", "--c.compression=store");
@@ -392,6 +392,10 @@ const calculateTargets = function (wrapperConfig) {
             name: "deb",
             platform: "linux",
         },
+        raspberrypi4DebPackage: {
+            name: "deb:armv7l",
+            platform: "linux",
+        },
         linuxRpmPackage: {
             name: "rpm",
             platform: "linux",
@@ -411,10 +415,11 @@ const calculateTargets = function (wrapperConfig) {
             targets.push({ name: "nsis:x64", platform: "win32" });
             break;
         case "linux":
-            targets.push(availableTargets.linuxPortable);
-            targets.push(availableTargets.linuxDebPackage);
-            targets.push(availableTargets.linuxRpmPackage);
-            targets.push(availableTargets.linuxDirectDownload);
+            // targets.push(availableTargets.linuxPortable);
+            // targets.push(availableTargets.linuxDebPackage);
+            // targets.push(availableTargets.linuxRpmPackage);
+            // targets.push(availableTargets.linuxDirectDownload);
+            targets.push(availableTargets.raspberrypi4DebPackage);
             break;
         case "darwin":
             // Running 'dmg' and 'mas' in the same pass causes electron-builder to skip signing the non-MAS app copy.
