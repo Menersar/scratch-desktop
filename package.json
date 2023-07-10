@@ -1,8 +1,8 @@
 {
-  "name": "scratch-desktop",
+  "name": "sidekick-desktop",
   "productName": "Scratch",
-  "description": "Scratch 3.0 as a self-contained desktop application",
-  "author": "Scratch Foundation",
+  "description": "Scratch 3.0 as a self-contained desktop application; version customized for Sidekick.",
+  "author": "",
   "version": "3.29.1",
   "license": "BSD-3-Clause",
   "scripts": {
@@ -22,11 +22,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/LLK/scratch-desktop.git"
+    "url": "git+ssh://git@github.com/Menersar/scratch-desktop.git"
   },
   "dependencies": {
     "source-map-support": "^0.5.19"
   },
+  "bugs": {
+    "url": "https://github.com/Menersar/scratch-desktop/issues"
+},
+"homepage": "https://github.com/Menersar/scratch-desktop#readme",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
@@ -45,7 +49,7 @@
     "electron-devtools-installer": "^3.2.0",
     "electron-notarize": "^1.1.1",
     "electron-store": "^8.0.1",
-    "electron-webpack": "^2.8.2",
+    "sidekick-electron-webpack": "git+https://github.com/Menersar/sidekick-electron-webpack.git#sidekick",
     "eslint": "^7.0.0",
     "eslint-config-scratch": "^6.0.0",
     "eslint-plugin-import": "2.27.5",
@@ -66,12 +70,27 @@
     "react-redux": "5.1.2",
     "redux": "3.7.2",
     "rimraf": "^3.0.2",
-    "scratch-gui": "github:LLK/scratch-gui#scratch-desktop-v3.29.0",
+    "scratch-gui": "git+https://github.com/Menersar/scratch-gui.git#sidekick",
     "uuid": "^8.0.0",
     "webpack": "^4.43.0",
     "webpack-merge": "4.2.2"
   },
   "resolutions": {
     "upath": "^1.0.5"
+  },
+  "build": {
+    "extends": "file:node_modules/sidekick-electron-webpack/out/electron-builder.js"
+  },
+  "electronWebpack": {
+    "main": {
+      "webpackConfig": "webpack.main.js",
+      "extraEntries": [
+        "@/preload.js"
+      ]
+    },
+    "renderer": {
+      "webpackConfig": "webpack.renderer.js",
+      "template": "src/renderer/index.html"
+    }
   }
 }
