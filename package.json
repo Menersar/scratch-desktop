@@ -18,7 +18,8 @@
     "dist": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dist",
     "distDev": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dev",
     "test": "npm run test:lint",
-    "test:lint": "eslint --cache --color --ext .jsx,.js ."
+    "test:lint": "eslint --cache --color --ext .jsx,.js .",
+    "mklink:blocks": "python build-blocks.py"
   },
   "repository": {
     "type": "git",
