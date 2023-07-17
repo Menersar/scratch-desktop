@@ -3,5 +3,8 @@ module.exports = {
     env: {
         node: true
     },
-    extends: ['scratch', 'scratch/es6', 'scratch/node']
+    extends: ['scratch', 'scratch/es6', 'scratch/node'],
+    rules: {
+        indent: off,
+      }
 };
