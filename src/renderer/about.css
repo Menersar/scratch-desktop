@@ -1,15 +1,20 @@
-html, body {
-    background-color: #4D97FF;
+/* html,
+body {
+    background-color: #4d97ff;
     color: white;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bolder;
 }
 
-a:active, a:hover, a:link, a:visited {
+a:active,
+a:hover,
+a:link,
+a:visited {
     color: currentColor;
 }
 
-a:active, a:hover {
+a:active,
+a:hover {
     filter: brightness(0.9);
 }
 
@@ -36,4 +41,4 @@ a:active, a:hover {
 
 .aboutFooter {
     font-size: small;
-}
+} */

@@ -6,29 +6,42 @@ thumbs.db
 
 # NPM
 /node_modules
-npm-*
+# npm-*
 
 # Testing
-/.nyc_output
-/coverage
-.eslintcache
+# /.nyc_output
+# /coverage
+# .eslintcache
 
 # Build
-/build
+# /build
 /dist
-/.opt-in
-/*.provisionprofile
+# /.opt-in
+# /*.provisionprofile
 
 # don't store the assets downloaded with the `fetch` script
-/static/assets/
+# /static/assets/
 
 # generated translation files
-/translations
-/locale
+# /translations
+# /locale
 
 # Fastlane
-**/fastlane/Matchfile
-**/fastlane/report.xml
-**/fastlane/Preview.html
-**/fastlane/screenshots
-**/fastlane/test_output
+# **/fastlane/Matchfile
+# **/fastlane/report.xml
+# **/fastlane/Preview.html
+# **/fastlane/screenshots
+# **/fastlane/test_output
+
+.idea/
+
+# Generated files during installation.
+library-files
+packager.html.br
+extensions.sidekick
+
+# !!! ???
+# Generated files during Debian release creation.
+deb
+
+.history

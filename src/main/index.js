@@ -1,435 +1,905 @@
-import {BrowserWindow, Menu, app, dialog, ipcMain, shell, systemPreferences} from 'electron';
-import fs from 'fs-extra';
-import path from 'path';
-import {URL} from 'url';
-import {promisify} from 'util';
+import {app, BrowserWindow, Menu, ipcMain, shell, dialog, clipboard, screen, net, session} from 'electron';
+import pathUtil from 'path';
+import fs from 'fs';
+import util from 'util';
+import {format as formatUrl} from 'url';
+import zlib from 'zlib';
+import checkForUpdate from './update-checker';
+import {getTranslation, getTranslationOrNull} from './translations';
+import {APP_NAME, EXTENSION_GALLERY_NAME, PACKAGER_NAME} from './brand';
+import './advanced-user-customizations';
+import * as store from './store';
+import './crash';
+import parseArgs from './parse-args';
+import {isDevelopment, isMac, isLinux, staticDir} from './environment';
+import './library-files';
+import './user-agent';
+import './hardware-acceleration';
+import './get-debug-info';
+import {handlePermissionRequest} from './permissions';
+import './detect-arm-translation';
+import {isBackgroundThrottlingEnabled, whenBackgroundThrottlingChanged} from './background-throttling';
+import './extensions';
+import {createAtomicWriteStream, writeFileAtomic} from './atomic-file-write-stream';
+import './protocols';
 
-import argv from './argv';
-import {getFilterForExtension} from './FileFilters';
-import telemetry from './ScratchDesktopTelemetry';
-import MacOSMenu from './MacOSMenu';
-import log from '../common/log.js';
-import {productName, version} from '../../package.json';
+const readFile = util.promisify(fs.readFile);
+const brotliDecompress = util.promisify(zlib.brotliDecompress);
 
-// suppress deprecation warning; this will be the default in Electron 9
-app.allowRendererProcessReuse = true;
+const filesToOpen = [];
 
-telemetry.appWasOpened();
+const editorWindows = new Set();
+let aboutWindow = null;
+let addonSettingsWindow = null;
+let privacyWindow = null;
+let desktopSettingsWindow = null;
+const dataWindows = new Set();
+const extensionWindows = new Set();
+const closeAllNonEditorWindows = () => [
+    aboutWindow,
+    addonSettingsWindow,
+    privacyWindow,
+    desktopSettingsWindow,
+    ...dataWindows,
+    ...extensionWindows
+].filter(i => i).forEach(i => i.close());
 
-// const defaultSize = {width: 1096, height: 715}; // minimum
-const defaultSize = {width: 1280, height: 800}; // good for MAS screenshots
+const allowedToAccessFiles = new Set();
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
-const devToolKey = ((process.platform === 'darwin') ?
-    { // macOS: command+option+i
-        alt: true, // option
-        control: false,
-        meta: true, // command
-        shift: false,
-        code: 'KeyI'
-    } : { // Windows: control+shift+i
-        alt: false,
-        control: true,
-        meta: false, // Windows key
-        shift: true,
-        code: 'KeyI'
-    }
-);
-
-// global window references prevent them from being garbage-collected
-const _windows = {};
-
-// enable connecting to Scratch Link even if we DNS / Internet access is not available
-// this must happen BEFORE the app ready event!
-app.commandLine.appendSwitch('host-resolver-rules', 'MAP device-manager.scratch.mit.edu 127.0.0.1');
-
-const displayPermissionDeniedWarning = (browserWindow, permissionType) => {
-    let title;
-    let message;
-    switch (permissionType) {
-    case 'camera':
-        title = 'Camera Permission Denied';
-        message = 'Permission to use the camera has been denied. ' +
-            'Scratch will not be able to take a photo or use video sensing blocks.';
-        break;
-    case 'microphone':
-        title = 'Microphone Permission Denied';
-        message = 'Permission to use the microphone has been denied. ' +
-            'Scratch will not be able to record sounds or detect loudness.';
-        break;
-    default: // shouldn't ever happen...
-        title = 'Permission Denied';
-        message = 'A permission has been denied.';
-    }
-
-    let instructions;
-    switch (process.platform) {
-    case 'darwin':
-        instructions = 'To change Scratch permissions, please check "Security & Privacy" in System Preferences.';
-        break;
-    default:
-        instructions = 'To change Scratch permissions, please check your system settings and restart Scratch.';
-        break;
-    }
-    message = `${message}\n\n${instructions}`;
-
-    dialog.showMessageBox(browserWindow, {type: 'warning', title, message});
-};
-
-/**
- * Build an absolute URL from a relative one, optionally adding search query parameters.
- * The base of the URL will depend on whether or not the application is running in development mode.
- * @param {string} url - the relative URL, like 'index.html'
- * @param {*} search - the optional "search" parameters (the part of the URL after '?'), like "route=about"
- * @returns {string} - an absolute URL as a string
- */
-const makeFullUrl = (url, search = null) => {
-    const baseUrl = (isDevelopment ?
-        `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/` :
-        `file://${__dirname}/`
-    );
-    const fullUrl = new URL(url, baseUrl);
-    if (search) {
-        fullUrl.search = search; // automatically percent-encodes anything that needs it
-    }
-    return fullUrl.toString();
-};
-
-/**
- * Prompt in a platform-specific way for permission to access the microphone or camera, if Electron supports doing so.
- * Any application-level checks, such as whether or not a particular frame or document should be allowed to ask,
- * should be done before calling this function.
- * This function may return a Promise!
- *
- * @param {string} mediaType - one of Electron's media types, like 'microphone' or 'camera'
- * @returns {boolean|Promise.<boolean>} - true if permission granted, false otherwise.
- */
-const askForMediaAccess = mediaType => {
-    if (systemPreferences.askForMediaAccess) {
-        // Electron currently only implements this on macOS
-        // This returns a Promise
-        return systemPreferences.askForMediaAccess(mediaType);
-    }
-    // For other platforms we can't reasonably do anything other than assume we have access.
-    return true;
-};
-
-const handlePermissionRequest = async (webContents, permission, callback, details) => {
-    if (webContents !== _windows.main.webContents) {
-        // deny: request came from somewhere other than the main window's web contents
-        return callback(false);
-    }
-    if (!details.isMainFrame) {
-        // deny: request came from a subframe of the main window, not the main frame
-        return callback(false);
-    }
-    if (permission !== 'media') {
-        // deny: request is for some other kind of access like notifications or pointerLock
-        return callback(false);
-    }
-    const requiredBase = makeFullUrl('');
-    if (details.requestingUrl.indexOf(requiredBase) !== 0) {
-        // deny: request came from a URL outside of our "sandbox"
-        return callback(false);
-    }
-    let askForMicrophone = false;
-    let askForCamera = false;
-    for (const mediaType of details.mediaTypes) {
-        switch (mediaType) {
-        case 'audio':
-            askForMicrophone = true;
-            break;
-        case 'video':
-            askForCamera = true;
-            break;
-        default:
-            // deny: unhandled media type
-            return callback(false);
-        }
-    }
-    const parentWindow = _windows.main; // if we ever allow media in non-main windows we'll also need to change this
-    if (askForMicrophone) {
-        const microphoneResult = await askForMediaAccess('microphone');
-        if (!microphoneResult) {
-            displayPermissionDeniedWarning(parentWindow, 'microphone');
-            return callback(false);
-        }
-    }
-    if (askForCamera) {
-        const cameraResult = await askForMediaAccess('camera');
-        if (!cameraResult) {
-            displayPermissionDeniedWarning(parentWindow, 'camera');
-            return callback(false);
-        }
-    }
-    return callback(true);
-};
-
-const createWindow = ({search = null, url = 'index.html', ...browserWindowOptions}) => {
-    const window = new BrowserWindow({
-        useContentSize: true,
-        show: false,
-        webPreferences: {
-            contextIsolation: false,
-            nodeIntegration: true
-        },
-        ...browserWindowOptions
-    });
-    const webContents = window.webContents;
-
-    webContents.session.setPermissionRequestHandler(handlePermissionRequest);
-
-    webContents.on('before-input-event', (event, input) => {
-        if (input.code === devToolKey.code &&
-            input.alt === devToolKey.alt &&
-            input.control === devToolKey.control &&
-            input.meta === devToolKey.meta &&
-            input.shift === devToolKey.shift &&
-            input.type === 'keyDown' &&
-            !input.isAutoRepeat &&
-            !input.isComposing) {
-            event.preventDefault();
-            webContents.openDevTools({mode: 'detach', activate: true});
-        }
-    });
-
-    webContents.on('new-window', (event, newWindowUrl) => {
-        shell.openExternal(newWindowUrl);
-        event.preventDefault();
-    });
-
-    const fullUrl = makeFullUrl(url, search);
-    window.loadURL(fullUrl);
-    window.once('ready-to-show', () => {
-        webContents.send('ready-to-show');
-    });
-
-    return window;
-};
-
-const createAboutWindow = () => {
-    const window = createWindow({
-        width: 400,
-        height: 400,
-        parent: _windows.main,
-        search: 'route=about',
-        title: `About ${productName}`
-    });
-    return window;
-};
-
-const createPrivacyWindow = () => {
-    const window = createWindow({
-        width: _windows.main.width * 0.8,
-        height: _windows.main.height * 0.8,
-        parent: _windows.main,
-        search: 'route=privacy',
-        title: `${productName} Privacy Policy`
-    });
-    return window;
-};
-
-const getIsProjectSave = downloadItem => {
-    switch (downloadItem.getMimeType()) {
-    case 'application/x.scratch.sb3':
-        return true;
+const isSafeOpenExternal = url => {
+    try {
+        const parsedUrl = new URL(url);
+        return parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:';
+    } catch (e) {
+    // ignore
     }
     return false;
 };
 
-const createMainWindow = () => {
-    const window = createWindow({
-        width: defaultSize.width,
-        height: defaultSize.height,
-        title: `${productName} ${version}` // something like "Scratch 3.14"
-    });
-    const webContents = window.webContents;
-
-    webContents.session.on('will-download', (willDownloadEvent, downloadItem) => {
-        const isProjectSave = getIsProjectSave(downloadItem);
-        const itemPath = downloadItem.getFilename();
-        const baseName = path.basename(itemPath);
-        const extName = path.extname(baseName);
-        const options = {
-            defaultPath: baseName
-        };
-        if (extName) {
-            const extNameNoDot = extName.replace(/^\./, '');
-            options.filters = [getFilterForExtension(extNameNoDot)];
-        }
-        const userChosenPath = dialog.showSaveDialogSync(window, options);
-        // this will be falsy if the user canceled the save
-        if (userChosenPath) {
-            const userBaseName = path.basename(userChosenPath);
-            const tempPath = path.join(app.getPath('temp'), userBaseName);
-
-            // WARNING: `setSavePath` on this item is only valid during the `will-download` event. Calling the async
-            // version of `showSaveDialog` means the event will finish before we get here, so `setSavePath` will be
-            // ignored. For that reason we need to call `showSaveDialogSync` above.
-            downloadItem.setSavePath(tempPath);
-
-            downloadItem.on('done', async (doneEvent, doneState) => {
-                try {
-                    if (doneState !== 'completed') {
-                        // The download was canceled or interrupted. Cancel the telemetry event and delete the file.
-                        throw new Error(`save ${doneState}`); // "save cancelled" or "save interrupted"
-                    }
-                    await fs.move(tempPath, userChosenPath, {overwrite: true});
-                    if (isProjectSave) {
-                        const newProjectTitle = path.basename(userChosenPath, extName);
-                        webContents.send('setTitleFromSave', {title: newProjectTitle});
-
-                        // "setTitleFromSave" will set the project title but GUI has already reported the telemetry
-                        // event using the old title. This call lets the telemetry client know that the save was
-                        // actually completed and the event should be committed to the event queue with this new title.
-                        telemetry.projectSaveCompleted(newProjectTitle);
-                    }
-                } catch (e) {
-                    if (isProjectSave) {
-                        telemetry.projectSaveCanceled();
-                    }
-                    // don't clean up until after the message box to allow troubleshooting / recovery
-                    await dialog.showMessageBox(window, {
-                        type: 'error',
-                        title: 'Failed to save project',
-                        message: `Save failed:\n${userChosenPath}`,
-                        detail: e.message
-                    });
-                    fs.exists(tempPath).then(exists => {
-                        if (exists) {
-                            fs.unlink(tempPath);
-                        }
-                    });
-                }
-            });
-        } else {
-            downloadItem.cancel();
-            if (isProjectSave) {
-                telemetry.projectSaveCanceled();
-            }
-        }
-    });
-
-    webContents.on('will-prevent-unload', ev => {
-        const choice = dialog.showMessageBoxSync(window, {
-            title: productName,
-            type: 'question',
-            message: 'Leave Scratch?',
-            detail: 'Any unsaved changes will be lost.',
-            buttons: ['Stay', 'Leave'],
-            cancelId: 0, // closing the dialog means "stay"
-            defaultId: 0 // pressing enter or space without explicitly selecting something means "stay"
-        });
-        const shouldQuit = (choice === 1);
-        if (shouldQuit) {
-            ev.preventDefault();
-        }
-    });
-
-    window.once('ready-to-show', () => {
-        window.show();
-    });
-
-    return window;
+const isDataURL = url => {
+    try {
+        const parsedUrl = new URL(url);
+        return parsedUrl.protocol === 'data:';
+    } catch (e) {
+    // ignore
+    }
+    return false;
 };
 
-if (process.platform === 'darwin') {
-    const osxMenu = Menu.buildFromTemplate(MacOSMenu(app));
-    Menu.setApplicationMenu(osxMenu);
+// !!! CHANGE !!!
+// const isExtensionURL = url => url === 'https://mixality.github.io/Sidekick/extensions/';
+const isExtensionURL = url => url === 'https://menersar.github.io/Sidekick/extensions/';
+
+const defaultWindowOpenHandler = details => {
+    if (isSafeOpenExternal(details.url)) {
+        setImmediate(() => {
+            shell.openExternal(details.url);
+        });
+    } else if (isDataURL(details.url)) {
+        createDataWindow(details.url);
+    }
+    return {
+        action: 'deny'
+    };
+};
+
+if (isMac) {
+    Menu.setApplicationMenu(Menu.buildFromTemplate([
+        {role: 'appMenu'},
+        {
+            role: 'fileMenu',
+            submenu: [
+                {role: 'quit'},
+                {
+                    label: getTranslation('menu.new-window'),
+                    accelerator: 'Cmd+N',
+                    click: () => {
+                        createEditorWindow();
+                    }
+                }
+            ]
+        },
+        {role: 'editMenu'},
+        {role: 'viewMenu'},
+        {role: 'windowMenu'},
+        {
+            role: 'help',
+            submenu: [
+                {
+                    label: getTranslation('menu.learn-more'),
+                    // !!! CHANGE !!!
+                    // click: () => shell.openExternal('https://mixality.github.io/Sidekick/desktop/')
+                    click: () => shell.openExternal('https://menersar.github.io/Sidekick/desktop/')
+                }
+            ]
+        }
+    ]));
 } else {
-    // disable menu for other platforms
     Menu.setApplicationMenu(null);
 }
 
-// quit application when all windows are closed
+const getURL = route => {
+    if (isDevelopment) {
+        return `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/?route=${route}`;
+    }
+    return formatUrl({
+        pathname: pathUtil.join(__dirname, 'index.html'),
+        protocol: 'file',
+        search: `route=${route}`,
+        slashes: true
+    });
+};
+
+const closeWindowWhenPressEscape = window => {
+    window.webContents.on('before-input-event', (e, input) => {
+        if (
+            input.type === 'keyDown' &&
+      input.key === 'Escape' &&
+      !input.control &&
+      !input.alt &&
+      !input.meta &&
+      !input.isAutoRepeat &&
+      !input.isComposing &&
+      // set by logic in web-contents-created
+      !e.didJustLeaveFullScreen
+        ) {
+            window.close();
+        }
+    });
+};
+
+const getWindowOptions = options => {
+    if (isLinux) {
+        options.icon = pathUtil.join(staticDir, 'icon.png');
+    }
+    options.useContentSize = true;
+    options.minWidth = 200;
+    options.minHeight = 200;
+    options.webPreferences ||= {};
+    if (typeof options.webPreferences.preload === 'undefined') {
+    // only undefined should be replaced as null is interpreted as "no preload script"
+        options.webPreferences.preload = pathUtil.resolve(__dirname, 'preload.js');
+    }
+
+    const activeScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
+    const bounds = activeScreen.workArea;
+
+    options.width = Math.min(bounds.width, options.width);
+    options.height = Math.min(bounds.height, options.height);
+
+    options.x = bounds.x + ((bounds.width - options.width) / 2);
+    options.y = bounds.y + ((bounds.height - options.height) / 2);
+
+    return options;
+};
+
+const createWindow = (url, options) => {
+    const window = new BrowserWindow(getWindowOptions(options));
+    window.loadURL(url);
+    return window;
+};
+
+const createEditorWindow = () => {
+    // Note: the route for this must be `editor`, otherwise the dev tools keyboard shortcuts will not work.
+    let url = getURL('editor');
+    const fileToOpen = filesToOpen.shift();
+    if (typeof fileToOpen !== 'undefined') {
+        url += `&file=${encodeURIComponent(fileToOpen)}`;
+        allowedToAccessFiles.add(fileToOpen);
+    }
+    const window = createWindow(url, {
+        title: APP_NAME,
+        width: 1280,
+        height: 800,
+        webPreferences: {
+            backgroundThrottling: isBackgroundThrottlingEnabled()
+        }
+    });
+    window.on('page-title-updated', (event, title, explicitSet) => {
+        event.preventDefault();
+        if (explicitSet && title) {
+            window.setTitle(`${title} - ${APP_NAME}`);
+        } else {
+            window.setTitle(APP_NAME);
+        }
+    });
+    window.on('closed', () => {
+        editorWindows.delete(window);
+        if (editorWindows.size === 0) {
+            closeAllNonEditorWindows();
+        }
+    });
+    window.webContents.on('will-prevent-unload', e => {
+        const choice = dialog.showMessageBoxSync(window, {
+            title: APP_NAME,
+            type: 'info',
+            buttons: [
+                getTranslation('unload.stay'),
+                getTranslation('unload.leave')
+            ],
+            cancelId: 0,
+            defaultId: 0,
+            message: getTranslation('unload.message'),
+            detail: getTranslation('unload.detail')
+        });
+        if (choice === 1) {
+            e.preventDefault();
+        }
+    });
+    window.webContents.setWindowOpenHandler(details => {
+        if (isExtensionURL(details.url)) {
+            createExtensionsWindow(window.webContents);
+            return {
+                action: 'deny'
+            };
+        }
+        return defaultWindowOpenHandler(details);
+    });
+    editorWindows.add(window);
+    return window;
+};
+
+const createAboutWindow = () => {
+    if (!aboutWindow) {
+        aboutWindow = createWindow(getURL('about'), {
+            title: getTranslation('about'),
+            width: 800,
+            height: 450,
+            minimizable: false,
+            maximizable: false
+        });
+        aboutWindow.on('closed', () => {
+            aboutWindow = null;
+        });
+        closeWindowWhenPressEscape(aboutWindow);
+    }
+    aboutWindow.show();
+    aboutWindow.focus();
+};
+
+const createAddonSettingsWindow = () => {
+    if (!addonSettingsWindow) {
+        addonSettingsWindow = createWindow(getURL('settings'), {
+            // The window will update its title to be something localized
+            title: 'Addon Settings',
+            width: 700,
+            height: 650
+        });
+        addonSettingsWindow.on('close', () => {
+            addonSettingsWindow = null;
+        });
+        closeWindowWhenPressEscape(addonSettingsWindow);
+    }
+    addonSettingsWindow.show();
+    addonSettingsWindow.focus();
+};
+
+const createPrivacyWindow = () => {
+    if (!privacyWindow) {
+        privacyWindow = createWindow(getURL('privacy'), {
+            title: getTranslation('privacy'),
+            width: 800,
+            height: 700,
+            minimizable: false,
+            maximizable: false
+        });
+        privacyWindow.on('closed', () => {
+            privacyWindow = null;
+        });
+        closeWindowWhenPressEscape(privacyWindow);
+    }
+    privacyWindow.show();
+    privacyWindow.focus();
+};
+
+const createDesktopSettingsWindow = () => {
+    if (!desktopSettingsWindow) {
+        desktopSettingsWindow = createWindow(getURL('desktop-settings'), {
+            title: getTranslation('desktop-settings'),
+            width: 500,
+            height: 450
+        });
+        desktopSettingsWindow.on('closed', () => {
+            desktopSettingsWindow = null;
+        });
+        closeWindowWhenPressEscape(desktopSettingsWindow);
+    }
+    desktopSettingsWindow.show();
+    desktopSettingsWindow.focus();
+};
+
+const createPackagerWindow = editorWebContents => {
+    const window = createWindow(`${getURL('packager')}&editor_id=${editorWebContents.id}`, {
+        title: PACKAGER_NAME,
+        width: 700,
+        height: 700
+    });
+    closeWindowWhenPressEscape(window);
+
+    let defaultWindowTitle;
+    window.on('page-title-updated', (e, newTitle, explicitSet) => {
+        e.preventDefault();
+        if (!explicitSet) {
+            return;
+        }
+        // The packager's default name is quite long and we want to display a shorter title instead
+        if (!defaultWindowTitle) {
+            defaultWindowTitle = newTitle;
+        }
+        if (newTitle === defaultWindowTitle) {
+            window.setTitle(PACKAGER_NAME);
+        } else {
+            window.setTitle(newTitle);
+        }
+    });
+
+    window.webContents.setWindowOpenHandler(details => {
+        if (details.url === 'about:blank') {
+            // Opening preview window
+            return {
+                action: 'allow',
+                overrideBrowserWindowOptions: getWindowOptions({
+                    title: getTranslation('loading-preview'),
+                    width: 640,
+                    height: 480,
+                    webPreferences: {
+                        // preview window can have arbitrary custom JS and should not have access to special APIs
+                        preload: null
+                    }
+                })
+            };
+        }
+        return defaultWindowOpenHandler(details);
+    });
+    window.webContents.on('did-create-window', newWindow => {
+        closeWindowWhenPressEscape(newWindow);
+    });
+    return window;
+};
+
+const createDataWindow = url => {
+    const window = createWindow(url, {
+        title: 'data: URL',
+        width: 480,
+        height: 360,
+        webPreferences: {
+            preload: null,
+            session: session.fromPartition('unsafe-data-url')
+        }
+    });
+    closeWindowWhenPressEscape(window);
+    window.on('closed', () => {
+        dataWindows.delete(window);
+    });
+    dataWindows.add(window);
+};
+
+const createExtensionsWindow = editorWebContents => {
+    const window = createWindow(`sidekick-extensions://./index.html?editor_id=${editorWebContents.id}`, {
+        title: EXTENSION_GALLERY_NAME,
+        width: 950,
+        height: 700
+    });
+    closeWindowWhenPressEscape(window);
+    extensionWindows.add(window);
+    window.on('closed', () => {
+        extensionWindows.delete(window);
+    });
+};
+
+const getLastAccessedDirectory = () => store.get('last_accessed_directory') || '';
+const setLastAccessedFile = filePath => store.set('last_accessed_directory', pathUtil.dirname(filePath));
+
+ipcMain.handle('show-save-dialog', async (event, options) => {
+    const result = await dialog.showSaveDialog(BrowserWindow.fromWebContents(event.sender), {
+        filters: options.filters,
+        defaultPath: pathUtil.join(getLastAccessedDirectory(), options.suggestedName)
+    });
+    if (!result.canceled) {
+        const {filePath} = result;
+        setLastAccessedFile(filePath);
+        allowedToAccessFiles.add(filePath);
+    }
+    return result;
+});
+
+ipcMain.handle('show-open-dialog', async (event, options) => {
+    const result = await dialog.showOpenDialog(BrowserWindow.fromWebContents(event.sender), {
+        filters: options.filters,
+        properties: ['openFile'],
+        defaultPath: getLastAccessedDirectory()
+    });
+    if (!result.canceled) {
+        const [filePath] = result.filePaths;
+        setLastAccessedFile(filePath);
+        allowedToAccessFiles.add(filePath);
+    }
+    return result;
+});
+
+ipcMain.handle('read-file', async (event, file) => {
+    if (!allowedToAccessFiles.has(file)) {
+        throw new Error('Not allowed to access file');
+    }
+    return await readFile(file);
+});
+
+ipcMain.on('write-file-with-port', async (startEvent, path) => {
+    const port = startEvent.ports[0];
+
+    /** @type {NodeJS.WritableStream|null} */
+    let writeStream = null;
+
+    const handleError = error => {
+        console.error(error);
+        port.postMessage({
+            error
+        });
+        // Make sure the port is started as we can encounter an error before we normally
+        // begin to accept messages.
+        port.start();
+    };
+
+    try {
+        if (!allowedToAccessFiles.has(path)) {
+            throw new Error('Not allowed to access path');
+        }
+        writeStream = await createAtomicWriteStream(path);
+    } catch (error) {
+        handleError(error);
+        return;
+    }
+
+    writeStream.on('atomic-error', handleError);
+
+    const handleMessage = data => {
+        if (data.write) {
+            if (writeStream.write(data.write)) {
+                // Still more space in the buffer. Ask for more immediately.
+                return;
+            }
+            // Wait for the buffer to become empty before asking for more.
+            return new Promise(resolve => {
+                writeStream.once('drain', resolve);
+            });
+        } else if (data.finish) {
+            // Wait for the atomic file write to complete.
+            return new Promise(resolve => {
+                writeStream.once('atomic-finish', resolve);
+                writeStream.end();
+            });
+        } else if (data.abort) {
+            writeStream.emit('error', new Error('Aborted by renderer process'));
+            return;
+        }
+        throw new Error('Unknown message from renderer');
+    };
+
+    port.on('message', async messageEvent => {
+        try {
+            const data = messageEvent.data;
+            const id = data.id;
+            const result = await handleMessage(data);
+            port.postMessage({
+                response: {
+                    id,
+                    result
+                }
+            });
+        } catch (error) {
+            handleError(error);
+        }
+    });
+
+    port.start();
+});
+
+ipcMain.on('open-new-window', () => {
+    createEditorWindow();
+});
+
+ipcMain.on('open-about', () => {
+    createAboutWindow();
+});
+
+ipcMain.on('open-addon-settings', () => {
+    createAddonSettingsWindow();
+});
+
+ipcMain.on('open-privacy-policy', () => {
+    createPrivacyWindow();
+});
+
+ipcMain.on('open-desktop-settings', () => {
+    createDesktopSettingsWindow();
+});
+
+ipcMain.on('open-packager', event => {
+    createPackagerWindow(event.sender);
+});
+
+ipcMain.handle('get-packager-html', async () => {
+    const compressed = await readFile(pathUtil.join(staticDir, 'packager.html.br'));
+    const uncomressed = await brotliDecompress(compressed);
+    return uncomressed;
+});
+
+ipcMain.on('export-addon-settings', async (event, settings) => {
+    const result = await dialog.showSaveDialog(BrowserWindow.fromWebContents(event.sender), {
+        defaultPath: 'sidekick-addon-setting.json',
+        filters: [
+            {
+                name: 'JSON',
+                extensions: ['json']
+            }
+        ]
+    });
+    if (result.canceled) {
+        return;
+    }
+
+    const path = result.filePath;
+    await writeFileAtomic(path, JSON.stringify(settings));
+});
+
+ipcMain.on('addon-settings-changed', (event, newSettings) => {
+    for (const window of editorWindows) {
+        window.webContents.send('addon-settings-changed', newSettings);
+    }
+});
+
+ipcMain.on('set-represented-file', (event, filename) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    win.setRepresentedFilename(filename || '');
+});
+
+ipcMain.on('set-file-changed', (event, changed) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    win.setDocumentEdited(changed);
+});
+
+ipcMain.on('alert', (event, message) => {
+    dialog.showMessageBoxSync(BrowserWindow.fromWebContents(event.sender), {
+        title: APP_NAME,
+        message: `${message}`,
+        buttons: [
+            getTranslation('prompt.ok')
+        ],
+        noLink: true
+    });
+    // set returnValue to something to reply so the renderer can resume
+    event.returnValue = 1;
+});
+
+ipcMain.on('confirm', (event, message) => {
+    const result = dialog.showMessageBoxSync(BrowserWindow.fromWebContents(event.sender), {
+        title: APP_NAME,
+        message: `${message}`,
+        buttons: [
+            getTranslation('prompt.ok'),
+            getTranslation('prompt.cancel')
+        ],
+        defaultId: 0,
+        cancelId: 1,
+        noLink: true
+    }) === 0;
+    event.returnValue = result;
+});
+
+const requestURLAsArrayBuffer = url => new Promise((resolve, reject) => {
+    const request = net.request(url);
+    request.on('response', response => {
+        const statusCode = response.statusCode;
+        if (statusCode !== 200) {
+            reject(new Error(`Unexpected status code: ${statusCode}`));
+            return;
+        }
+        const chunks = [];
+        response.on('data', chunk => {
+            chunks.push(chunk);
+        });
+        response.on('end', () => {
+            const buffer = Buffer.concat(chunks);
+            const slice = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+            resolve(slice);
+        });
+    });
+    request.on('error', e => {
+        reject(e);
+    });
+    request.end();
+});
+
+ipcMain.handle('request-url', (event, url) => {
+    if (!allowedToAccessFiles.has(url)) {
+        throw new Error('Not allowed to access URL');
+    }
+    return requestURLAsArrayBuffer(url);
+});
+
+ipcMain.handle('get-project-metadata', (event, id) => {
+    if (!/^\d+$/.test(id)) {
+        throw new Error('Invalid project ID');
+    }
+    return requestURLAsArrayBuffer(`https://api.scratch.mit.edu/projects/${id}`);
+});
+
+ipcMain.on('open-user-data', () => {
+    shell.showItemInFolder(app.getPath('userData'));
+});
+
 app.on('window-all-closed', () => {
     app.quit();
 });
 
-app.on('will-quit', () => {
-    telemetry.appWillClose();
+// Handle file opening on macOS
+app.on('open-file', (event, path) => {
+    event.preventDefault();
+    filesToOpen.push(path);
+    // This event can be emitted before we create the main window or while we're already running.
+    if (editorWindows.size > 0) {
+        createEditorWindow();
+    }
 });
 
-// work around https://github.com/MarshallOfSound/electron-devtools-installer/issues/122
-// which seems to be a result of https://github.com/electron/electron/issues/19468
-if (process.platform === 'win32') {
-    const appUserDataPath = app.getPath('userData');
-    const devToolsExtensionsPath = path.join(appUserDataPath, 'DevTools Extensions');
-    try {
-        fs.unlinkSync(devToolsExtensionsPath);
-    } catch (_) {
-        // don't complain if the file doesn't exist
-    }
-}
+app.on('session-created', session => {
+    session.setPermissionRequestHandler(handlePermissionRequest);
 
-// create main BrowserWindow when electron is ready
-app.on('ready', () => {
-    if (isDevelopment) {
-        import('electron-devtools-installer').then(importedModule => {
-            const {default: installExtension, ...devToolsExtensions} = importedModule;
-            const extensionsToInstall = [
-                devToolsExtensions.REACT_DEVELOPER_TOOLS,
-                devToolsExtensions.REACT_PERF,
-                devToolsExtensions.REDUX_DEVTOOLS
-            ];
-            for (const extension of extensionsToInstall) {
-                // WARNING: depending on a lot of things including the version of Electron `installExtension` might
-                // return a promise that never resolves, especially if the extension is already installed.
-                installExtension(extension).then(
-                    extensionName => log(`Installed dev extension: ${extensionName}`),
-                    errorMessage => log.error(`Error installing dev extension: ${errorMessage}`)
-                );
+    session.on('will-download', (event, item, webContents) => {
+        const extension = pathUtil.extname(item.getFilename()).replace(/^\./, '')
+            .toLowerCase();
+        const extensionName = getTranslationOrNull(`files.${extension}`);
+        if (extensionName) {
+            item.setSaveDialogOptions({
+                title: item.getFilename(),
+                filters: [
+                    {
+                        name: extensionName,
+                        extensions: [extension]
+                    }
+                ]
+            });
+        }
+    });
+});
+
+app.on('web-contents-created', (event, webContents) => {
+    webContents.on('context-menu', (event, params) => {
+        const text = params.selectionText;
+        const hasText = !!text;
+        const menuItems = [];
+
+        if (params.misspelledWord && params.dictionarySuggestions.length > 0) {
+            for (const word of params.dictionarySuggestions) {
+                menuItems.push({
+                    label: word,
+                    click: () => {
+                        webContents.replaceMisspelling(word);
+                    }
+                });
+            }
+            menuItems.push({
+                type: 'separator'
+            });
+        }
+
+        const url = params.linkURL;
+        if (params.linkURL) {
+            menuItems.push({
+                id: 'openLink',
+                label: getTranslation('context.open-link'),
+                enabled: !url.startsWith('blob:'),
+                click () {
+                    if (isSafeOpenExternal(url)) {
+                        shell.openExternal(url);
+                    }
+                }
+            });
+            menuItems.push({
+                type: 'separator'
+            });
+        }
+
+        if (params.isEditable) {
+            menuItems.push({
+                id: 'cut',
+                label: getTranslation('context.cut'),
+                enabled: hasText,
+                click: () => {
+                    clipboard.writeText(text);
+                    webContents.cut();
+                }
+            });
+        }
+        if (hasText || params.isEditable) {
+            menuItems.push({
+                id: 'copy',
+                label: getTranslation('context.copy'),
+                enabled: hasText,
+                click: () => {
+                    clipboard.writeText(text);
+                }
+            });
+        }
+        if (params.isEditable) {
+            menuItems.push({
+                id: 'Paste',
+                label: getTranslation('context.paste'),
+                click: () => {
+                    webContents.paste();
+                }
+            });
+        }
+
+        if (menuItems.length > 0) {
+            const menu = Menu.buildFromTemplate(menuItems);
+            menu.popup();
+        }
+    });
+
+    if (!isMac) {
+    // On Mac, shortcuts are handled by the menu bar.
+        webContents.on('before-input-event', (e, input) => {
+            if (input.isAutoRepeat || input.isComposing || input.type !== 'keyDown' || input.meta) {
+                return;
+            }
+            const window = BrowserWindow.fromWebContents(webContents);
+            // Ctrl+Shift+I to open dev tools
+            if (
+                input.control &&
+        input.shift &&
+        input.key.toLowerCase() === 'i' &&
+        !input.alt
+            ) {
+                e.preventDefault();
+                webContents.toggleDevTools();
+            }
+            // Ctrl+N to open new window
+            if (
+                input.control &&
+        input.key.toLowerCase() === 'n'
+            ) {
+                e.preventDefault();
+                createEditorWindow();
+            }
+            // Ctrl+Equals/Plus to zoom in (depends on keyboard layout)
+            if (
+                input.control &&
+        (input.key === '=' || input.key === '+')
+            ) {
+                e.preventDefault();
+                webContents.setZoomLevel(webContents.getZoomLevel() + 1);
+            }
+            // Ctrl+Minus/Underscore to zoom out
+            if (
+                input.control &&
+        input.key === '-'
+            ) {
+                e.preventDefault();
+                webContents.setZoomLevel(webContents.getZoomLevel() - 1);
+            }
+            // Ctrl+0 to reset zoom
+            if (
+                input.control &&
+        input.key === '0'
+            ) {
+                e.preventDefault();
+                webContents.setZoomLevel(0);
+            }
+            // F11 and alt+enter to toggle fullscreen
+            if (
+                input.key === 'F11' ||
+        (input.key === 'Enter' && input.alt)
+            ) {
+                e.preventDefault();
+                window.setFullScreen(!window.isFullScreen());
+            }
+            // Escape to exit fullscreen
+            if (
+                input.key === 'Escape' &&
+        window.isFullScreen()
+            ) {
+                e.preventDefault();
+                // used by closeWindowWhenPressEscape
+                e.didJustLeaveFullScreen = true;
+                window.setFullScreen(false);
+            }
+            // Ctrl+R and Ctrl+Shift+R to reload
+            if (
+                input.control &&
+        input.key.toLowerCase() === 'r'
+            ) {
+                e.preventDefault();
+                if (input.shift) {
+                    webContents.reloadIgnoringCache();
+                } else {
+                    webContents.reload();
+                }
             }
         });
     }
 
-    _windows.main = createMainWindow();
-    _windows.main.on('closed', () => {
-        delete _windows.main;
-    });
-    _windows.about = createAboutWindow();
-    _windows.about.on('close', event => {
-        event.preventDefault();
-        _windows.about.hide();
-    });
-    _windows.privacy = createPrivacyWindow();
-    _windows.privacy.on('close', event => {
-        event.preventDefault();
-        _windows.privacy.hide();
+    webContents.setWindowOpenHandler(defaultWindowOpenHandler);
+
+    webContents.on('will-navigate', (navigateEvent, url) => {
+        // !!!!HERE!!!!
+        // !!! CHANGE !!!
+        if (url === 'mailto:contact@mixality.org') {
+            // If clicking on the contact email address, we'll let the OS figure out how to open it
+            return;
+        }
+        try {
+            const newURL = new URL(url);
+            const baseURL = new URL(getURL(''));
+            if (newURL.href.startsWith(baseURL.href)) {
+                // Let the editor reload itself
+                // For example, reloading to apply settings
+            } else {
+                navigateEvent.preventDefault();
+                if (isSafeOpenExternal(url)) {
+                    shell.openExternal(url);
+                }
+            }
+        } catch (e) {
+            e.preventDefault();
+        }
     });
 });
 
-ipcMain.on('open-about-window', () => {
-    _windows.about.show();
+whenBackgroundThrottlingChanged(backgroundThrottlingEnabled => {
+    for (const editorWindow of editorWindows) {
+        editorWindow.webContents.setBackgroundThrottling(backgroundThrottlingEnabled);
+    }
 });
 
-ipcMain.on('open-privacy-policy-window', () => {
-    _windows.privacy.show();
-});
+// Allows certain versions of Scratch Link to work without an internet connection
+// https://github.com/LLK/scratch-desktop/blob/4b462212a8e406b15bcf549f8523645602b46064/src/main/index.js#L45
+app.commandLine.appendSwitch('host-resolver-rules', 'MAP device-manager.scratch.mit.edu 127.0.0.1');
 
-// start loading initial project data before the GUI needs it so the load seems faster
-const initialProjectDataPromise = (async () => {
-    if (argv._.length === 0) {
-        // no command line argument means no initial project data
-        return;
-    }
-    if (argv._.length > 1) {
-        log.warn(`Expected 1 command line argument but received ${argv._.length}.`);
-    }
-    const projectPath = argv._[argv._.length - 1];
-    try {
-        const projectData = await promisify(fs.readFile)(projectPath, null);
-        return projectData;
-    } catch (e) {
-        dialog.showMessageBox(_windows.main, {
-            type: 'error',
-            title: 'Failed to load project',
-            message: `Could not load project from file:\n${projectPath}`,
-            detail: e.message
-        });
-    }
-    // load failed: initial project data undefined
-})(); // IIFE
+const acquiredLock = app.requestSingleInstanceLock();
+if (acquiredLock) {
+    const autoCreateEditorWindows = () => {
+        if (filesToOpen.length) {
+            while (filesToOpen.length) {
+                createEditorWindow();
+            }
+        } else {
+            createEditorWindow();
+        }
+    };
 
-ipcMain.handle('get-initial-project-data', () => initialProjectDataPromise);
+    const resolveFilePath = (workingDirectory, file) => {
+        try {
+            // If the file is a full absolute URL, pass it through unmodified.
+            const _ = new URL(file);
+            return file;
+        } catch (e) {
+            return pathUtil.resolve(workingDirectory, file);
+        }
+    };
+
+    for (const path of parseArgs(process.argv)) {
+        filesToOpen.push(resolveFilePath('', path));
+    }
+
+    app.on('second-instance', (event, argv, workingDirectory) => {
+        for (const i of parseArgs(argv)) {
+            filesToOpen.push(resolveFilePath(workingDirectory, i));
+        }
+        autoCreateEditorWindows();
+    });
+
+    app.on('activate', () => {
+        if (app.isReady() && editorWindows.size === 0) {
+            createEditorWindow();
+        }
+    });
+
+    app.whenReady().then(() => {
+        checkForUpdate();
+        autoCreateEditorWindows();
+    });
+} else {
+    console.log('Handing off to existing instance.');
+    app.quit();
+}

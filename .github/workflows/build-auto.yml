@@ -1,0 +1,27 @@
+name: Build (Auto)
+
+on:
+#   push:
+#     branches: [ sidekick ]
+  pull_request:
+    branches: [ sidekick ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: npm
+    - name: Install Dependencies
+      run: npm ci
+    - name: Compile and package
+      run: npm run dist -- --linux tar.gz --publish never
+      env:
+        NODE_OPTIONS: --max-old-space-size=4096

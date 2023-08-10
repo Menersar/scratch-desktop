@@ -1,0 +1,19 @@
+# Description of the desktop app in the Microsoft Store.
+microsoft-store-description: |
+  Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.
+
+  The developers of Sidekick have no affiliation with the Scratch or TurboWarp Team. Sidekick is developed throughout student projects at the University of Applied Sciences Emden / Leer in Emden, Germany.
+
+  Project shown in screenshots is {screenshot_project_link}
+
+# Release notes of the desktop app in the Microsoft Store. For languages other than English we do not publish full release notes in the store.
+microsoft-store-generic-release-notes: "For the latest release notes, visit {changelog_link}."
+
+# Caption of app screenshots for the desktop app in the Microsoft Store.
+microsoft-store-screenshot-caption: "Project pictured: {screenshot_project_link}"
+
+# Caption of the addon settings page screenshot for the desktop app in the Microsoft Store.
+microsoft-store-screenshot-addons: "More than {number_of_addons} addons to customize and enhance your experience."
+
+# Caption of the package screenshot for the desktop app in the Microsoft Store.
+microsoft-store-screenshot-packager: "Builtin packager to convert projects to HTML files or applications for Windows, macOS, or Linux."

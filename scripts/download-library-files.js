@@ -17,7 +17,15 @@ if (!fs.existsSync(libraryFiles)) {
     });
 }
 
-const guiLibraryFolder = pathUtil.join(__dirname, '..', 'node_modules', 'scratch-gui', 'src', 'lib', 'libraries');
+const guiLibraryFolder = pathUtil.join(
+    __dirname,
+    '..',
+    'node_modules',
+    'scratch-gui',
+    'src',
+    'lib',
+    'libraries'
+);
 const costumesManifest = pathUtil.join(guiLibraryFolder, 'costumes.json');
 const backdropManifest = pathUtil.join(guiLibraryFolder, 'backdrops.json');
 const spriteManifest = pathUtil.join(guiLibraryFolder, 'sprites.json');
@@ -40,8 +48,9 @@ const backdrops = JSON.parse(fs.readFileSync(backdropManifest));
 const sprites = JSON.parse(fs.readFileSync(spriteManifest));
 const sounds = JSON.parse(fs.readFileSync(soundManifest));
 
-const md5 = buffer => crypto.createHash('md5').update(new Uint8Array(buffer))
-    .digest('hex');
+const md5 = buffer =>
+    crypto.createHash('md5').update(new Uint8Array(buffer))
+        .digest('hex');
 
 const allCompressedFiles = [];
 
@@ -69,7 +78,9 @@ const downloadAsset = async asset => {
     const expectedHash = asset.assetId;
     const hash = md5(uncompressed);
     if (hash !== expectedHash) {
-        throw new Error(`${md5ext}: Hash mismatch: expected ${expectedHash} but found ${hash}`);
+        throw new Error(
+            `${md5ext}: Hash mismatch: expected ${expectedHash} but found ${hash}`
+        );
     }
 
     const compressed = await compress(uncompressed);
@@ -81,12 +92,13 @@ const limiter = new Limiter({
 });
 
 const queueDownloadAsset = asset => {
-    limiter.push(done => downloadAsset(asset)
-        .then(done)
-        .catch(error => {
-            console.error(error);
-            process.exit(1);
-        })
+    limiter.push(done =>
+        downloadAsset(asset)
+            .then(done)
+            .catch(error => {
+                console.error(error);
+                process.exit(1);
+            })
     );
 };
 

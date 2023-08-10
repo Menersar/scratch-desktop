@@ -2,81 +2,201 @@
   "name": "sidekick-desktop",
   "productName": "Scratch",
   "description": "Scratch 3.0 as a self-contained desktop application; version customized for Sidekick.",
-  "author": "",
+  "author": {
+    "email": "",
+    "name": ""
+  },
   "version": "3.29.1",
   "license": "BSD-3-Clause",
   "scripts": {
+    "dev": "npm run start",
+    "start": "mkdirp ./dist && electron-webpack dev",
+    "compile": "mkdirp ./dist && electron-webpack",
+    "dist": "npm run clean && npm run compile && electron-builder",
+    "dist:dir": "npm run compile && electron-builder --dir",
+    "fetch": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
     "clean": "rimraf ./dist ./static/assets",
-    "start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
-    "compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
-    "fetch": "rimraf ./static/assets/ && mkdirp ./static/assets/ && node ./scripts/fetchMediaLibraryAssets.js",
-    "build": "npm run build:dev",
-    "build:dev": "npm run compile && npm run doBuild -- --mode=dev",
-    "build:dir": "npm run compile && npm run doBuild -- --mode=dir",
-    "build:dist": "npm run compile && npm run doBuild -- --mode=dist",
-    "doBuild": "node ./scripts/electron-builder-wrapper.js",
-    "dist": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dist",
-    "distDev": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dev",
-    "test": "npm run test:lint",
-    "test:lint": "eslint --cache --color --ext .jsx,.js .",
-    "mklink:blocks": "python build-blocks.py"
+    "make:icons": "cd build && bash make-icons.sh",
+    "scratch:clean": "rimraf ./dist ./static/assets",
+    "scratch:start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
+    "scratch:compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
+    "scratch:fetch": "rimraf ./static/assets/ && mkdirp ./static/assets/ && node ./scripts/fetchMediaLibraryAssets.js",
+    "scratch:build": "npm run build:dev",
+    "scratch:build:dev": "npm run compile && npm run doBuild -- --mode=dev",
+    "scratch:build:dir": "npm run compile && npm run doBuild -- --mode=dir",
+    "scratch:build:dist": "npm run compile && npm run doBuild -- --mode=dist",
+    "scratch:doBuild": "node ./scripts/electron-builder-wrapper.js",
+    "scratch:scratch:dist": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dist",
+    "scratch:distDev": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dev",
+    "scratch:test": "npm run test:lint",
+    "scratch:test:lint": "eslint --cache --color --ext .jsx,.js .",
+    "scratch:mklink:blocks": "python build-blocks.py"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Menersar/scratch-desktop.git"
   },
-  "dependencies": {
-    "source-map-support": "^0.5.19"
-  },
   "bugs": {
-    "url": "https://github.com/Menersar/scratch-desktop/issues"
+    "url": "https://github.com/Menersar/scratch-desktop/issues",
+    "email": ""
   },
-  "homepage": "https://github.com/Menersar/scratch-desktop#readme",
+  "homepage": "https://menersar.github.io/Sidekick/",
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-async-to-generator": "^7.8.3",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/preset-react": "^7.9.4",
-    "async": "^3.2.0",
-    "autoprefixer": "9.8.8",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "babel-plugin-react-intl": "^7.5.7",
-    "copy-webpack-plugin": "^5.1.1",
-    "electron": "^15.3.1",
-    "electron-builder": "^22.13.1",
-    "electron-devtools-installer": "^3.2.0",
-    "electron-notarize": "^1.1.1",
-    "electron-store": "^8.0.1",
-    "eslint": "^7.0.0",
-    "eslint-config-scratch": "^6.0.0",
-    "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-react": "^7.20.0",
-    "fs-extra": "^9.0.1",
-    "intl": "1.2.5",
-    "lodash.bindall": "^4.4.0",
-    "lodash.defaultsdeep": "^4.6.1",
-    "minilog": "^3.1.0",
-    "minimist": "^1.2.5",
-    "mkdirp": "^1.0.4",
-    "nets": "^3.2.0",
-    "postcss-import": "12.0.1",
-    "postcss-simple-vars": "5.0.2",
-    "react": "16.14.0",
-    "react-dom": "16.14.0",
-    "react-intl": "2.9.0",
-    "react-redux": "5.1.2",
-    "redux": "3.7.2",
-    "rimraf": "^3.0.2",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-react": "^7.13.13",
+    "@electron/notarize": "^2.1.0",
+    "css-loader": "^5.0.2",
+    "electron": "^22.3.13",
+    "electron-builder": "^24.4.0",
+    "postcss": "^8.4.13",
+    "postcss-import": "^14.0.0",
+    "postcss-loader": "^4.2.0",
+    "postcss-simple-vars": "^6.0.3",
     "scratch-gui": "git+https://github.com/Menersar/scratch-gui.git#sidekick",
+    "semver": "^7.5.3",
     "sidekick-electron-webpack": "git+https://github.com/Menersar/sidekick-electron-webpack.git#sidekick",
-    "uuid": "^8.0.0",
-    "webpack": "^4.43.0",
-    "webpack-merge": "4.2.2"
+    "webpack": "~4.46.0"
   },
-  "resolutions": {
-    "upath": "^1.0.5"
-  }
+  "build": {
+    "extends": "file:node_modules/sidekick-electron-webpack/out/electron-builder.js",
+    "appId": "de.mixality.sidekick.sidekick-desktop",
+    "productName": "Sidekick",
+    "win": {
+      "artifactName": "${productName} Portable ${version} ${arch}.${ext}",
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": "x64"
+        },
+        {
+          "target": "portable",
+          "arch": "x64"
+        }
+      ]
+    },
+    "appx": {
+      "artifactName": "${productName} MS Store ${version} ${arch}.${ext}",
+      "applicationId": "Sidekick",
+      "displayName": "Sidekick",
+      "identityName": "Mixality.SidekickDesktop",
+      "publisher": "CN=5b744553-b6ec-446a-aa4e-d77024aa8c74",
+      "publisherDisplayName": "Mixality",
+      "backgroundColor": "#62ad44",
+      "showNameOnTiles": true,
+      "languages": [
+        "en-US",
+        "fr",
+        "nl",
+        "de",
+        "it",
+        "ja",
+        "ru",
+        "es-ES"
+      ]
+    },
+    "nsis": {
+      "artifactName": "${productName} Setup ${version} ${arch}.${ext}",
+      "oneClick": false,
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "artifactName": "${productName} Setup ${version}.${ext}",
+      "icon": "build/icon.icns",
+      "category": "public.app-category.education",
+      "darkModeSupport": true,
+      "gatekeeperAssess": false,
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "NSCameraUsageDescription": "This app requires camera access when using the video sensing blocks.",
+        "NSMicrophoneUsageDescription": "This app requires microphone access when recording sounds or detecting loudness."
+      },
+      "target": [
+        {
+          "arch": "universal",
+          "target": "dmg"
+        }
+      ]
+    },
+    "linux": {
+      "artifactName": "${productName}-${os}-${arch}-${version}.${ext}",
+      "icon": "./build/",
+      "synopsis": "Assistance system for the manual assembly utilizing the Scratch programming interface to create workflows.",
+      "description": "Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.",
+      "category": "Development",
+      "extraFiles": [
+        "linux-files"
+      ],
+      "target": [
+        {
+          "target": "deb"
+        },
+        {
+          "target": "appimage"
+        },
+        {
+          "target": "tar.gz"
+        }
+      ]
+    },
+    "snap": {
+      "summary": "Assistance system for the manual assembly utilizing the Scratch programming interface to create workflows.",
+      "allowNativeWayland": true,
+      "plugs": [
+        "default",
+        "camera",
+        "audio-playback",
+        "audio-record",
+        "joystick",
+        "removable-media"
+      ]
+    },
+    "appImage": {
+      "license": null
+    },
+    "fileAssociations": [
+      {
+        "ext": "sb3",
+        "name": "Scratch 3 Project",
+        "role": "Editor",
+        "mimeType": "application/x.scratch.sb3"
+      },
+      {
+        "ext": "sb2",
+        "name": "Scratch 2 Project",
+        "role": "Editor",
+        "mimeType": "application/x.scratch.sb2"
+      },
+      {
+        "ext": "sb",
+        "name": "Scratch 1 Project",
+        "role": "Editor",
+        "mimeType": "application/x.scratch.sb"
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "repo": "sidekick-desktop",
+        "owner": "Mixality"
+      }
+    ],
+    "afterSign": "scripts/after-sign.js"
+  },
+  "electronWebpack": {
+    "main": {
+      "webpackConfig": "webpack.main.js",
+      "extraEntries": [
+        "@/preload.js"
+      ]
+    },
+    "renderer": {
+      "webpackConfig": "webpack.renderer.js",
+      "template": "src/renderer/template.html"
+    }
+  },
+  "private": false
 }

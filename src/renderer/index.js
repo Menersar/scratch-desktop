@@ -1,33 +1,22 @@
-// This file does async imports of the heavy JSX, especially app.jsx, to avoid blocking the first render.
-// The main index.html just contains a loading/splash screen which will display while this import loads.
+import './normalize.css';
+import './browser-ui-reimplementation';
+import './temporary-fetch-fix';
 
-import {ipcRenderer} from 'electron';
+const searchParams = new URLSearchParams(location.search);
+const route = searchParams.get('route');
 
-import ReactDOM from 'react-dom';
-
-ipcRenderer.on('ready-to-show', () => {
-    // Start without any element in focus, otherwise the first link starts with focus and shows an orange box.
-    // We shouldn't disable that box or the focus behavior in case someone wants or needs to navigate that way.
-    // This seems like a hack... maybe there's some better way to do avoid any element starting with focus?
-    document.activeElement.blur();
-});
-
-const route = new URLSearchParams(window.location.search).get('route') || 'app';
-let routeModulePromise;
-switch (route) {
-case 'app':
-    routeModulePromise = import('./app.jsx');
-    break;
-case 'about':
-    routeModulePromise = import('./about.jsx');
-    break;
-case 'privacy':
-    routeModulePromise = import('./privacy.jsx');
-    break;
+if (route === 'editor') {
+    import('./gui/gui.jsx');
+} else if (route === 'about') {
+    import('./about/about.jsx');
+} else if (route === 'settings') {
+    import('./addon-settings/addon-settings.jsx');
+} else if (route === 'privacy') {
+    import('./privacy/privacy.jsx');
+} else if (route === 'desktop-settings') {
+    import('./desktop-settings/desktop-settings.jsx');
+} else if (route === 'packager') {
+    import('./packager/packager.js');
+} else {
+    alert(`Invalid route: ${route}`);
 }
-
-routeModulePromise.then(routeModule => {
-    const appTarget = document.getElementById('app');
-    const routeElement = routeModule.default;
-    ReactDOM.render(routeElement, appTarget);
-});

@@ -1,0 +1,6 @@
+// !!! 'yaml.schemas'? ???
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/dependabot-2.0.json": "file:///c%3A/Users/mener/Desktop/desktop-master/.github/dependabot.yml"
+    }
+}
