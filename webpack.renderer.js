@@ -20,7 +20,9 @@ module.exports = defaultConfig => {
                     loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env', '@babel/preset-react'],
+                        // !!!!!HERE!!!!!
                         plugins: ['@babel/plugin-proposal-optional-chaining']
+                        // plugins: ['@babel/plugin-transform-optional-chaining']
                     }
                 },
                 {

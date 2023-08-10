@@ -28,5 +28,8 @@
     "python.analysis.typeCheckingMode": "basic",
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsx]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     } // set as "true" to run 'prettier' last not first
 }

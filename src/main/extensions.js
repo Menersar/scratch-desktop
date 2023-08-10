@@ -4,6 +4,7 @@ import {staticDir} from './environment';
 import {canBypassCORS} from './bypass-cors';
 
 const extensionDirectory = pathUtil.join(staticDir, 'sidekick-extensions.sidekick.mixality.de', '/');
+// const extensionDirectory = pathUtil.join(staticDir, 'extensions.turbowarp.org', '/');
 
 const ORIGIN = 'null';
 
@@ -13,8 +14,9 @@ app.on('session-created', session => {
     // We can only use one onBeforeRequest -- calling it again removes the previous listener.
     session.webRequest.onBeforeRequest({
         // !!! CHANGE !!!
-        // urls: ['file://*', 'https://https://mixality.github.io/Sidekick/extensions/*']
-        urls: ['file://*', 'https://https://menersar.github.io/Sidekick/extensions/*']
+        // urls: ['file://*', 'https://extensions.turbowarp.org/*']
+        // urls: ['file://*', 'https://mixality.github.io/Sidekick/extensions/*']
+        urls: ['file://*', 'https://menersar.github.io/Sidekick/extensions/*']
     }, (details, callback) => {
         const url = new URL(details.url);
 
@@ -24,6 +26,7 @@ app.on('session-created', session => {
                 cancel: !url.href.startsWith(rootFileURL)
             });
         // !!! CHANGE !!!
+        // } else if (url.origin === 'https://extensions.turbowarp.org') {
         // } else if (url.origin === 'https://mixality.github.io/Sidekick/extensions') {
         } else if (url.origin === 'https://menersar.github.io/Sidekick/extensions') {
             // Rewrite sidekick-extensions.sidekick.mixality.de to the offline cache.
