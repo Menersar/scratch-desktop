@@ -30,7 +30,7 @@ build.export(outputDirectory);
 
 // !!! CHANGE !!!
 // console.log(`Built ${mode} copy of extensions.turbowarp.org to ${outputDirectory}`);
-// console.log(`Built ${mode} copy of menersar.github.io/Sidekick/extensions to ${outputDirectory}`);
+// console.log(`Built ${mode} copy of menersar.github.io/Sidekick/sidekick-extensions to ${outputDirectory}`);
 // console.log(`Built ${mode} copy of sidekick-extensions to ${outputDirectory}`);
 console.log(
   `Built ${mode} copy of sidekick-extensions.mixality.de to ${outputDirectory}`
