@@ -2,11 +2,11 @@ const pathUtil = require("path");
 
 let Builder;
 try {
-  Builder = require("../extensions/development/builder");
+  Builder = require("../sidekick-extensions/development/builder");
 } catch (e) {
   if (e.code === "MODULE_NOT_FOUND") {
     console.error(
-      "Could not load sidekick-desktop/extensions build scripts – perhaps the sidekick-extensions submodule is missing?"
+      "Could not load sidekick-desktop/sidekick-extensions build scripts – perhaps the sidekick-extensions submodule is missing?"
     );
     console.error(
       "If the extension submodule is missing, run: `git submodule init`, `git submodule update`."

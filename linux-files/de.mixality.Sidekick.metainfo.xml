@@ -67,7 +67,7 @@
             <description>
                 <ul>
                     <li>Fixed issues using custom extensions in the packager</li>
-                    <li>Fixed using an extension to fetch files from extensions.mixality.de in the editor</li>
+                    <li>Fixed using an extension to fetch files from sidekick-extensions.mixality.de in the editor</li>
                     <li>Fixed Looks Plus "this sprite" option not working properly in clones</li>
                 </ul>
             </description>
@@ -91,8 +91,8 @@
         <release version="1.7.0" date="2023-1-24">
             <description>
                 <ul>
-                    <li>Added support for unsandboxed extensions from extensions.mixality.de</li>
-                    <li>The sidekick-desktop app includes an offline copy of extensions.mixality.de</li>
+                    <li>Added support for unsandboxed extensions from sidekick-extensions.mixality.de</li>
+                    <li>The sidekick-desktop app includes an offline copy of sidekick-extensions.mixality.de</li>
                     <li>Custom extensions will now be automatically loaded when you open a project made with recent versions of Sidekick (a confirmation prompt appears for third-party extensions)</li>
                     <li>Project saving now uses significantly less memory</li>
                     <li>Added "Rename broadcasts" addon (enabled by default)</li>

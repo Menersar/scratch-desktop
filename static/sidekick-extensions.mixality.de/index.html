@@ -268,9 +268,9 @@
         <p>Unlike custom extensions on other websites, these aren't limited by the extension sandbox, so they are a lot
             more powerful. All extensions are reviewed for safety.</p>
         <p>
-            
-                To use these extensions in Sidekick Desktop, hover over the extension and press the add button.
-                
+
+            To use these extensions in Sidekick Desktop, hover over the extension and press the add button.
+
         </p>
 
         <div class="infobox infobox-warning">
@@ -282,1179 +282,1365 @@
         </div>
 
         <div class="infobox">
-            
-                <div class="infobox-title">Some extensions may be outdated or missing.</div>
-                
-                    For compatibility, security, and offline support, Sidekick Desktop includes an offline copy of
-                    extensions.turbowarp.org from this update's release date (2023-08-10).
-                        Compared to the live website, some extensions may be missing or outdated.
-                        
+
+            <div class="infobox-title">Some extensions may be outdated or missing.</div>
+
+            For compatibility, security, and offline support, Sidekick Desktop includes an offline copy of
+            extensions.turbowarp.org from this update's release date (2023-08-10).
+            Compared to the live website, some extensions may be missing or outdated.
+
         </div>
     </div>
 
-    
 
-        
 
-                <script>
-                    document.addEventListener('click', function (e) {
-                        var toCopy = e.target.getAttribute('data-copy');
-                        if (toCopy) {
-                            if (navigator.clipboard && navigator.clipboard.writeText) {
-                                navigator.clipboard.writeText(toCopy);
+
+
+    <script>
+        document.addEventListener('click', function (e) {
+            var toCopy = e.target.getAttribute('data-copy');
+            if (toCopy) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(toCopy);
+                } else {
+                    var input = document.createElement('input');
+                    input.value = toCopy;
+                    input.style.top = '0';
+                    input.style.left = '0';
+                    input.style.position = 'fixed';
+                    document.body.appendChild(input);
+                    input.focus();
+                    input.select();
+                    try {
+                        document.execCommand('copy');
+                    } catch (e) {
+                        console.error(e);
+                    }
+                    document.body.removeChild(input);
+                    e.target.focus();
+                }
+            }
+        });
+    </script>
+
+
+    <script>
+        // !!!! CHANGE !!!!
+        // Mock API for testing outside of desktop app
+        if (typeof TWD === 'undefined') {
+            console.log('MOCK: Desktop API object does not exist -- using a mock instead');
+            var TWD = {
+                extensions: {
+                    loadExtension: (url) => new Promise((resolve, reject) => {
+                        console.log(`MOCK: Loading ${url}...`);
+                        setTimeout(() => {
+                            console.log(`MOCK: Loaded ${url}`);
+                            if (Math.random() > 0.5) {
+                                resolve();
                             } else {
-                                var input = document.createElement('input');
-                                input.value = toCopy;
-                                input.style.top = '0';
-                                input.style.left = '0';
-                                input.style.position = 'fixed';
-                                document.body.appendChild(input);
-                                input.focus();
-                                input.select();
-                                try {
-                                    document.execCommand('copy');
-                                } catch (e) {
-                                    console.error(e);
-                                }
-                                document.body.removeChild(input);
-                                e.target.focus();
+                                reject(new Error('Demo error'));
                             }
-                        }
+                        }, Math.random() * 1000 + 50);
+                    }),
+                },
+            };
+        }
+
+        function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        document.addEventListener('click', (e) => {
+            var toLoad = e.target.getAttribute('data-load');
+            if (toLoad) {
+                e.target.classList.add('loading');
+                e.target.disabled = true;
+                Promise.all([
+                    SidekickDesktop.extensions.loadExtension(toLoad),
+                    sleep(500),
+                ])
+                    .then(() => {
+                        e.target.disabled = false;
+                        e.target.classList.remove('loading');
+                    })
+                    .catch((error) => {
+                        alert(error);
+                        e.target.disabled = false;
+                        e.target.classList.remove('loading');
                     });
-                </script>
-
-                
-                    <script>
-                        // !!!! CHANGE !!!!
-                        // Mock API for testing outside of desktop app
-                        if (typeof TWD === 'undefined') {
-                            console.log('MOCK: Desktop API object does not exist -- using a mock instead');
-                            var TWD = {
-                                extensions: {
-                                    loadExtension: (url) => new Promise((resolve, reject) => {
-                                        console.log(`MOCK: Loading ${url}...`);
-                                        setTimeout(() => {
-                                            console.log(`MOCK: Loaded ${url}`);
-                                            if (Math.random() > 0.5) {
-                                                resolve();
-                                            } else {
-                                                reject(new Error('Demo error'));
-                                            }
-                                        }, Math.random() * 1000 + 50);
-                                    }),
-                                },
-                            };
-                        }
-
-                        function sleep(ms) {
-                            return new Promise((resolve) => setTimeout(resolve, ms));
-                        }
-
-                        document.addEventListener('click', (e) => {
-                            var toLoad = e.target.getAttribute('data-load');
-                            if (toLoad) {
-                                e.target.classList.add('loading');
-                                e.target.disabled = true;
-                                Promise.all([
-                                    TWD.extensions.loadExtension(toLoad),
-                                    sleep(500),
-                                ])
-                                    .then(() => {
-                                        e.target.disabled = false;
-                                        e.target.classList.remove('loading');
-                                    })
-                                    .catch((error) => {
-                                        alert(error);
-                                        e.target.disabled = false;
-                                        e.target.classList.remove('loading');
-                                    });
-                            }
-                        });
-                    </script>
-                    
-
-                        
-
-                            <div class="section extensions-outer">
-                                <div class="extensions">
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/lab/text.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/lab/text.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/lab/text.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Animated Text</h3>
-                                            <p>An easy way to display and animate text. Compatible with Scratch Lab's
-                                                Animated Text experiment.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/stretch.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/stretch.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/stretch.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Stretch</h3>
-                                            <p>Stretch sprites horizontally or vertically.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/gamepad.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/gamepad.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/gamepad.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Gamepad</h3>
-                                            <p>Directly access gamepads instead of just mapping buttons to keys.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/box2d.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/box2d.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/box2d.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Box2D Physics</h3>
-                                            <p>Two dimensional physics. Originally created by <a
-                                                    href="https://scratch.mit.edu/users/griffpatch/">griffpatch</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/files.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/files.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/files.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Files</h3>
-                                            <p>Read and download files.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/pointerlock.png" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/pointerlock.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/pointerlock.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Pointerlock</h3>
-                                            <p>Adds blocks for mouse locking. Mouse x & y blocks will report the change
-                                                since the previous frame while the pointer is locked. Replaces the <a
-                                                    href="https://experiments.turbowarp.org/pointerlock/">pointerlock
-                                                    experiment</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/cursor.png" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/cursor.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/cursor.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Mouse Cursor</h3>
-                                            <p>Use custom cursors or hide the cursor. Also allows replacing the cursor
-                                                with any costume image.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/runtime-options.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/runtime-options.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/runtime-options.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Runtime Options</h3>
-                                            <p>Get and modify turbo mode, framerate, interpolation, clone limit, stage
-                                                size, and more.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/fetch.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/fetch.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/fetch.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Fetch</h3>
-                                            <p>Make requests to the broader internet.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/text.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/text.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/text.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Text</h3>
-                                            <p>Manipulate characters and text. Originally created by <a
-                                                    href="https://scratch.mit.edu/users/CST1229/">CST1229</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/local-storage.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/local-storage.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/local-storage.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Local Storage</h3>
-                                            <p>Store data persistently. Like cookies, but better.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/true-fantom/base.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/true-fantom/base.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/true-fantom/base.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Base</h3>
-                                            <p>Convert numbers between bases. Created by <a
-                                                    href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/bitwise.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/bitwise.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/bitwise.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Bitwise</h3>
-                                            <p>Blocks that operate on the binary representation of numbers in computers.
-                                                Modified by <a
-                                                    href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Skyhigh173/bigint.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Skyhigh173/bigint.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Skyhigh173/bigint.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>BigInt</h3>
-                                            <p>Math blocks that work on infinitely large integers (no decimals). Created
-                                                by Skyhigh173.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/utilities.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/utilities.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/utilities.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Utilities</h3>
-                                            <p>A bunch of interesting blocks. Originally created by <a
-                                                    href="https://scratch.mit.edu/users/Sheep_maker/">Sheep_maker</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/sound.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/sound.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/sound.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Sound</h3>
-                                            <p>Play sounds from URLs.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Xeltalliv/clippingblending.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Xeltalliv/clippingblending.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Xeltalliv/clippingblending.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Clipping &amp; Blending</h3>
-                                            <p>Clipping outside of a specified rectangular area and additive color
-                                                blending. Created by <a
-                                                    href="https://scratch.mit.edu/users/Vadik1/">Vadik1</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/clipboard.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/clipboard.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/clipboard.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Clipboard</h3>
-                                            <p>Read and write from the system clipboard.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/penplus.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/penplus.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/penplus.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Pen Plus</h3>
-                                            <p>Advanced rendering capabilities. Created by <a
-                                                    href="https://scratch.mit.edu/users/pinksheep2917/">ObviousAlexC.</a>
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/obviousAlexC/SensingPlus.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/obviousAlexC/SensingPlus.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/obviousAlexC/SensingPlus.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Sensing Plus</h3>
-                                            <p>An extension to the sensing category. Created by <a
-                                                    href="https://scratch.mit.edu/users/pinksheep2917/">ObviousAlexC</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Lily/ClonesPlus.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Lily/ClonesPlus.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Lily/ClonesPlus.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Clones Plus</h3>
-                                            <p>Expansion of Scratch's clone features. Created by <a
-                                                    href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Lily/LooksPlus.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Lily/LooksPlus.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Lily/LooksPlus.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Looks Plus</h3>
-                                            <p>Expands upon the looks category, allowing you to show/hide, get costume
-                                                data and edit SVG skins on sprites. Created by <a
-                                                    href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/navigator.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/navigator.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/navigator.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Navigator</h3>
-                                            <p>Details about the user's browser and operating system.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/battery.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/battery.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/battery.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Battery</h3>
-                                            <p>Access information about the battery of phones or laptops. May not work
-                                                on all devices and browsers.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/mdwalters/notifications.png" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/mdwalters/notifications.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/mdwalters/notifications.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Notifications</h3>
-                                            <p>Display notifications.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/ar.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/ar.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/ar.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Augmented Reality</h3>
-                                            <p>Shows image from camera and performs motion tracking, allowing 3D
-                                                projects to correctly overlay virtual objects on real world. Created by
-                                                <a href="https://scratch.mit.edu/users/Vadik1/">Vadik1</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/encoding.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/encoding.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/encoding.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Encoding</h3>
-                                            <p>Encode and decode strings into their unicode numbers, base 64, or URLs.
-                                                Created by -SIPC-.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Lily/MoreTimers.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Lily/MoreTimers.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Lily/MoreTimers.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>More Timers</h3>
-                                            <p>Control several timers at once. Created by <a
-                                                    href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/clouddata-ping.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/clouddata-ping.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/clouddata-ping.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Ping Cloud Data</h3>
-                                            <p>Determine whether a cloud variable server is probably up. Originally
-                                                created by TheShovel.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/cloudlink.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/cloudlink.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/cloudlink.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Cloudlink</h3>
-                                            <p>Powerful WebSocket extension for Scratch 3. Created by MikeDEV.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/true-fantom/network.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/true-fantom/network.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/true-fantom/network.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Network</h3>
-                                            <p>Various blocks for interacting with the network. Created by <a
-                                                    href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/true-fantom/math.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/true-fantom/math.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/true-fantom/math.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Math</h3>
-                                            <p>A lot of operators blocks, from exponentiation to trigonometric
-                                                functions. Created by <a
-                                                    href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/true-fantom/regexp.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/true-fantom/regexp.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/true-fantom/regexp.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>RegExp</h3>
-                                            <p>Full interface for working with <a
-                                                    href="https://en.wikipedia.org/wiki/Regular_expression">Regular
-                                                    Expressions</a>. Created by <a
-                                                    href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/true-fantom/couplers.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/true-fantom/couplers.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/true-fantom/couplers.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Couplers</h3>
-                                            <p>A few adapter blocks. Created by <a
-                                                    href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Lily/Cast.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Lily/Cast.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Lily/Cast.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Cast</h3>
-                                            <p>Convert values between types. Created by <a
-                                                    href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/-SIPC-/time.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/-SIPC-/time.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/-SIPC-/time.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Time</h3>
-                                            <p>Blocks for interacting with unix timestamps and other date strings.
-                                                Created by -SIPC-.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/-SIPC-/consoles.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/-SIPC-/consoles.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/-SIPC-/consoles.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Consoles</h3>
-                                            <p>Blocks that interact the JavaScript console built in to your browser's
-                                                developer tools. Created by -SIPC-.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/ZXMushroom63/searchApi.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/ZXMushroom63/searchApi.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/ZXMushroom63/searchApi.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Search Params</h3>
-                                            <p>Interact with URL search parameters: the part of the URL after a question
-                                                mark. Created by ZXMushroom63.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/TheShovel/ShovelUtils.png" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/TheShovel/ShovelUtils.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/TheShovel/ShovelUtils.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>ShovelUtils</h3>
-                                            <p>A bunch of miscellaneous blocks. Created by TheShovel.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Skyhigh173/json.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Skyhigh173/json.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Skyhigh173/json.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>JSON</h3>
-                                            <p>Handle JSON strings and arrays. Created by Skyhigh173.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/cs2627883/numericalencoding.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/cs2627883/numericalencoding.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/cs2627883/numericalencoding.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Numerical Encoding</h3>
-                                            <p>Encode strings as numbers for cloud variables. Created by <a
-                                                    href="https://scratch.mit.edu/users/cs2627883/">cs2627883</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/DT/cameracontrols.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/DT/cameracontrols.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/DT/cameracontrols.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Camera Controls</h3>
-                                            <p>Move the visible part of the stage. Created by DT.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/TheShovel/CanvasEffects.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/TheShovel/CanvasEffects.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/TheShovel/CanvasEffects.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Canvas Effects</h3>
-                                            <p>Apply visual effects to the entire stage. Created by TheShovel.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Longboost/color_channels.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Longboost/color_channels.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Longboost/color_channels.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>RGB Channels</h3>
-                                            <p>Only render or stamp certain RGB channels.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Lily/TempVariables2.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Lily/TempVariables2.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Lily/TempVariables2.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Temporary Variables</h3>
-                                            <p>Create disposable runtime or thread variables. Created by <a
-                                                    href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/0832/rxFS2.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/0832/rxFS2.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/0832/rxFS2.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>rxFS</h3>
-                                            <p>Blocks for interacting with a virtual in-memory filesystem. Created by
-                                                0832.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/NexusKitten/sgrab.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/NexusKitten/sgrab.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/NexusKitten/sgrab.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>S-Grab</h3>
-                                            <p>Get information about Scratch projects and Scratch users. Created by <a
-                                                    href="https://scratch.mit.edu/users/NamelessCat/">NamelessCat</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/NOname-awa/graphics2d.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/NOname-awa/graphics2d.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/NOname-awa/graphics2d.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Graphics 2D</h3>
-                                            <p>Blocks to compute lengths, angles, and areas in two dimensions. Created
-                                                by NOname-awa.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/NOname-awa/more-comparisons.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/NOname-awa/more-comparisons.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/NOname-awa/more-comparisons.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>More Comparisons</h3>
-                                            <p>More comparison blocks. Created by NOname-awa.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/JeremyGamer13/tween.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/JeremyGamer13/tween.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/JeremyGamer13/tween.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Tween</h3>
-                                            <p>Easing methods for smooth animations. Created by <a
-                                                    href="https://scratch.mit.edu/users/JeremyGamer13/">JeremyGamer13</a>
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/rixxyx.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/rixxyx.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/rixxyx.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>RixxyX</h3>
-                                            <p>Various utility blocks. Created by <a
-                                                    href="https://scratch.mit.edu/users/RixTheTyrunt/">RixTheTyrunt</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/qxsck/data-analysis.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/qxsck/data-analysis.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/qxsck/data-analysis.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Data Analysis</h3>
-                                            <p>Blocks to compute means, medians, maximums, minimums, variances, and
-                                                modes. Created by qxsck.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/qxsck/var-and-list.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/qxsck/var-and-list.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/qxsck/var-and-list.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Variable and list</h3>
-                                            <p>More blocks related to variables and lists. Created by qxsck.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/vercte/dictionaries.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/vercte/dictionaries.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/vercte/dictionaries.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Dictionaries</h3>
-                                            <p>Use the power of dictionaries in your project. Created by <a
-                                                    href="https://scratch.mit.edu/users/lolecksdeehaha/">Vercte</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/unknown.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/godslayerakp/http.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/godslayerakp/http.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>HTTP</h3>
-                                            <p>Comprehensive extension for interacting with external websites. Created
-                                                by <a href="https://scratch.mit.edu/users/RedMan13/">RedMan13</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Lily/CommentBlocks.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Lily/CommentBlocks.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Lily/CommentBlocks.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Comment Blocks</h3>
-                                            <p>Annotate your scripts. Created by <a
-                                                    href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/CubesterYT/TurboHook.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/CubesterYT/TurboHook.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/CubesterYT/TurboHook.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>TurboHook</h3>
-                                            <p>Allows you to use webhooks. Created by <a
-                                                    href="https://scratch.mit.edu/users/CubesterYT/">CubesterYT</a>.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/unknown.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Alestore/nfcwarp.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Alestore/nfcwarp.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>NFCWarp</h3>
-                                            <p>Allows reading data from NFC (NDEF) devices. Only works in Chrome on
-                                                Android. Created by <a
-                                                    href="https://scratch.mit.edu/users/aleb2005/">Alestore Games</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/itchio.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/itchio.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/itchio.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>itch.io</h3>
-                                            <p>Blocks that interact with the itch.io website. Unofficial. Created by
-                                                softed.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/gamejolt.png" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/gamejolt.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/gamejolt.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>GameJolt</h3>
-                                            <p>Blocks that allow games to interact with the GameJolt API. Unofficial.
-                                                Created by softed.</p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/obviousAlexC/newgroundsIO.svg" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/obviousAlexC/newgroundsIO.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/obviousAlexC/newgroundsIO.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>Newgrounds</h3>
-                                            <p>Blocks that allow games to interact with the Newgrounds API. Unofficial.
-                                                Created by <a
-                                                    href="https://scratch.mit.edu/users/pinksheep2917/">ObviousAlexC</a>.
-                                            </p>
-                                    </div>
-
-                                    <div class="extension">
-                                        
-                            <div class="extension-banner">
-                                <img loading="lazy" src="images/Lily/McUtils.png" class="extension-image"
-                                    style="">
-                                <div class="extension-buttons">
-                                    <button class="copy" data-copy="https://menersar.github.io/Sidekick/extensions/Lily/McUtils.js">Copy URL</button>
-                                    
-                                    <button class="open" data-load="https://menersar.github.io/Sidekick/extensions/Lily/McUtils.js">Add Extension</button>
-                                    
-                                </div>
-                            </div>
-                                            <h3>McUtils</h3>
-                                            <p>Helpful utilities for any fast food employee. Created by <a
-                                                    href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
-                                            </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <footer class="section">
-                                <p>Sidekick is not affiliated with Scratch, the Scratch Team, or the Scratch Foundation.
-                                </p>
-                                <div class="links">
-                                    <a href="https://github.com/TurboWarp/extensions/tree/master/images#readme">Image
-                                        Attribution</a>
-                                    -
-                                    <a href="https://github.com/TurboWarp/extensions">GitHub</a>
-                                    -
-                                    <a href="https://docs.turbowarp.org/development/custom-extensions">Developer
-                                        Documentation</a>
-                                </div>
-                            </footer>
+            }
+        });
+    </script>
+
+
+
+
+    <div class="section extensions-outer">
+        <div class="extensions">
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/lab/text.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/lab/text.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/lab/text.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Animated Text</h3>
+                <p>An easy way to display and animate text. Compatible with Scratch Lab's
+                    Animated Text experiment.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/stretch.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/stretch.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/stretch.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Stretch</h3>
+                <p>Stretch sprites horizontally or vertically.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/gamepad.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/gamepad.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/gamepad.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Gamepad</h3>
+                <p>Directly access gamepads instead of just mapping buttons to keys.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/box2d.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/box2d.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/box2d.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Box2D Physics</h3>
+                <p>Two dimensional physics. Originally created by <a
+                        href="https://scratch.mit.edu/users/griffpatch/">griffpatch</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/files.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/files.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/files.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Files</h3>
+                <p>Read and download files.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/pointerlock.png" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/pointerlock.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/pointerlock.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Pointerlock</h3>
+                <p>Adds blocks for mouse locking. Mouse x & y blocks will report the change
+                    since the previous frame while the pointer is locked. Replaces the <a
+                        href="https://experiments.turbowarp.org/pointerlock/">pointerlock
+                        experiment</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/cursor.png" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/cursor.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/cursor.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Mouse Cursor</h3>
+                <p>Use custom cursors or hide the cursor. Also allows replacing the cursor
+                    with any costume image.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/runtime-options.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/runtime-options.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/runtime-options.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Runtime Options</h3>
+                <p>Get and modify turbo mode, framerate, interpolation, clone limit, stage
+                    size, and more.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/fetch.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/fetch.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/fetch.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Fetch</h3>
+                <p>Make requests to the broader internet.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/text.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/text.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/text.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Text</h3>
+                <p>Manipulate characters and text. Originally created by <a
+                        href="https://scratch.mit.edu/users/CST1229/">CST1229</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/local-storage.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/local-storage.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/local-storage.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Local Storage</h3>
+                <p>Store data persistently. Like cookies, but better.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/true-fantom/base.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/base.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/base.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Base</h3>
+                <p>Convert numbers between bases. Created by <a
+                        href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/bitwise.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/bitwise.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/bitwise.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Bitwise</h3>
+                <p>Blocks that operate on the binary representation of numbers in computers.
+                    Modified by <a href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Skyhigh173/bigint.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Skyhigh173/bigint.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Skyhigh173/bigint.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>BigInt</h3>
+                <p>Math blocks that work on infinitely large integers (no decimals). Created
+                    by Skyhigh173.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/utilities.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/utilities.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/utilities.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Utilities</h3>
+                <p>A bunch of interesting blocks. Originally created by <a
+                        href="https://scratch.mit.edu/users/Sheep_maker/">Sheep_maker</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/sound.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/sound.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/sound.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Sound</h3>
+                <p>Play sounds from URLs.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Xeltalliv/clippingblending.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Xeltalliv/clippingblending.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Xeltalliv/clippingblending.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Clipping &amp; Blending</h3>
+                <p>Clipping outside of a specified rectangular area and additive color
+                    blending. Created by <a href="https://scratch.mit.edu/users/Vadik1/">Vadik1</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/clipboard.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/clipboard.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/clipboard.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Clipboard</h3>
+                <p>Read and write from the system clipboard.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/penplus.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/penplus.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/penplus.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Pen Plus</h3>
+                <p>Advanced rendering capabilities. Created by <a
+                        href="https://scratch.mit.edu/users/pinksheep2917/">ObviousAlexC.</a>
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/obviousAlexC/SensingPlus.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/obviousAlexC/SensingPlus.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/obviousAlexC/SensingPlus.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Sensing Plus</h3>
+                <p>An extension to the sensing category. Created by <a
+                        href="https://scratch.mit.edu/users/pinksheep2917/">ObviousAlexC</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Lily/ClonesPlus.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/ClonesPlus.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/ClonesPlus.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Clones Plus</h3>
+                <p>Expansion of Scratch's clone features. Created by <a
+                        href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Lily/LooksPlus.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/LooksPlus.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/LooksPlus.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Looks Plus</h3>
+                <p>Expands upon the looks category, allowing you to show/hide, get costume
+                    data and edit SVG skins on sprites. Created by <a
+                        href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/navigator.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/navigator.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/navigator.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Navigator</h3>
+                <p>Details about the user's browser and operating system.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/battery.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/battery.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/battery.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Battery</h3>
+                <p>Access information about the battery of phones or laptops. May not work
+                    on all devices and browsers.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/mdwalters/notifications.png" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/mdwalters/notifications.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/mdwalters/notifications.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Notifications</h3>
+                <p>Display notifications.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/ar.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/ar.js">Copy URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/ar.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Augmented Reality</h3>
+                <p>Shows image from camera and performs motion tracking, allowing 3D
+                    projects to correctly overlay virtual objects on real world. Created by
+                    <a href="https://scratch.mit.edu/users/Vadik1/">Vadik1</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/encoding.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/encoding.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/encoding.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Encoding</h3>
+                <p>Encode and decode strings into their unicode numbers, base 64, or URLs.
+                    Created by -SIPC-.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Lily/MoreTimers.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/MoreTimers.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/MoreTimers.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>More Timers</h3>
+                <p>Control several timers at once. Created by <a
+                        href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/clouddata-ping.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/clouddata-ping.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/clouddata-ping.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Ping Cloud Data</h3>
+                <p>Determine whether a cloud variable server is probably up. Originally
+                    created by TheShovel.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/cloudlink.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/cloudlink.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/cloudlink.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Cloudlink</h3>
+                <p>Powerful WebSocket extension for Scratch 3. Created by MikeDEV.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/true-fantom/network.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/network.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/network.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Network</h3>
+                <p>Various blocks for interacting with the network. Created by <a
+                        href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/true-fantom/math.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/math.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/math.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Math</h3>
+                <p>A lot of operators blocks, from exponentiation to trigonometric
+                    functions. Created by <a href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/true-fantom/regexp.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/regexp.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/regexp.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>RegExp</h3>
+                <p>Full interface for working with <a href="https://en.wikipedia.org/wiki/Regular_expression">Regular
+                        Expressions</a>. Created by <a href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/true-fantom/couplers.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/couplers.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/true-fantom/couplers.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Couplers</h3>
+                <p>A few adapter blocks. Created by <a href="https://scratch.mit.edu/users/TrueFantom/">TrueFantom</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Lily/Cast.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/Cast.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/Cast.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Cast</h3>
+                <p>Convert values between types. Created by <a
+                        href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/-SIPC-/time.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/-SIPC-/time.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/-SIPC-/time.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Time</h3>
+                <p>Blocks for interacting with unix timestamps and other date strings.
+                    Created by -SIPC-.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/-SIPC-/consoles.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/-SIPC-/consoles.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/-SIPC-/consoles.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Consoles</h3>
+                <p>Blocks that interact the JavaScript console built in to your browser's
+                    developer tools. Created by -SIPC-.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/ZXMushroom63/searchApi.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/ZXMushroom63/searchApi.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/ZXMushroom63/searchApi.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Search Params</h3>
+                <p>Interact with URL search parameters: the part of the URL after a question
+                    mark. Created by ZXMushroom63.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/TheShovel/ShovelUtils.png" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/TheShovel/ShovelUtils.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/TheShovel/ShovelUtils.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>ShovelUtils</h3>
+                <p>A bunch of miscellaneous blocks. Created by TheShovel.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Skyhigh173/json.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Skyhigh173/json.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Skyhigh173/json.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>JSON</h3>
+                <p>Handle JSON strings and arrays. Created by Skyhigh173.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/cs2627883/numericalencoding.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/cs2627883/numericalencoding.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/cs2627883/numericalencoding.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Numerical Encoding</h3>
+                <p>Encode strings as numbers for cloud variables. Created by <a
+                        href="https://scratch.mit.edu/users/cs2627883/">cs2627883</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/DT/cameracontrols.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/DT/cameracontrols.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/DT/cameracontrols.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Camera Controls</h3>
+                <p>Move the visible part of the stage. Created by DT.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/TheShovel/CanvasEffects.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/TheShovel/CanvasEffects.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/TheShovel/CanvasEffects.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Canvas Effects</h3>
+                <p>Apply visual effects to the entire stage. Created by TheShovel.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Longboost/color_channels.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Longboost/color_channels.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Longboost/color_channels.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>RGB Channels</h3>
+                <p>Only render or stamp certain RGB channels.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Lily/TempVariables2.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/TempVariables2.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/TempVariables2.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Temporary Variables</h3>
+                <p>Create disposable runtime or thread variables. Created by <a
+                        href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/0832/rxFS2.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/0832/rxFS2.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/0832/rxFS2.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>rxFS</h3>
+                <p>Blocks for interacting with a virtual in-memory filesystem. Created by
+                    0832.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/NexusKitten/sgrab.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/NexusKitten/sgrab.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/NexusKitten/sgrab.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>S-Grab</h3>
+                <p>Get information about Scratch projects and Scratch users. Created by <a
+                        href="https://scratch.mit.edu/users/NamelessCat/">NamelessCat</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/NOname-awa/graphics2d.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/NOname-awa/graphics2d.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/NOname-awa/graphics2d.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Graphics 2D</h3>
+                <p>Blocks to compute lengths, angles, and areas in two dimensions. Created
+                    by NOname-awa.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/NOname-awa/more-comparisons.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/NOname-awa/more-comparisons.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/NOname-awa/more-comparisons.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>More Comparisons</h3>
+                <p>More comparison blocks. Created by NOname-awa.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/JeremyGamer13/tween.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/JeremyGamer13/tween.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/JeremyGamer13/tween.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Tween</h3>
+                <p>Easing methods for smooth animations. Created by <a
+                        href="https://scratch.mit.edu/users/JeremyGamer13/">JeremyGamer13</a>
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/rixxyx.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/rixxyx.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/rixxyx.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>RixxyX</h3>
+                <p>Various utility blocks. Created by <a
+                        href="https://scratch.mit.edu/users/RixTheTyrunt/">RixTheTyrunt</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/qxsck/data-analysis.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/qxsck/data-analysis.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/qxsck/data-analysis.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Data Analysis</h3>
+                <p>Blocks to compute means, medians, maximums, minimums, variances, and
+                    modes. Created by qxsck.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/qxsck/var-and-list.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/qxsck/var-and-list.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/qxsck/var-and-list.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Variable and list</h3>
+                <p>More blocks related to variables and lists. Created by qxsck.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/vercte/dictionaries.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/vercte/dictionaries.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/vercte/dictionaries.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Dictionaries</h3>
+                <p>Use the power of dictionaries in your project. Created by <a
+                        href="https://scratch.mit.edu/users/lolecksdeehaha/">Vercte</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/unknown.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/godslayerakp/http.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/godslayerakp/http.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>HTTP</h3>
+                <p>Comprehensive extension for interacting with external websites. Created
+                    by <a href="https://scratch.mit.edu/users/RedMan13/">RedMan13</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Lily/CommentBlocks.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/CommentBlocks.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/CommentBlocks.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Comment Blocks</h3>
+                <p>Annotate your scripts. Created by <a
+                        href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/CubesterYT/TurboHook.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/CubesterYT/TurboHook.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/CubesterYT/TurboHook.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>TurboHook</h3>
+                <p>Allows you to use webhooks. Created by <a
+                        href="https://scratch.mit.edu/users/CubesterYT/">CubesterYT</a>.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/unknown.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Alestore/nfcwarp.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Alestore/nfcwarp.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>NFCWarp</h3>
+                <p>Allows reading data from NFC (NDEF) devices. Only works in Chrome on
+                    Android. Created by <a href="https://scratch.mit.edu/users/aleb2005/">Alestore Games</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/itchio.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/itchio.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/itchio.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>itch.io</h3>
+                <p>Blocks that interact with the itch.io website. Unofficial. Created by
+                    softed.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/gamejolt.png" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/gamejolt.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/gamejolt.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>GameJolt</h3>
+                <p>Blocks that allow games to interact with the GameJolt API. Unofficial.
+                    Created by softed.</p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/obviousAlexC/newgroundsIO.svg" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/obviousAlexC/newgroundsIO.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/obviousAlexC/newgroundsIO.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>Newgrounds</h3>
+                <p>Blocks that allow games to interact with the Newgrounds API. Unofficial.
+                    Created by <a href="https://scratch.mit.edu/users/pinksheep2917/">ObviousAlexC</a>.
+                </p>
+            </div>
+
+            <div class="extension">
+
+                <div class="extension-banner">
+                    <img loading="lazy" src="images/Lily/McUtils.png" class="extension-image" style="">
+                    <div class="extension-buttons">
+                        <button class="copy"
+                            data-copy="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/McUtils.js">Copy
+                            URL</button>
+
+                        <button class="open"
+                            data-load="https://menersar.github.io/Sidekick/sidekick-extensions/Lily/McUtils.js">Add
+                            Extension</button>
+
+                    </div>
+                </div>
+                <h3>McUtils</h3>
+                <p>Helpful utilities for any fast food employee. Created by <a
+                        href="https://scratch.mit.edu/users/LilyMakesThings/">LilyMakesThings</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="section">
+        <p>Sidekick is not affiliated with Scratch, the Scratch Team, or the Scratch Foundation.
+        </p>
+        <div class="links">
+            <!-- !!! CHANGE !!! -->
+            <!-- <a href="https://github.com/TurboWarp/extensions/tree/master/images#readme">Image -->
+            <a href="https://github.com/Menersar/sidekick-extensions/tree/sidekick/images#readme">Image
+                Attribution</a>
+            -
+            <!-- !!! CHANGE !!! -->
+            <!-- <a href="https://github.com/TurboWarp/extensions">GitHub</a> -->
+            <a href="https://github.com/Menersar/sidekick-extensions">GitHub</a>
+            -
+            <!-- !!! CHANGE !!! -->
+            <!-- <a href="https://docs.turbowarp.org/development/custom-extensions">Developer -->
+            <a href="https://menersar.github.io/Sidekick#development_custom-extensions">Developer
+                Documentation</a>
+        </div>
+    </footer>
 </body>
 
 </html>

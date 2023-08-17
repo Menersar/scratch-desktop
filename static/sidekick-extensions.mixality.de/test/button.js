@@ -1,29 +1,29 @@
-(function(Scratch) {
-  'use strict';
+(function (Scratch) {
+  "use strict";
   class Test {
-    getInfo () {
+    getInfo() {
       return {
-        id: 'testbutton',
-        name: 'test 123',
+        id: "testbutton",
+        name: "test 123",
         // !!! CHANGE !!!
         // docsURI: 'https://mixality.github.io/Sidekick/extensions',
-        docsURI: 'https://menersar.github.io/Sidekick/extensions',
+        docsURI: "https://menersar.github.io/Sidekick/sidekick-extensions",
         blocks: [
           {
             blockType: Scratch.BlockType.BUTTON,
-            func: 'MAKE_A_VARIABLE',
-            text: 'Make variable'
+            func: "MAKE_A_VARIABLE",
+            text: "Make variable",
           },
           {
             blockType: Scratch.BlockType.BUTTON,
-            text: ':)',
-            func: 'hello'
-          }
-        ]
+            text: ":)",
+            func: "hello",
+          },
+        ],
       };
     }
-    hello () {
-      alert('>:]');
+    hello() {
+      alert(">:]");
     }
   }
   Scratch.extensions.register(new Test());

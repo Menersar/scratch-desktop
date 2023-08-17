@@ -90,7 +90,7 @@ const isDataURL = (url) => {
 // const isExtensionURL = (url) => url === "https://extensions.turbowarp.org/";
 // const isExtensionURL = url => url === 'https://mixality.github.io/Sidekick/extensions/';
 const isExtensionURL = (url) =>
-  url === "https://menersar.github.io/Sidekick/extensions/";
+  url === "https://menersar.github.io/Sidekick/sidekick-extensions/";
 
 const defaultWindowOpenHandler = (details) => {
   if (isSafeOpenExternal(details.url)) {
