@@ -65,8 +65,8 @@ ReactDOM.render(
     {/* !!! '`"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`. eslint (react/no-unescaped-entities)'? ??? */}
     <h2>Output of packager ("packaged projects")</h2>
     {/* !!! CHANGE !!! */}
-    {/* Keep in sync with https://mixality.github.io/Sidekick/packager/privacy.html */}
-    {/* Keep in sync with https://menersar.github.io/Sidekick/packager/privacy.html */}
+    {/* Keep in sync with https://mixality.github.io/Sidekick/sidekick-packager/privacy.html */}
+    {/* Keep in sync with https://menersar.github.io/Sidekick/sidekick-packager/privacy.html */}
     <p>
       If the packaged project uses extensions that require Wi-Fi such as
       Translate, Text to Speech, LEGO, and micro:bit, then the project may

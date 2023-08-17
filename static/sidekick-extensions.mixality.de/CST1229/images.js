@@ -33,7 +33,10 @@
             arguments: {
               IMAGEURL: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: "https://extensions.turbowarp.org/robot.png",
+                // !!! CHANGE !!!
+                // defaultValue: "https://extensions.turbowarp.org/robot.png",
+                defaultValue:
+                  "https://menersar.github.io/Sidekick/sidekick-extensions/robot.png",
               },
             },
             disableMonitor: true,
@@ -202,7 +205,7 @@
           case "image/bmp":
           case "image/jpeg":
             {
-              if (!await Scratch.canFetch(IMAGEURL)) return;
+              if (!(await Scratch.canFetch(IMAGEURL))) return;
               // eslint-disable-next-line no-restricted-syntax
               const image = new Image();
               image.crossOrigin = "anonymous";
@@ -377,6 +380,7 @@
     }
   }
 
-  if (!Scratch.extensions.unsandboxed) throw new Error("This extension cannot run in sandboxed mode.");
+  if (!Scratch.extensions.unsandboxed)
+    throw new Error("This extension cannot run in sandboxed mode.");
   Scratch.extensions.register(new ImagesExt(Scratch.vm));
 })(globalThis.Scratch);

@@ -5,7 +5,7 @@
     throw new Error("Local Storage must be run unsandboxed");
   }
 
-  //   !!! CHANGE !!!
+  // !!! CHANGE !!!
   //   const PREFIX = "extensions.turbowarp.org/local-storage:";
   const PREFIX = "sidekick-extensions.mixality.de/local-storage:";
   let namespace = "";

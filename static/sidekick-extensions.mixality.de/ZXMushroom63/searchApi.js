@@ -7,7 +7,7 @@
   // !!!! CHANGE !!!!
   // Disable in desktop app editor for security reasons.
   // @ts-ignore
-  const disabled = typeof TWD !== 'undefined';
+  const disabled = typeof SidekickDesktop !== 'undefined';
 
   class SearchApi {
     getInfo() {

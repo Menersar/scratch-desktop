@@ -23,7 +23,7 @@ const outputDirectory = pathUtil.join(
   "static",
   "sidekick-extensions.mixality.de"
 );
-const mode = "sidekick-desktop";
+const mode = "desktop";
 const builder = new Builder(mode);
 const build = builder.build();
 build.export(outputDirectory);
