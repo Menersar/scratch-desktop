@@ -1,0 +1,3 @@
+[submodule "sidekick-extensions"]
+	path = sidekick-extensions
+	url = https://github.com/Menersar/sidekick-extensions
