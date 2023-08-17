@@ -87,6 +87,7 @@ const isDataURL = (url) => {
 };
 
 // !!! CHANGE !!!
+// const isExtensionURL = (url) => url === "https://extensions.turbowarp.org/";
 // const isExtensionURL = url => url === 'https://mixality.github.io/Sidekick/extensions/';
 const isExtensionURL = (url) =>
   url === "https://menersar.github.io/Sidekick/extensions/";

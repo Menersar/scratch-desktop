@@ -19,9 +19,9 @@ app.on("session-created", (session) => {
   session.webRequest.onBeforeRequest(
     {
       // !!! CHANGE !!!
-      urls: ["file://*", "https://extensions.turbowarp.org/*"],
+      //   urls: ["file://*", "https://extensions.turbowarp.org/*"],
       // urls: ['file://*', 'https://mixality.github.io/Sidekick/extensions/*']
-      //   urls: ["file://*", "https://menersar.github.io/Sidekick/extensions/*"],
+      urls: ["file://*", "https://menersar.github.io/Sidekick/extensions/*"],
     },
     (details, callback) => {
       const url = new URL(details.url);
@@ -32,9 +32,11 @@ app.on("session-created", (session) => {
           cancel: !url.href.startsWith(rootFileURL),
         });
         // !!! CHANGE !!!
-      } else if (url.origin === "https://extensions.turbowarp.org") {
+        //   } else if (url.origin === "https://extensions.turbowarp.org") {
         // } else if (url.origin === 'https://mixality.github.io/Sidekick/extensions') {
-        //   } else if (url.origin === "https://menersar.github.io/Sidekick/extensions") {
+      } else if (
+        url.origin === "https://menersar.github.io/Sidekick/extensions"
+      ) {
         // Rewrite sidekick-extensions.mixality.de to the offline cache.
         callback({
           redirectURL: `sidekick-extensions://${url.pathname}`,
