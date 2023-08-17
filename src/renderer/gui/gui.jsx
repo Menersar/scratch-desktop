@@ -140,7 +140,9 @@ const storeFilePathInURL = (filePath) => {
   } else {
     urlParameters.delete("file");
   }
-  history.replaceState("", "", `?${urlParameters.toString()}`);
+  history.replaceState("", "", "?" + urlParameters.toString());
+  // !!! Change back to the following code line? ???
+  //   history.replaceState("", "", `?${urlParameters.toString()}`);
 };
 
 const DesktopHOC = function (WrappedComponent) {
@@ -173,7 +175,13 @@ const DesktopHOC = function (WrappedComponent) {
       } else {
         this.props.onHasInitialProject(true, this.props.loadingState);
         loadInitialProject(fileToOpen)
-          .then((projectData) => this.props.vm.loadProject(projectData))
+          .then((projectData) =>
+            // !!! Change back to the following code line? ???
+            //   this.props.vm.loadProject(projectData))
+            {
+              return this.props.vm.loadProject(projectData);
+            }
+          )
           .then(() => {
             this.props.onLoadingCompleted();
             this.props.onLoadedProject(this.props.loadingState, true);
@@ -191,7 +199,9 @@ const DesktopHOC = function (WrappedComponent) {
           .catch((err) => {
             console.error(err);
             alert(
-              getTranslation("failed-to-load").replace("{error}", `${err}`)
+              // !!! Change back to the following code line? ???
+              //   getTranslation("failed-to-load").replace("{error}", `${err}`)
+              getTranslation("failed-to-load").replace("{error}", "" + err)
             );
             this.props.onLoadingCompleted();
             this.props.onLoadedProject(this.props.loadingState, false);
@@ -235,7 +245,9 @@ const DesktopHOC = function (WrappedComponent) {
         });
       } catch (e) {
         console.error(e);
-        ipcRenderer.sendTo(event.senderId, "export-project/error", `${e}`);
+        // !!! Change back to the following code line? ???
+        // ipcRenderer.sendTo(event.senderId, "export-project/error", `${e}`);
+        ipcRenderer.sendTo(event.senderId, "export-project/error", "" + e);
       }
     }
     handleLoadExtensionOverIPC(event, url) {
@@ -335,7 +347,13 @@ const DesktopHOC = function (WrappedComponent) {
     onFetchedInitialProjectData: (projectData, loadingState) =>
       dispatch(onFetchedProjectData(projectData, loadingState)),
     onLoadedProject: (loadingState, loadSuccess) =>
-      dispatch(onLoadedProject(loadingState, /* canSave */ false, loadSuccess)),
+      // !!! Change back to the following code line? ???
+      //   dispatch(
+      {
+        return dispatch(
+          onLoadedProject(loadingState, /* canSave */ false, loadSuccess)
+        );
+      },
     onRequestNewProject: () => dispatch(requestNewProject(false)),
     onSetFileHandle: (fileHandle) => dispatch(setFileHandle(fileHandle)),
   });
@@ -357,11 +375,14 @@ ReactDOM.render(
     canEditTitle
     isScratchDesktop
     // Cloud variables can be created, but not used.
-    canModifyCloudData
+    // !!! Change back to the following code line? ???
+    // canModifyCloudData
+    canModifyCloudData={true}
     // !!! CHANGE !!!
     // !!!!!HERE!!!!!
     // cloudHost="wss://clouddata.turbowarp.org"
-    cloudHost="wss://clouddata.scratch.mit.edu"
+    // cloudHost="wss://clouddata.scratch.mit.edu"
+    cloudHost="ws:localhost:9080"
     onStorageInit={handleStorageInit}
     onUpdateProjectTitle={handleUpdateProjectTitle}
     onClickPackager={openPackager}

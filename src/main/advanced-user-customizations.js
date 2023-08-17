@@ -18,4 +18,8 @@ try {
     // ignore
 }
 
-ipcMain.handle('get-user-customizations', () => ({js, css}));
+// ipcMain.handle('get-user-customizations', () => ({js, css}));
+
+ipcMain.handle('get-user-customizations', () => {
+    return {js, css};
+});

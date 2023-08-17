@@ -103,7 +103,8 @@
                 type: Scratch.ArgumentType.STRING,
                 // !!! CHANGE !!!
                 // defaultValue: "wss://clouddata.turbowarp.org",
-                defaultValue: "wss://clouddata.scratch.mit.edu",
+                // defaultValue: "wss://clouddata.scratch.mit.edu",
+                defaultValue: "ws:localhost:8080",
               },
             },
           },

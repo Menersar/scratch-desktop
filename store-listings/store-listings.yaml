@@ -10,7 +10,7 @@ microsoft-store-description: |
 microsoft-store-generic-release-notes: "For the latest release notes, visit {changelog_link}."
 
 # Caption of app screenshots for the desktop app in the Microsoft Store.
-microsoft-store-screenshot-caption: "Project pictured: {screenshot_project_link}"
+microsoft-store-screenshot-caption: "Project pictured: {screenshot_project_link}."
 
 # Caption of the addon settings page screenshot for the desktop app in the Microsoft Store.
 microsoft-store-screenshot-addons: "More than {number_of_addons} addons to customize and enhance your experience."

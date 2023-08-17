@@ -1,6 +1,12 @@
 const path = require("path");
+
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+
+// const makeConfig = require('./webpack.makeConfig.js');
+
 const merge = require("webpack-merge");
+
+// const getModulePath = moduleName => path.dirname(require.resolve(`${moduleName}/package.json`));
 
 module.exports = (defaultConfig) => {
   defaultConfig.module.rules = [];
@@ -13,7 +19,9 @@ module.exports = (defaultConfig) => {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env", "@babel/preset-react"],
+            // !!!!!HERE!!!!!
             plugins: ["@babel/plugin-proposal-optional-chaining"],
+            // plugins: ['@babel/plugin-transform-optional-chaining']
           },
         },
         {
@@ -87,3 +95,33 @@ module.exports = (defaultConfig) => {
     target: "web",
   });
 };
+
+// makeConfig(
+//     defaultConfig,
+//     {
+//         name: 'renderer',
+//         useReact: true,
+//         disableDefaultRulesForExtensions: ['js', 'jsx', 'css', 'svg', 'png', 'wav', 'gif', 'jpg', 'ttf'],
+//         babelPaths: [
+//             path.resolve(__dirname, 'src', 'renderer'),
+//             /node_modules[\\/]+scratch-[^\\/]+[\\/]+src/,
+//             /node_modules[\\/]+pify/,
+//             /node_modules[\\/]+@vernier[\\/]+godirect/
+//         ],
+//         plugins: [
+//             new CopyWebpackPlugin([{
+//                 from: path.join(getModulePath('scratch-blocks'), 'media'),
+//                 to: 'static/blocks-media'
+//             }]),
+//             new CopyWebpackPlugin([{
+//                 from: 'extension-worker.{js,js.map}',
+//                 context: path.join(getModulePath('scratch-vm'), 'dist', 'web')
+//             }]),
+//             new CopyWebpackPlugin([{
+//                 from: path.join(getModulePath('scratch-gui'), 'src', 'lib', 'libraries', '*.json'),
+//                 to: 'static/libraries',
+//                 flatten: true
+//             }])
+//         ]
+//     }
+// );

@@ -7,8 +7,8 @@ cd deb
 
 for arch in amd64 arm64 armhf; do
   echo "Scanning $arch packages"
-  mkdir -p "dists/stable/main/binary-$arch"
-  dpkg-scanpackages --arch "$arch" pool > "dists/stable/main/binary-$arch/Packages"
+  mkdir -p "dists/sidekick/main/binary-$arch"
+  dpkg-scanpackages --arch "$arch" pool > "dists/sidekick/main/binary-$arch/Packages"
   # Generate Packages.gz
-  gzip -kf9 "dists/stable/main/binary-$arch/Packages"
+  gzip -kf9 "dists/sidekick/main/binary-$arch/Packages"
 done

@@ -7,7 +7,7 @@
     "files.autoSave": "onFocusChange", // optional but recommended
     "vs-code-prettier-eslint.prettierLast": false,
     "[javascript]": {
-        "editor.defaultFormatter": "jonwolfe.prettier-eslint-formatter"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[yaml]": {
         "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
@@ -32,4 +32,8 @@
     "[jsx]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     } // set as "true" to run 'prettier' last not first
+    ,
+    "yaml.schemas": {
+        "https://json.schemastore.org/dependabot-2.0.json": "file:///c%3A/Users/mener/Desktop/desktop-master/.github/dependabot.yml"
+    }
 }
