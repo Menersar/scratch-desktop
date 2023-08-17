@@ -58,7 +58,6 @@
         "semver": "^7.5.3",
         "webpack": "~4.46.0"
     },
-    "//": "extends: file:node_modules/sidekick-electron-webpack/packages/electron-webpack/out/electron-builder.js",
     "//": "!!! Oder besser 'de.mixality.sidekick.sidekick-desktop' für 'appId' setzen? ???",
     "build": {
         "extends": "file:node_modules/@sidekick/electron-webpack/out/electron-builder.js",
