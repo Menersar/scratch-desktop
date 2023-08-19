@@ -3,6 +3,7 @@
   console.log("ShovelUtils v1.3");
   const vm = Scratch.vm;
 
+  // !!! 'fast-simple-js-fps-counter.html'? ???
   // Based on from https://www.growingwiththeweb.com/2017/12/fast-simple-js-fps-counter.html
   const times = [];
   let fps = vm.runtime.frameLoop.framerate;

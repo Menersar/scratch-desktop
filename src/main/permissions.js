@@ -23,6 +23,7 @@ const showPermissionDeniedWarning = (window, mediaType) => {
   const description = getTranslation(
     `permission.${mediaType}-denied-description`
   );
+  // !!! Exact reason for that? ???
   // This prompt currently is only visible in macOS
   const instructions = getTranslation("permission.macos-instructions");
   dialog.showMessageBox(window, {
@@ -39,6 +40,7 @@ const handlePermissionRequest = async (
   details
 ) => {
   if (!details.isMainFrame) {
+    // !!! Exact reason for that? ???
     // We don't trust subframes
     return callback(false);
   }

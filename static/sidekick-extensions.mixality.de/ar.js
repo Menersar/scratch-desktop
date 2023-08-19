@@ -200,6 +200,7 @@
     };
   };
 
+  // !!! 'AR mode', etc.? ???
   // Patching frameLoop to use xrSession.requestAnimationFrame when in AR mode
   const xrAnimationFrameWrapper = (callback, fps = 30) => {
     const xrSessionBackup = xrSession;
