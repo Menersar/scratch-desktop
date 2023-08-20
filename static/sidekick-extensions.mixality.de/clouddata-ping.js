@@ -22,10 +22,10 @@
    * @returns {Promise<CacheEntry>}
    */
   const pingWebSocket = async (uri) => {
-    if (!await Scratch.canFetch(uri)) {
+    if (!(await Scratch.canFetch(uri))) {
       return {
         expires: 0,
-        value: false
+        value: false,
       };
     }
 
@@ -38,7 +38,7 @@
     } catch (e) {
       return {
         expires: 0,
-        value: false
+        value: false,
       };
     }
 
@@ -65,7 +65,7 @@
 
     return {
       expires: Date.now() + 60000,
-      value: isUp
+      value: isUp,
     };
   };
 
@@ -109,7 +109,8 @@
                 // !!! c CHANGE !!!
                 // defaultValue: "wss://clouddata.turbowarp.org",
                 // defaultValue: "wss://clouddata.turbowarp.org",
-                defaultValue: "ws:localhost:8080",              },
+                defaultValue: "ws:localhost:8080",
+              },
             },
           },
         ],

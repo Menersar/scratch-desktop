@@ -11,7 +11,8 @@
 
   // !!! ? CHANGE !!!
 //   const PREFIX = 'extensions.turbowarp.org/local-storage:';
-  const PREFIX = 'menersar.github.io/Sidekick/sidekick-extensions/local-storage:';
+//   const PREFIX = 'menersar.github.io/Sidekick/sidekick-extensions/local-storage:';
+  const PREFIX = 'sidekick-extensions.mixality.de/local-storage';
   let namespace = '';
   const getFullStorageKey = () => `${PREFIX}${namespace}`;
 
@@ -75,7 +76,7 @@
         name: 'Local Storage',
         // !!! CHANGE !!!
         // docsURI: "https://extensions.turbowarp.org/local-storage",
-        docsURI: "https://menersar.github.io/Sidekick/sidekick-extensions/local-storage",
+        docsURI: "https://menersar.github.io/Sidekick/sidekick-docs#sidekick-extensions-local-storage",
         blocks: [
           {
             opcode: 'setProjectId',
