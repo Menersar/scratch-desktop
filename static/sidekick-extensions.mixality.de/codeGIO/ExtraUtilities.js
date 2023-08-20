@@ -141,7 +141,9 @@
             arguments: {
               one: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: "https://turbowarp.org/"
+                // !!! CHANGE !!!
+                // defaultValue: "https://turbowarp.org/"
+                defaultValue: "https://menersar.github.io/Sidekick/"
               }
             }
           },
@@ -153,7 +155,9 @@
             arguments: {
               one: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: "https://turbowarp.org/"
+                // !!! CHANGE !!!
+                // defaultValue: "https://turbowarp.org/"
+                defaultValue: "https://menersar.github.io/Sidekick/"
               }
             }
           },

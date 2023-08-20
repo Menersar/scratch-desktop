@@ -38,7 +38,10 @@ thumbs.db
 # Generated files during installation.
 library-files
 packager.html.br
+# !!! CHANGE !!!
+# extensions.turbowarp.org
 sidekick-extensions.mixality.de
+# sidekick-extensions. …
 
 # !!! ???
 # Generated files during Debian release creation.

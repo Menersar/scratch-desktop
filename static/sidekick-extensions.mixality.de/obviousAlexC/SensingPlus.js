@@ -1,3 +1,8 @@
+// Name: Sensing Plus
+// ID: obviousalexsensing
+// Description: An extension to the sensing category.
+// By: ObviousAlexC <https://scratch.mit.edu/users/pinksheep2917/>
+
 (function (Scratch) {
   "use strict";
 
@@ -474,7 +479,9 @@
             arguments: {
               term: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: "Dango",
+                // !!! ? CHANGE !!!
+                // defaultValue: "Dango",
+                defaultValue: "Sidekick",
               },
               List: {
                 type: Scratch.ArgumentType.STRING,
@@ -490,7 +497,9 @@
             arguments: {
               term: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: "Dango",
+                // !!! ? CHANGE !!!
+                // defaultValue: "Dango",
+                defaultValue: "Sidekick",
               },
               List: {
                 type: Scratch.ArgumentType.STRING,
@@ -1077,4 +1086,4 @@
     }
   }
   Scratch.extensions.register(new SensingPlus());
-})(window.Scratch);
+})(Scratch);

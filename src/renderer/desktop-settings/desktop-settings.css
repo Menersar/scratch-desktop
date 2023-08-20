@@ -43,3 +43,11 @@ input[type="checkbox"] {
 .device-chooser {
     width: 100%;
 }
+a {
+    color: #1e6bac;
+    cursor: pointer;
+    text-decoration: underline;
+}
+a:active {
+    color: #8fc8cf;
+}

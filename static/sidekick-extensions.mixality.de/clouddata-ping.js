@@ -1,3 +1,8 @@
+// Name: Ping Cloud Data
+// ID: clouddataping
+// Description: Determine whether a cloud variable server is probably up.
+// Original: TheShovel
+
 (function (Scratch) {
   "use strict";
 
@@ -101,11 +106,10 @@
             arguments: {
               SERVER: {
                 type: Scratch.ArgumentType.STRING,
-                // !!! CHANGE !!!
+                // !!! c CHANGE !!!
                 // defaultValue: "wss://clouddata.turbowarp.org",
-                // defaultValue: "wss://clouddata.scratch.mit.edu",
-                defaultValue: "ws:localhost:8080",
-              },
+                // defaultValue: "wss://clouddata.turbowarp.org",
+                defaultValue: "ws:localhost:8080",              },
             },
           },
         ],

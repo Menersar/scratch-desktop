@@ -1,3 +1,8 @@
+// Name: JSON
+// ID: skyhigh173JSON
+// Description: Handle JSON strings and arrays.
+// By: Skyhigh173
+
 (function(Scratch) {
   'use strict';
   /*
@@ -103,7 +108,9 @@
               },
               json: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: '["TurboWarp","scratch"]'
+                // !!! ? CHANGE !!!
+                // defaultValue: '["TurboWarp","scratch"]'
+                defaultValue: '["Sidekick","scratch"]'
               }
             }
           },
@@ -211,7 +218,9 @@
               },
               json: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: '["scratch","TurboWarp"]'
+                // !!! ? CHANGE !!!
+                // defaultValue: '["scratch","TurboWarp"]'
+                defaultValue: '["scratch","Sidekick"]'
               }
             }
           },
@@ -222,7 +231,9 @@
             arguments: {
               item: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: 'TurboWarp'
+                // !!! ? CHANGE !!!
+                // defaultValue: 'TurboWarp'
+                defaultValue: 'Sidekick'
               },
               json: {
                 type: Scratch.ArgumentType.STRING,
@@ -280,7 +291,9 @@
               },
               json: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: '["scratch","a","TurboWarp"]'
+                // !!! ? CHANGE !!!
+                // defaultValue: '["scratch","a","TurboWarp"]'
+                defaultValue: '["scratch","a","Sidekick"]'
               }
             }
           },
@@ -295,7 +308,9 @@
               },
               json: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: '["scratch","a","TurboWarp","a","a"]'
+                // !!! ? CHANGE !!!
+                // defaultValue: '["scratch","a","TurboWarp","a","a"]'
+                defaultValue: '["scratch","a","Sidekick","a","a"]'
               }
             }
           },
@@ -311,7 +326,9 @@
               },
               json: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: '["scratch","TurboWarp"]'
+                // !!! ? CHANGE !!!
+                // defaultValue: '["scratch","TurboWarp"]'
+                defaultValue: '["scratch","Sidekick"]'
               }
             }
           },

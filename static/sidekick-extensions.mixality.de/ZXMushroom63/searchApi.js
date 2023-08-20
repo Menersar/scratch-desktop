@@ -1,13 +1,17 @@
+// Name: Search Params
+// ID: zxmushroom63searchparams
+// Description: Interact with URL search parameters: the part of the URL after a question mark.
+// By: ZXMushroom63
+
 (function (Scratch) {
   "use strict";
   if (!Scratch.extensions.unsandboxed) {
     throw new Error("SearchParams must be run unsandboxed.");
   }
 
-  // !!!! CHANGE !!!!
   // Disable in desktop app editor for security reasons.
   // @ts-ignore
-  const disabled = typeof SidekickDesktop !== 'undefined';
+  const disabled = typeof TWD !== 'undefined';
 
   class SearchApi {
     getInfo() {

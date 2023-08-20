@@ -178,7 +178,9 @@
               },
               INPUTB: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: 'Turbowarp'
+                // !!! ? CHANGE !!!
+                // defaultValue: 'Turbowarp'
+                defaultValue: 'Sidekick'
               },
               STRING: {
                 type: Scratch.ArgumentType.STRING,
@@ -197,7 +199,9 @@
               },
               INPUTB: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: 'Turbowarp is brilliant!'
+                // !!! ? CHANGE !!!
+                // defaultValue: 'Turbowarp is brilliant!'
+                defaultValue: 'Sidekick is brilliant!'
               }
             }
           },

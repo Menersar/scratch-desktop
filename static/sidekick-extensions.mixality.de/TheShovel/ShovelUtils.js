@@ -1,9 +1,16 @@
+// Name: ShovelUtils
+// ID: ShovelUtils
+// Description: A bunch of miscellaneous blocks.
+// By: TheShovel
+
 (function (Scratch) {
   'use strict';
-  console.log("ShovelUtils v1.3");
+  if (!Scratch.extensions.unsandboxed) {
+    throw new Error('ShovelUtils must be run unsandboxed');
+  }
+  console.log("ShovelUtils v1.4");
   const vm = Scratch.vm;
 
-  // !!! 'fast-simple-js-fps-counter.html'? ???
   // Based on from https://www.growingwiththeweb.com/2017/12/fast-simple-js-fps-counter.html
   const times = [];
   let fps = vm.runtime.frameLoop.framerate;
@@ -34,11 +41,15 @@
             arguments: {
               TEXT: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: 'https://extensions.turbowarp.org/dango.png',
+                // !!! CHANGE !!!
+                // defaultValue: 'https://extensions.turbowarp.org/dango.png',
+                defaultValue: 'https://menersar.github.io/Sidekick/sidekick-extensions/dango.png',
               },
               NAME: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: 'Dango',
+                // !!! ? CHANGE !!!
+                // defaultValue: 'Dango',
+                defaultValue: 'Sidekick',
               }
             }
           },
@@ -86,7 +97,9 @@
             arguments: {
               TEXT: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: 'https://extensions.turbowarp.org/meow.mp3',
+                // !!! CHANGE !!!
+                // defaultValue: 'https://extensions.turbowarp.org/meow.mp3',
+                defaultValue: 'https://menersar.github.io/Sidekick/sidekick-extensions/meow.mp3',
               },
               NAME: {
                 type: Scratch.ArgumentType.STRING,
@@ -112,7 +125,9 @@
             arguments: {
               TEXT: {
                 type: Scratch.ArgumentType.STRING,
-                defaultValue: 'https://extensions.turbowarp.org/utilities.js',
+                // !!! CHANGE !!!
+                // defaultValue: 'https://extensions.turbowarp.org/utilities.js',
+                defaultValue: 'https://menersar.github.io/Sidekick/sidekick-extensions/utilities.js',
               }
             }
           },
@@ -140,6 +155,21 @@
             }
           },
           {
+            opcode: 'deleteImage',
+            blockType: Scratch.BlockType.COMMAND,
+            text: 'Delete costume [COSNAME] in [SPRITE]',
+            arguments: {
+              COSNAME: {
+                type: Scratch.ArgumentType.STRING,
+                defaultValue: 'costume1'
+              },
+              SPRITE: {
+                type: Scratch.ArgumentType.STRING,
+                defaultValue: 'Sprite1'
+              }
+            }
+          },
+          {
             opcode: 'setedtarget',
             blockType: Scratch.BlockType.COMMAND,
             text: 'Set editing target to [NAME]',
@@ -163,6 +193,11 @@
             }
           },
 
+          {
+            opcode: 'getAllSprites',
+            blockType: Scratch.BlockType.REPORTER,
+            text: 'get all sprites'
+          },
           {
             opcode: 'getfps',
             blockType: Scratch.BlockType.REPORTER,
@@ -329,8 +364,25 @@
     getfps(){
       return fps;
     }
-  }
 
+    deleteImage({ SPRITE, COSNAME }){
+      // 0znzw, since shovel did not add it yet.
+      const target = vm.runtime.getSpriteTargetByName(SPRITE);
+      if (!target) {
+        return;
+      }
+      target.deleteCostume(target.getCostumeIndexByName(COSNAME));
+    }
+
+    getAllSprites(){
+      // 0znzw, since shovel did not add it yet.
+      let sprites = [];
+      for (const target of vm.runtime.targets) {
+        if (target.isOriginal) sprites.push(target.sprite.name);
+      }
+      return JSON.stringify(sprites);
+    }
+  }
   Scratch.extensions.register(new ShovelUtils());
 // @ts-ignore
 })(Scratch);

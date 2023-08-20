@@ -1,3 +1,7 @@
+// Name: Mouse Cursor
+// ID: MouseCursor
+// Description: Use custom cursors or hide the cursor. Also allows replacing the cursor with any costume image.
+
 (function (Scratch) {
   'use strict';
 
@@ -46,7 +50,7 @@
     // The most reliable way to get the bitmap in every runtime is through the silhouette.
     // This is very slow and could involve reading the texture from the GPU.
     const silhouette = skin._silhouette;
-    // unlazy() only exists in Sidekick
+    // unlazy() only exists in TW
     if (silhouette.unlazy) {
       silhouette.unlazy();
     }

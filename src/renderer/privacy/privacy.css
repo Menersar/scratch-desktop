@@ -11,10 +11,10 @@ main {
     border: 20px solid hsla(103, 44%, 47%, 1);
 }
 a {
-    color: #8fc8cf;
+    color: #1e6bac;
     cursor: pointer;
     text-decoration: underline;
 }
 a:active {
-    color: #1e6bac;
+    color: #8fc8cf;
 }
