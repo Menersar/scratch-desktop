@@ -1,12 +1,12 @@
 {
     "name": "sidekick-desktop",
-    "productName": "Scratch",
+    "productName": "Sidekick",
     "description": "Scratch 3.0 as a self-contained desktop application; version customized for Sidekick.",
     "author": {
-        "email": "contact@sidekick.de",
+        "email": "contact@mixality.de",
         "name": "Mixality"
     },
-    "version": "3.29.1",
+    "version": "0.1.0",
     "license": "BSD-3-Clause",
     "scripts": {
         "//": "postinstall1: node scripts/postinstall.js",
@@ -18,6 +18,13 @@
         "fetch": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "clean": "rimraf ./dist ./static/assets",
         "make:icons": "cd build && bash make-icons.sh",
+        "webpack:compile": "webpack",
+        "webpack:watch": "webpack --watch",
+        "webpack:prod": "cross-env NODE_ENV=production webpack",
+        "webpack:prod2": "set NODE_ENV=production && webpack",
+        "webpack:prod1": "cross-env NODE_ENV=production webpack",
+        "electron:start": "electron src-main/index.js",
+        "electron:package:dir": "electron-builder --dir",
         "scratch:clean": "rimraf ./dist ./static/assets",
         "scratch:start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
         "scratch:compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
@@ -35,34 +42,61 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/Menersar/sidekick-desktop.git"
+        "url": "https://github.com/Menersar/sidekick-desktop.git"
     },
     "bugs": {
         "url": "https://github.com/Menersar/sidekick-desktop/issues",
-        "email": "contact@sidekick.de"
+        "email": "contact@mixality.de"
     },
-    "homepage": "https://menersar.github.io/Sidekick/desktop/",
+    "homepage": "https://menersar.github.io/Sidekick/sidekick-desktop/",
+    "main": "./src-main/index.js",
+    "dependencies": {
+        "semver": "^7.5.3"
+    },
     "devDependencies": {
-        "@babel/preset-env": "7.18.0",
-        "@babel/preset-react": "7.17.12",
+        "@babel/core": "^7.22.11",
+        "@babel/preset-env": "^7.12.16",
+        "@babel/preset-react": "^7.13.13",
         "@electron/notarize": "^2.1.0",
         "@sidekick/electron-webpack": "git+https://github.com/Menersar/sidekick-electron-webpack.git#sidekick",
-        "css-loader": "^5.0.2",
-        "electron": "^22.3.13",
-        "electron-builder": "^24.4.0",
+        "adm-zip": "^0.5.10",
+        "async-limiter": "^2.0.0",
+        "autoprefixer": "^9.8.8",
+        "babel-loader": "^8.3.0",
+        "copy-webpack-plugin": "^6.4.1",
+        "cross-env": "^7.0.3",
+        "css-loader": "^1.0.1",
+        "electron": "^22.3.22",
+        "electron-builder": "^24.6.4",
         "postcss": "^8.4.13",
         "postcss-import": "^14.0.0",
         "postcss-loader": "^4.2.0",
         "postcss-simple-vars": "^6.0.3",
         "scratch-gui": "git+https://github.com/Menersar/scratch-gui.git#sidekick",
-        "semver": "^7.5.3",
-        "webpack": "~4.46.0"
+        "style-loader": "^0.23.0",
+        "url-loader": "^4.1.1",
+        "webpack": "^4.46.0",
+        "webpack-cli": "^4.10.0"
     },
     "//": "!!! Oder besser 'de.mixality.sidekick.sidekick-desktop' für 'appId' setzen? ???",
     "build": {
-        "extends": "file:node_modules/@sidekick/electron-webpack/out/electron-builder.js",
         "appId": "de.mixality.sidekick-desktop",
         "productName": "Sidekick",
+        "files": [
+            "node_modules/**/*",
+            "src-main/**/*",
+            "src-preload/**/*",
+            "src-renderer/**/*",
+            "dist-renderer-webpack/**/*",
+            "dist-library-files/**/*",
+            "dist-extensions/**/*"
+        ],
+        "extraResources": [
+            {
+                "from": "art/icon.png",
+                "to": "icon.png"
+            }
+        ],
         "win": {
             "artifactName": "${productName} Portable ${version} ${arch}.${ext}",
             "icon": "build/icon.ico",
@@ -84,17 +118,14 @@
             "identityName": "Mixality.SidekickDesktop",
             "publisher": "CN=5b744553-b6ec-446a-aa4e-d77024aa8c74",
             "publisherDisplayName": "Mixality",
-            "backgroundColor": "#62ad44",
+            "backgroundColor": "#5ea82d",
             "showNameOnTiles": true,
             "languages": [
                 "en-US",
-                "fr",
                 "nl",
                 "de",
                 "it",
-                "ja",
-                "ru",
-                "es-ES"
+                "ko"
             ]
         },
         "nsis": {
@@ -113,6 +144,8 @@
             "entitlements": "build/entitlements.mac.plist",
             "entitlementsInherit": "build/entitlements.mac.plist",
             "extendInfo": {
+                "ITSAppUsesNonExemptEncryption": false,
+                "LSMultipleInstancesProhibited": true,
                 "NSCameraUsageDescription": "This app requires camera access when using the video sensing blocks.",
                 "NSMicrophoneUsageDescription": "This app requires microphone access when recording sounds or detecting loudness."
             },
@@ -122,6 +155,16 @@
                     "target": "dmg"
                 }
             ]
+        },
+        "mas": {
+            "hardenedRuntime": false,
+            "entitlements": "build/entitlements.mas.plist",
+            "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+            "provisioningProfile": "build/distribution.provisionprofile"
+        },
+        "masDev": {
+            "type": "development",
+            "provisioningProfile": "build/development.provisionprofile"
         },
         "linux": {
             "artifactName": "${productName}-${os}-${arch}-${version}.${ext}",
@@ -187,18 +230,6 @@
             }
         ],
         "afterSign": "scripts/after-sign.js"
-    },
-    "electronWebpack": {
-        "main": {
-            "webpackConfig": "webpack.main.js",
-            "extraEntries": [
-                "@/preload.js"
-            ]
-        },
-        "renderer": {
-            "webpackConfig": "webpack.renderer.js",
-            "template": "src/renderer/template.html"
-        }
     },
     "private": true
 }

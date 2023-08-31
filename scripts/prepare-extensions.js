@@ -4,25 +4,25 @@ let Builder;
 try {
   Builder = require("../sidekick-extensions/development/builder");
 } catch (e) {
-  if (e.code === "MODULE_NOT_FOUND") {
-    console.error(
-      "Could not load sidekick-desktop/sidekick-extensions build scripts – perhaps the sidekick-extensions submodule is missing?"
-    );
-    console.error(
-      "If the extension submodule is missing, run: `git submodule init`, `git submodule update`."
-    );
-  } else {
-    console.error(e);
-  }
+//   if (e.code === "MODULE_NOT_FOUND") {
+//     console.error(
+//       "Could not load sidekick-desktop/sidekick-extensions build scripts – perhaps the sidekick-extensions submodule is missing?"
+//     );
+//     console.error(
+//       "If the extension submodule is missing, run: `git submodule init`, `git submodule update`."
+//     );
+//   } else {
+  console.error(
+    "Could not load Sidekick/sidekick-extensions build scripts, most likely because the submodule is missing."
+  );
+  console.error("Try running: `git submodule init` and `git submodule update`");
+  console.error(e);
+//   }
   process.exit(1);
 }
 
-const outputDirectory = pathUtil.join(
-  __dirname,
-  "..",
-  "static",
-  "sidekick-extensions.mixality.de"
-);
+const outputDirectory = pathUtil.join(__dirname, "../dist-extensions/");
+
 const mode = "desktop";
 const builder = new Builder(mode);
 const build = builder.build();

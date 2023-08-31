@@ -1,5 +1,5 @@
 {
-  "latest": "1.8.1",
-  "oldest_safe": "0.0.1",
-  "yanked": "< 1.8.0"
+  "latest": "0.1.0",
+  "latest_unstable": "0.1.0",
+  "oldest_safe": "0.1.0"
 }

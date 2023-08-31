@@ -21,7 +21,11 @@ jobs:
         cache: npm
     - name: Install Dependencies
       run: npm ci
-    - name: Compile and package
-      run: npm run dist -- --linux tar.gz --publish never
-      env:
-        NODE_OPTIONS: --max-old-space-size=4096
+    # - name: Compile and package
+    #   run: npm run dist -- --linux tar.gz --publish never
+    #   env:
+    #     NODE_OPTIONS: --max-old-space-size=4096
+    - name: Compile
+      run: npm run webpack:compile
+    - name: Package
+      run: npm run electron:package:dir        

@@ -16,6 +16,10 @@ thumbs.db
 # Build
 # /build
 /dist
+dist-renderer-webpack
+dist-library-files
+dist-extensions
+src-renderer/packager/standalone.html
 # /.opt-in
 # /*.provisionprofile
 
@@ -34,13 +38,13 @@ thumbs.db
 # **/fastlane/test_output
 
 .idea/
+.vscode
 
 # Generated files during installation.
-library-files
-packager.html.br
+# library-files
+# packager.html.br
 # !!! CHANGE !!!
-# extensions.turbowarp.org
-sidekick-extensions.mixality.de
+# sidekick-extensions.mixality.de
 # sidekick-extensions. …
 
 # !!! ???
@@ -48,3 +52,7 @@ sidekick-extensions.mixality.de
 deb
 
 .history
+
+# Mac App Store
+distribution.provisionprofile
+development.provisionprofile

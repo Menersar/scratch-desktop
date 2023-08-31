@@ -155,3 +155,91 @@ Deleting this file will:
 - Remove any pending telemetry packets
 - Reset the opt in/out state: the app should display the opt in/out modal on next launch
 - Remove the random client UUID: the app will generate a new one on next launch
+
+### Building the application
+
+#### Develompent builds
+
+Clone the `sidekick-desktop` repository into a folder `sidekick-desktop` by running:
+
+``` console
+<!-- !!! CHANGE !!! -->
+git clone --recursive https://github.com/Menersar/sidekick-desktop sidekick-desktop
+```
+
+OR (alternatively) run:
+
+``` console
+<!-- !!! CHANGE !!! -->
+git clone https://github.com/Menersar/sidekick-desktop sidekick-desktop
+git submodule init
+git submodule update
+```
+
+Install dependencies via the following command:
+
+``` console
+npm ci
+```
+
+Fetch extra library, packager, and extension files by running:
+
+``` console
+npm run fetch
+```
+
+To build the webpack portions in src-renderer-webpack for development builds, run this:
+
+``` console
+npm run webpack:compile
+```
+
+You can also run this instead for source file changes to immediately trigger rebuilds:
+
+``` console
+npm run webpack:watch
+```
+
+If everything is compiled and fetched, the application can be packaged up for Electron.
+For development, start a development Electron instance by running:
+
+``` console
+npm run electron:start
+```
+
+Linux note: The app icon won't work in the development version, but it will work in the packaged version.
+
+Development can work well by opening two terminals side-by-side, run `npm run webpack:watch` in one and `npm run electron:start` in the other.
+Refresh the windows with `Ctrl` + `R` or `Cmd` + `R` to apply renderer file changes, manually restart the app to apply main file changes.
+
+#### Production-ready builds
+
+The development version of the app will be larger and slower than the final release builds.
+
+Build an optimized version of the webpack portions with:
+
+``` console
+npm run webpack:prod
+```
+
+Then to package up the final Electron binaries, use the electron-builder CLI. They will be saved in the dist folder. Some examples:
+
+``` console
+# Windows installer
+
+npx electron-builder --windows nsis --x64
+
+# macOS DMG
+
+npx electron-builder --mac dmg --universal
+
+# Linux Debian
+
+npx electron-builder --linux deb
+```
+
+<!-- !!! CHANGE !!! -->
+More examples in the [release script](https://github.com/Menersar/sidekick-desktop/blob/sidekick/.github/workflows/release.yml). You can typically only package for a certain operating system while on that operating system.
+
+It is possible to give each packaged version of the app a unique distribution ID to help uniquely identify them – it appears in the "About" window.
+Add `--config.extraMetadata.sidekick_dist=your-dist-id-here` to electron-builder's arguments to set the distribution ID. Additionally, to enable the in-app update checker, also add `--config.extraMetadata.tw_update=yes`.

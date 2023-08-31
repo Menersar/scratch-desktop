@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: black;
+            background-color: white;
+        }
+
+        main {
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 100vh;
+            border: 20px solid hsla(0, 100%, 65%, 1);
+        }
+
+        pre {
+            font-size: inherit;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Sidekick Desktop <span class="version"></span></h1>
+        <p class="more-version"></p>
+        <script>
+            var info = AboutPreload.getInfo();
+            document.querySelector('.version').textContent = info.version;
+            document.querySelector('.more-version').textContent = `(Debug info: Distribution ${info.dist}, Electron ${info.electron}, ${info.platform} ${info.arch})`;
+        </script>
+        <p>Sidekick Desktop is an offline editor of the Sidekick assistance system utilizing the Scratch 3 programming
+            interface. Learn more at <a
+                href="https://menersar.github.io/Sidekick/sidekick-desktop/">https://menersar.github.io/Sidekick/sidekick-desktop/</a>.
+        </p>
+        <!-- !!! CHANGE !!! -->
+        <p>Sidekick Desktop is licensed under the BSD 3-Clause License. The source code is published <a
+                href="https://github.com/Menersar/Sidekick/" target="_blank" rel="noreferrer">on GitHub</a>. You can
+            read the license below:</p>
+        <pre>
+            BSD 3-Clause License
+            
+            Copyright (c) 2019, Scratch Foundation
+            
+            Redistribution and use in source and binary forms, with or without
+            modification, are permitted provided that the following conditions are met:
+            
+            1. Redistributions of source code must retain the above copyright notice, this
+            list of conditions and the following disclaimer.
+            
+            2. Redistributions in binary form must reproduce the above copyright notice,
+            this list of conditions and the following disclaimer in the documentation
+            and/or other materials provided with the distribution.
+            
+            3. Neither the name of the copyright holder nor the names of its
+            contributors may be used to endorse or promote products derived from
+            this software without specific prior written permission.
+            
+            THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+            AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+            IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+            DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+            FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+            DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+            SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+            CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+            OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+            OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        </pre>
+    </main>
+</body>
+
+</html>

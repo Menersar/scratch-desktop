@@ -31,7 +31,7 @@ ssh-add
 update_source() {
 	echo "Updating source"
 	cd "$src"
-	git checkout master
+	git checkout sidekick
 	git pull
 	git submodule update
 	npm ci
@@ -41,7 +41,7 @@ update_source() {
 update_flatpak() {
 	echo "Updating flatpak"
 	cd "$src/../de.mixality.Sidekick"
-	git checkout master
+	git checkout sidekick
 	git pull
 	git branch -D "$version" || true
 	git branch "$version"
@@ -61,12 +61,12 @@ update_flatpak() {
 update_aur() {
 	echo "Updating AUR"
 	cd "$src/../sidekick-desktop-bin"
-	git checkout master
+	git checkout sidekick
 	git pull
 	sed -E -i "s/pkgver=.*/pkgver=$version/" PKGBUILD
 	sed -E -i "s/pkgrel=.*/pkgrel=1/" PKGBUILD
-	rm *.tar.zst
-	rm *.tar.gz
+	rm *.tar.zst || true
+	rm *.tar.gz || true
 	updpkgsums
 	makepkg --printsrcinfo > .SRCINFO
 	makepkg -si
@@ -80,9 +80,9 @@ update_aur() {
 update_snap() {
 	echo "Updating snap"
 	cd "$src"
-	mkdir -p dist
-	rm dist/*.snap
-	npm run dist -- --linux snap
+	rm dist/*.snap || true
+	npm run webpack:prod
+    npx electron-builder --linux snap --publish never --config.extraMetadata.sidekick_dist="prod-snap-$(uname -m)"
 	snap install --dangerous dist/Sidekick-*.snap
 	snap run sidekick-desktop
 	await_confirmation
