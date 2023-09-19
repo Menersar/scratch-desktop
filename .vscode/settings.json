@@ -35,5 +35,8 @@
     ,
     "yaml.schemas": {
         "https://json.schemastore.org/dependabot-2.0.json": "file:///c%3A/Users/mener/Desktop/desktop-master/.github/dependabot.yml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }
