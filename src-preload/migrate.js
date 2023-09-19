@@ -1,6 +1,7 @@
-const {contextBridge, ipcRenderer} = require('electron');
+const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld('MigratePreload', {
-  getStrings: () => ipcRenderer.sendSync('get-strings'),
-  done: () => ipcRenderer.invoke('done')
+contextBridge.exposeInMainWorld("MigratePreload", {
+  getStrings: () => ipcRenderer.sendSync("get-strings"),
+  done: () => ipcRenderer.invoke("done"),
+  continueAnyways: () => ipcRenderer.invoke("continue-anyways"),
 });

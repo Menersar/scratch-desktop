@@ -6,7 +6,7 @@ echo -e "\e[31m\e[1m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo -e "!!! THIS SCRIPT IS DEPRECATED !!!"
 echo -e "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m"
 echo ""
-echo "Please use one of the installation methods listed on https://https://menersar.github.io/Sidekick/desktop/ instead."
+echo "Please use one of the installation methods listed on https://https://menersar.github.io/Sidekick/sidekick-desktop/ instead."
 echo "They are more secure and often integrate into your system's package manager."
 echo "If for some reason you must use this script, please contact us."
 echo ""
@@ -37,7 +37,7 @@ if [ "$(whoami)" != "root" ]; then
     fatal "Must be run as root."
 fi
 
-VERSION="1.8.1"
+VERSION="0.1.0"
 ARCH="$(uname -m)"
 echo "Version: $VERSION"
 echo "System archictecture: $ARCH"

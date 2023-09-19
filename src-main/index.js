@@ -190,6 +190,18 @@ app.whenReady().then(() => {
       ...parseFilesFromArgv(process.argv)
     ], process.cwd());
 
-    checkForUpdates();
+    // If no windows successfully opened:
+    if (BaseWindow.getAllWindows().length === 0) {
+      // Simply quit.
+      app.quit();
+    }
+
+    // checkForUpdates();
+    checkForUpdates().catch((error) => {
+      // Don't show a full error message when updates couldn't be fetched.
+      // The website might be down, the internet might be broken, might be a school
+      // network that blocks mixality.de, etc.
+      console.error("Error checking for updates:", error);
+    });
   });
 });

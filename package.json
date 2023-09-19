@@ -23,7 +23,7 @@
         "webpack:prod": "cross-env NODE_ENV=production webpack",
         "webpack:prod2": "set NODE_ENV=production && webpack",
         "webpack:prod1": "cross-env NODE_ENV=production webpack",
-        "electron:start": "electron src-main/index.js",
+        "electron:start": "electron src-main/entrypoint.js",
         "electron:package:dir": "npx electron-builder --dir",
         "electron:package:dir4": "npx electron-builder",
         "electron:package:dir2": "electron-builder --windows nsis --x64",
@@ -52,12 +52,12 @@
         "email": "contact@mixality.de"
     },
     "homepage": "https://menersar.github.io/Sidekick/sidekick-desktop/",
-    "main": "./src-main/index.js",
+    "main": "./src-main/entrypoint.js",
     "dependencies": {
         "semver": "^7.5.3"
     },
     "devDependencies": {
-        "@babel/core": "^7.22.11",
+        "@babel/core": "^7.22.17",
         "@babel/preset-env": "^7.12.16",
         "@babel/preset-react": "^7.13.13",
         "@electron/notarize": "^2.1.0",
@@ -69,7 +69,7 @@
         "copy-webpack-plugin": "^6.4.1",
         "cross-env": "^7.0.3",
         "css-loader": "^1.0.1",
-        "electron": "^22.3.22",
+        "electron": "^26.2.1",
         "electron-builder": "^24.6.4",
         "postcss": "^8.4.13",
         "postcss-import": "^14.0.0",
@@ -78,7 +78,7 @@
         "scratch-gui": "git+https://github.com/Menersar/scratch-gui.git#sidekick",
         "style-loader": "^0.23.0",
         "url-loader": "^4.1.1",
-        "webpack": "^4.46.0",
+        "webpack": "^4.47.0",
         "webpack-cli": "^4.10.0"
     },
     "//": "!!! Oder besser 'de.mixality.sidekick.sidekick-desktop' für 'appId' setzen? ???",

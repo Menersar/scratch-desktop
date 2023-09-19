@@ -340,13 +340,19 @@
 
         .alternative-download-links>div {
             margin: 8px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4px 8px;
         }
 
         .alternative-download-links ul {
             margin: 0;
             padding: 0;
-            display: inline-flex;
+            display: flex;
             justify-content: center;
+            gap: 8px;
         }
 
         .alternative-download-links li {
@@ -355,8 +361,31 @@
             margin: 0;
         }
 
-        .alternative-download-links a {
+        /* .alternative-download-links a {
             margin: 0 8px;
+        } */
+
+        .beta-badge,
+        .security-badge {
+            border-radius: 4px;
+            padding: 2px 5px;
+            /* border-bottom: 2px solid #6f0073; */
+            /* background: #b117f8; */
+            /* color: white; */
+            border-bottom-width: 2px;
+            border-bottom-style: solid;
+        }
+
+        .beta-badge {
+            color: white;
+            background-color: #b117f8;
+            border-color: #6f0073;
+        }
+
+        .security-badge {
+            color: black;
+            background-color: #fffb00;
+            border-color: rgb(205, 205, 0);
         }
 
         .picture {
@@ -520,6 +549,10 @@
         [data-os="unsupported"] [data-if-os="unsupported"] {
             display: initial;
         }
+
+        [hidden] {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -605,13 +638,15 @@
     <script type="generated-translations"
         data-locale="sv">{"602":"Ersätt Scratch's standard 30 FPS med vilken bildfrekvens du väljer eller använd interpolation.","about":"Skapa spel, animationer och historier med den bättre versionen av Scratch med mörkt läge, tillägg, en kompilator, och mycket mer. Nu tillgänglig som app för vilken dator som helst. Sidekick är inte ansluten med Scratch Teamet.","arch":"För Arch Linux system, rekommenderar vi det officiella AUR paketet: ","art":"Verktyg för artister","art2":"Fullt stöd för genomskinlighet, en förbättrad redigerare för kostymer, onion skinning, och mer.","backpack":"Ryggsäck","backpack2":"Lägg skripter, kostymer, ljud, eller hela sprajtar i ryggsäcken för att använda de senare.","beta":"Beta version tillgänglig:","bugg":"Rapportera buggar på GitHub","bugs":"Rapportera buggar på Scratch","caption":"Projekt på bild: Full Sphere Path Tracer av piano_miles","cat":"Kattblock","cat2":"Aktivera kattblocken för att ha söta kattblock alla dagar om året.","changelog":"Ändringslogg","code":"Källkod","dark":"Mörkt läge","dark2":"Dina ögon kommer tacka dig.","deb":"Installera vårat förvar för att få uppdateringar med hjälp av apt genom att köra dessa komandon:","deb2":"Eller installera .deb paketet manuellt (kommer inte att lägga till apt förvaret):","dev":"Verktyg för utvecklare","dev2":"Sökbara rullgardinsmenyer, sökfält, hoppa till definitionen, mappar, växla block, och mer.","donate":"Donera","downlin":"Läs Linux installationsinstruktionser.","downun":"Okänt operativsystem ","extensions":"Tillägg","extensions2":"Inkluderar nya tillägg så som gamepad och strech, och stödjer anpassade tillägg.","features":"Funktioner","flatpak":"Vi upprätthåller en officiell Flatpak version på Flathub:","flatpak2":"Gamepads kommer inte funka med Flatpak versionen","flatpak3":"Som standard, kommer appen vara begränsad till att bara få tillgång till projekt i din hemkatalog. För att få tillgång till andra kataloger, kör detta kommando: ","getit":"Få det från","issues":"Kända fel och lösningar","light":"Lättare än Scratch","light2":"Använder mindre minne och CPU jämfört med Scratch.","limitless":"Ta bort limitationerna","limitless2":"Ta bort nästan alla Scratch's limitationer, även 300 kloner limitationen.","lin":"Installera på Linux","lin2":"Försök att söka efter \"Sidekick\" i din distributions mjukvaruhanterare och välj det första alternativet som kommer upp. Om det kommer inte upp eller om du är en avancerad användare, välj någon av de installationsmetoderna: ","mac":"Installera på macOS","mac2":"Dra Sidekick till Applikations. Om det säger att Sidekick redan finns, välj \"Ersätt\".","macd":"Ladda ned för MacOS (Universal)","more":"Och mycket mera.","ms":"Få det från Microsoft Store för automatiska uppdateringar.","old":"Äldre utsläpps noteringar är tillgängliga på Github","or":"eller","otheros":"Instruktioner för andra operativ system:","packager":"Förpackare","packager2":"Inbyggd förpackare till att konvertera projekt till HTML filer, zip filer, eller applikationer för Windows, macOS, eller Linux.","privacy":"Integritet","smartscreen":"Om en Windows SmartScreen fönster poppar upp, klicka \"Mer Info\" välj då \"Kör ändå\".","snap":"Vi upprätthåller en officiell snap version:","snap2":"Som standard kan inte snap versionen inte komma åt din kamera, mikrfonen, gamepads eller borttagbara volymer. För att fixa detta, kör dessa komandon:","snap3":"Som standard kommer snap versionen inte ställas in som filöppnaren för sb3, sb2 eller sb filer utan stör för andra filtyper. För att fixa detta, kör dessa komandon: ","speed":"Fart","speed2":"Genom att kompilera projekt till JavaScript, körs de 10-100x snabbare än i Scratch.","stagesize":"Anpassad scenstorlek","stagesize2":"Ändra Scratch's standarda 480x360 scenstorlek till vilken storlek du vill.","updatelin":"Om du installerade Sidekick Desktop från en app butik eller från en pakethanterare, ladda ned uppdateringen därifrån. Annars, installera appen igen på samma sätt du installerade den.","updatemac":"För att uppdatera, ladda ned den nya appen och ersätt den gamla.","updateun":"För att uppdatera, installera appen igen likadant som du installerade den.","updatewin":"För att uppdatera, ladda ned och kör den nya installeraren.","w64":"Ladda ned installations programmet för Windows (64-bit)","w642":"Ladda ner installeraren (64-bit, rekommenderat)","webapp":"Eller så kan du använda web appen i vilken webbläsare som helst: ","win":"Installera på Windows","win2":"Eller ladda ned en installerare. Om en Windows SmartScreen varning kommer upp, klicka \"Mer info\" och \"Kör ändå\"."}</script>
     <script type="generated-translations"
+        data-locale="tr">{"602":"Scratch'in varsayılan 30 FPS'sini seçtiğiniz herhangi bir kare hızıyla değiştirin veya enterpolasyon kullanın.","about":"Scratch'in karanlık modu, eklentileri, derleyicisi ve çok daha fazlasını içeren daha iyi sürümüyle oyunlar, animasyonlar ve hikayeler oluşturun. Artık herhangi bir masaüstü bilgisayar için uygulama olarak mevcut. Sidekick'ın Scratch Takımına bağlı değildir.","arch":"Arch Linux sistemleri için resmi AUR paketini öneriyoruz:","art":"Sanatçılar için araçlar","art2":"Şeffaflık için tam destek, geliştirilmiş kostüm editörü, soğan kaplama ve daha fazlası.","backpack":"Sırt çantası","backpack2":"Daha sonra yeniden kullanmak için senaryoları, kostümleri, sesleri veya tüm spriteları sırt çantanıza koyun.","beta":"Beta sürümü mevcut:","bugg":"Hataları GitHub'da bildir","bugs":"Hataları Scratch'te bildir","caption":"Fotoğrafta gösterilen proje: piano_miles tarafından Full Sphere Path Tracer","cat":"Kedi blokları","cat2":"Yılın herhangi bir gününde sevimli kedi blokları elde etmek için kedi blokları eklentisini etkinleştirin.","changelog":"Değişiklik günlüğü","code":"Kaynak kodu","dark":"Karanlık Mod","dark2":"Gözleriniz size teşekkür edecek.","deb":"Bu komutları çalıştırarak apt aracılığıyla güncellemeleri almak için depomuzu yükleyin:","deb2":"Veya .deb'i manuel olarak yükleyin (uygun depo eklenmeyecektir):","dev":"Geliştiriciler için araçlar","dev2":"Aranabilir açılır menüler, bulma çubuğu, blok tanımına atlama, klasörler, blok değiştirme ve daha fazlası.","donate":"Bağış Yapın","downlin":"Linux kurulum talimatlarını okuyun","downun":"Bilinmeyen işletim sistemi","extensions":"Eklentiler\n","extensions2":"Gamepad ve Stretch gibi yeni uzantılar içerir ve özel uzantıların yüklenmesini destekler.","features":"Özellikler","flatpak":"Flathub'da resmi bir Flatpak sürümü bulunduruyoruz:","flatpak2":"Gamepad'ler Flatpak sürümünde çalışmayacaktır.","flatpak3":"Varsayılan olarak uygulama yalnızca ana dizininizdeki projelere erişimle sınırlı olabilir. Diğer klasörlere erişime izin vermek için şu komutu çalıştırın:","getit":"Şuradan al","issues":"Bilinen sorunlar ve geçici çözümler","light":"Scratch'ten daha hafif","light2":"Scratch'e göre önemli ölçüde daha az bellek ve boşta CPU kullanımı kullanır.","limitless":"Sınırları kaldır","limitless2":"300 klon sınırı da dahil olmak üzere Scratch'in keyfi sınırlarının neredeyse tamamını kaldırın.","lin":"Linux'a yükleyin","lin2":"Dağıtımınızın yazılım yöneticisinde \"Sidekick\" aramayı deneyin ve beliren ilk seçeneği seçin. Görünmüyorsa veya ileri düzey bir kullanıcıysanız aşağıdaki yükleme yöntemlerinden birini seçin:","mac":"MacOS'a yükleme","mac2":"Sidekick'ı Uygulamalar'a sürükleyin. Eğer Sidekick'ın zaten mevcut olduğunu söylerse \"Değiştir\"i seçin.","macd":"macOS için İndir (Evrensel)","more":"Ve çok daha fazlası.","ms":"Otomatik güncellemeleri etkinleştirmek için Microsoft Store'dan edinin.","old":"Daha eski sürüm notlarına GitHub'da ulaşılabilir.","or":"veya","otheros":"Diğer işletim sistemleri için talimatlar:","packager":"Paketleyici","packager2":"Projeleri HTML dosyalarına, zip dosyalarına veya Windows, macOS veya Linux uygulamalarına dönüştürmek için yerleşik paketleyici.","privacy":"Gizillik","smartscreen":"Eğer bir Windows SmartScreen uyarısı gözükürse, \"Daha fazla bilgi\" ve ardından \"Yine de çalıştır\" tuşlarına basınız.","snap":"Resmi bir snap versiyonunu sürdürüyoruz:","snap2":"Varsayılan olarak snap sürümü kameranıza, mikrofonunuza, oyun kumandalarınıza veya çıkarılabilir sürücülerinize erişemez. Bunu düzeltmek için şu komutları çalıştırın:","snap3":"Varsayılan olarak snap sürümü, diğer dosya türlerine müdahale etmeden sb3, sb2 veya sb dosyaları için dosya açıcı olarak ayarlanamaz. Bunu düzeltmek için şu komutları çalıştırın:","speed":"Hız","speed2":"Projeleri JavaScript'e derleyerek Scratch'e göre 10-100 kat daha hızlı çalışırlar.","stagesize":"Özel sahne boyutu","stagesize2":"Scratch'in varsayılan 480x360 sahnesini istediğiniz boyuta değiştirin.","updatelin":"Sidekick Desktop'ı bir uygulama mağazasından veya paket yöneticisinden yüklediyseniz güncellemeyi buradan indirin. Aksi takdirde, uygulamayı yüklediğiniz şekilde manuel olarak yeniden yükleyin.","updatemac":"Güncellemek için yeni uygulamayı indirin ve eskisini değiştirin.","updateun":"Güncellemek için uygulamayı yüklediğiniz şekilde yeniden yükleyin.","updatewin":"Güncellemek için yeni yükleyiciyi indirin ve çalıştırın.","w64":"Windows için yükleyiciyi indirin (64 bit)","w642":"Yükleyiciyi indirin (64 bit, önerilir)","webapp":"Veya web uygulamamızı herhangi bir tarayıcıda kullanın:","win":"Windows'a yükleyin","win2":"Veya bir yükleyici indirin. Windows SmartScreen uyarısı görünürse, \"Daha fazla bilgi\"yi ve ardından \"Yine de çalıştır\"ı tıklayın."}</script>
+    <script type="generated-translations"
         data-locale="zh-cn">{"60":"60 帧","602":"将 Scratch 的默认30帧替换为其他帧率。","about":"Sidekick 是 Scratch 的二次开发版，具有黑暗模式、扩展、编译器等可以使用更好版本的 Scratch 创建游戏、动画和故事。现在 Sidekick 可作为任何计算机的应用程序。Sidekick 不属于 Scratch 团队。","arch":"对于 Arch Linux 系统，我们建议使用官方的 AUR 软件包：","art":"艺术家工具","art2":"完全支持透明度，一个优化过的造型编辑器，描图纸等等功能。","backpack":"背包","backpack2":"将脚本、造型、声音或整个角色放入背包，以在之后重新使用它们。","beta":"测试版可用：","bugg":"在 GitHub 报告错误","bugs":"在 Scratch 网站报告错误","caption":"图片中的作品：由 piano_miles 制作的 Full Sphere Path Tracer","cat":"猫块","cat2":"启用“猫块”插件可在一年中的任意一天获得可爱的“猫块”。","changelog":"更新日志","code":"源代码","dark":"黑暗模式","dark2":"你的眼睛将感谢你。","deb":"通过apt安装我们的存储库，通过运行以下命令来接收更新：","deb2":"或者为您的系统手动安装.deb（不会添加apt仓库）:","dev":"开发者工具","dev2":"可搜索的下拉栏，搜索栏，跳转到定义，文件夹，切换积木等等。","donate":"捐赠","downlin":"阅读Linux系统安装指引","downun":"未知的操作系统","extensions":"扩展","extensions2":"包括 Gamepad 和 Stretch 等全新扩展，并支持加载自定义扩展。","features":"未来","flatpak":"我们在 Flathub 上维护一个官方的 Flatpak 版本：","flatpak2":"游戏手柄在 Flatpak 版本中无法工作。","flatpak3":"默认情况下，该应用程序可能仅限于访问主目录中的作品。要允许访问其他文件夹，您需要运行以下命令：","getit":"从此处获取","issues":"已知的问题和解决方法","light":"比Scratch更轻量级","light2":"与Scratch相比，使用的内存和空闲CPU使用率大幅减少。","limitless":"移除限制","limitless2":"移除Scratch中几乎所有的限制，包括克隆体的上限为300的限制。","lin":"在 Linux 上安装","lin2":"尝试在你的软件管理器中搜索“Sidekick”，然后选择出现的第一个选项。如果没有出现，或者您是高级用户，请选择以下方式下载：","mac":"在 macOS 上安装","mac2":"将Sidekick文件夹放进Application文件夹中。如果你看到“Sidekick已经存在”之类的警告，请选择“替换”","macd":"下载 macOS 版本（通用）","more":"还用更多。","ms":"从Microsoft Store上下载以启用自动更新。","old":"可在 GitHub 上查看更早的版本说明。","or":"或者","otheros":"其它操作系统的安装指引：","packager":"打包器","packager2":"内置的打包器可将项目转换为 HTML 文件或适用于 Windows、macOS、Linux 的应用程序。","privacy":"隐私","smartscreen":"如果出现 Windows SmartScreen 警告，请单击“更多信息”，然后单击“仍然运行”。","snap":"我们将会维护官方的 Snap 版本：","snap2":"默认情况下，snap 版本无法访问您的相机、麦克风、游戏手柄或可移动驱动器。要解决此问题，您需要运行以下命令：","snap3":"默认情况下，snap 版本不能设置为 sb3、sb2 或 sb 文件的文件启动项，而不影响其他文件类型。要解决这个问题，您需要运行以下命令：","speed":"速度","speed2":"通过将项目转为JavaScript，作品运行将比Scratch快10-100倍。","stagesize":"自定义舞台大小","stagesize2":"更改 Scratch 的默认 480x360 大小的舞台区到任何你喜欢的大小。","updatelin":"如果你从APP商城或安装包下载了Sidekick Desktop，在此安装更新。否则，请手动以你相同的方式重新安装Sidekick Desktop。","updatemac":"需要更新，请下载新的应用程序并替换旧的版本。","updateun":"需要更新，请按照您原来的安装的方式重新安装。","updatewin":"更新，下载并运行新的程序。","w323":"32位","w64":"下载适用于Windows 版本(64 位)的安装程序","w642":"下载安装包(64位，推荐)","webapp":"或者在任意浏览器中使用我们的Web APP：","win":"在Windows上安装","win2":"或者下载安装包。如果出现 Windows SmartScreen 警告，请单击“更多信息”，然后单击“仍然运行”。"}</script>
     <!-- L10N_END -->
     <script
         type="generated-locale-names">{"en":"English","ca":"Català","de":"Deutsch","es":"Español (España)","it":"Italiano","ja":"日本語","ko":"한국어","nl":"Nederlands","pt-br":"Português Brasileiro","sv":"Svenska","zh-cn":"简体中文"}</script>
 
     <script>
-        const VERSION = '1.8.1';
+        const VERSION = '0.1.0';
 
         // OS-specific styles
         const getOS = () => {
@@ -627,31 +662,56 @@
         document.body.setAttribute('data-os', getOS());
 
         // Changelog page
-        const INVALID_VERSIONS = 0;
-        const A_IS_OLDER = 1;
-        const B_IS_OLDER = 2;
-        const VERSIONS_ARE_EQUAL = 3;
+        // const INVALID_VERSIONS = 0;
+        // const A_IS_OLDER = 1;
+        // const B_IS_OLDER = 2;
+        // const VERSIONS_ARE_EQUAL = 3;
+        const VERSIONS_ARE_EQUAL = 0;
+        const A_IS_NEWER = 1;
+        const B_IS_NEWER = 2;
         const compareVersions = (a, b) => {
-            var partsA = a.split('-')[0].split('.');
-            var partsB = b.split('-')[0].split('.');
-            var expectedLength = 3;
-            if (partsA.length !== expectedLength || partsB.length !== expectedLength) {
-                return INVALID_VERSIONS;
-            }
+            // var partsA = a.split('-')[0].split('.');
+            // var partsB = b.split('-')[0].split('.');
+            // var expectedLength = 3;
+            // if (partsA.length !== expectedLength || partsB.length !== expectedLength) {
+            //     return INVALID_VERSIONS;
+            // }
+            const partsA = a.split('-')[0].split('.');
+            const partsB = b.split('-')[0].split('.');
+            const expectedLength = 3;
             for (var i = 0; i < expectedLength; i++) {
-                var itemA = +partsA[i];
-                var itemB = +partsB[i];
-                if (isNaN(itemA) || isNaN(itemB)) {
-                    return INVALID_VERSIONS;
-                }
+                // var itemA = +partsA[i];
+                // var itemB = +partsB[i];
+                // if (isNaN(itemA) || isNaN(itemB)) {
+                //     return INVALID_VERSIONS;
+                // }
+                const itemA = +partsA[i];
+                const itemB = +partsB[i];
                 if (itemA > itemB) {
-                    return B_IS_OLDER;
+                    // return B_IS_OLDER;
+                    return A_IS_NEWER;
                 } else if (itemA < itemB) {
-                    return A_IS_OLDER;
+                    // return A_IS_OLDER;
+                    return B_IS_NEWER;
                 }
             }
-            return VERSIONS_ARE_EQUAL;
+            // return VERSIONS_ARE_EQUAL;
+
+            const prereleaseA = a.split('-')[1];
+            const prereleaseB = b.split('-')[1];
+            if (prereleaseA === prereleaseB) {
+                return VERSIONS_ARE_EQUAL;
+            } else if (prereleaseA && !prereleaseB) {
+                return B_IS_NEWER;
+            } else if (prereleaseB && !prereleaseA) {
+                return A_IS_NEWER;
+            } else if (prereleaseA > prereleaseB) {
+                return A_IS_NEWER;
+            } else {
+                return B_IS_NEWER;
+            }
         };
+
         const searchParams = new URLSearchParams(location.search);
         const isChangelogPage = searchParams.has('changelog') || searchParams.has('from') || searchParams.has('to');
         const comingFromVersion = searchParams.get('from') || '0.0.0';
@@ -745,7 +805,8 @@
             const version = element.getAttribute('data-version');
             if (version) {
                 const result = compareVersions(comingFromVersion, version);
-                if (result === B_IS_OLDER || result === VERSIONS_ARE_EQUAL) {
+                // if (result === B_IS_OLDER || result === VERSIONS_ARE_EQUAL) {
+                if (result === A_IS_NEWER || result === VERSIONS_ARE_EQUAL) {
                     element.style.display = 'none';
                 }
             }
@@ -858,24 +919,39 @@
                 href="https://menersar.github.io/Sidekick/sidekick-editor">menersar.github.io/Sidekick/sidekick-editor</a>
         </div>
 
-        <!-- when there is no beta update, leave it hidden so we don't lose the l10n string -->
-        <div>
-            <b><span l10n="beta"
-                    l10n-description="Followed by a version number eg. v1.7.2-beta.1 that is a link to learn more about the current beta release.">Beta
-                    version available:</span></b>
-            <a href="https://github.com/Menersar/sidekick-desktop/releases/tag/v1.9.0-beta.6">v1.9.0-beta.6</a>
-        </div>
-    </div>
+        <!-- <div>
+            <b class="security-badge" l10n="security-advisory"
+                l10n-description="Followed by a link to learn more about a recent security-related bug">Security
+                Advisory:</b> -->
+        <!-- !!! HERE! TODO? CHANGE? REMOVE? ??? -->
+        <!-- <a href="https://github.com/Menersar/sidekick-desktop/security/advisories/GHSA-wg4p-vj7h-q82q">
+                CVE-2023-40168</a>
+        </div> -->
 
-    <div class="security-advisory" lang="en">
-        <h2>Security Advisory</h2>
-        <p>Versions of Sidekick Desktop prior to 1.8.0 allowed malicious projects or extensions to silently read files
-            from your computer and upload them to a remote server. Updating is <b>HIGHLY RECOMMENDED</b>.</p>
-        <p>You can check your current version by pressing the (?) button in the top right corner of the app then
-            "About".</p>
-        <p><a href="https://github.com/Menersar/sidekick-desktop/security/advisories/GHSA-wg4p-vj7h-q82q">CVE-2023-40168
-                -
-                GHSA-wg4p-vj7h-q82q</a></p>
+        <!-- when there is no beta update, leave this hidden so we don't lose the l10n string -->
+        <div hidden>
+            <!-- <div> -->
+            <!-- <b><span l10n="beta"
+                    l10n-description="Followed by a version number eg. v1.7.2-beta.1 that is a link to learn more about the current beta release.">Beta
+                    version available:</span></b> -->
+            <!-- <span class="beta-badge" l10n="beta-badge"
+                l10n-description="Part of the beta update available message.">New!</span>
+            <b l10n="beta"
+                l10n-description="Followed by a version number eg. v0.2.0-beta.1 that is a link to learn more about the current beta release.">Beta
+                version available:</b> -->
+            <b class="beta-badge" l10n="beta"
+                l10n-description="Followed by a version number e.g. v0.1.1-beta.1 that is a link to learn more about the current beta release.">Beta
+                version available:</b>
+            <a href="https://github.com/Menersar/sidekick-desktop/releases/tag/v0.1.1-beta">v0.1.1 beta</a>
+        </div>
+
+        <div>
+            <b class="security-badge" l10n="security-advisory"
+                l10n-description="Followed by a link to learn more about a recent security-related bug">Security
+                Advisory:</b>
+            <a
+                href="https://github.com/Menersar/sidekick-desktop/security/advisories/GHSA-wg4p-vj7h-q82q">CVE-2023-40168</a>
+        </div>
     </div>
 
     <div class="picture picture-editor">
@@ -1008,17 +1084,28 @@
             </svg>
             <div l10n="donate">Donate</div>
         </a>
+        <a class="link" href="https://github.com/Menersar/sidekick-desktop/security/policy">
+            <!-- https://fonts.google.com/icons?selected=Material+Symbols+Rounded:report:FILL@0;wght@400;GRAD@0;opsz@24 -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 135.46666 135.46667">
+                <path
+                    d="M67.733332 101.18219q2.843157 0 4.766461-1.923297 1.923312-1.923304 1.923312-4.766464 0-2.843157-1.923312-4.766468-1.923304-1.923303-4.766461-1.923303-2.843156 0-4.766467 1.923303-1.923306 1.923311-1.923306 4.766468 0 2.84316 1.923306 4.766464 1.923311 1.923297 4.766467 1.923297zm0-26.759084q2.843157 0 4.766461-1.923305 1.923312-1.923311 1.923312-4.766468V40.974234q0-2.843157-1.923312-4.766469-1.923304-1.923312-4.766461-1.923312-2.843156 0-4.766467 1.923312-1.923306 1.923312-1.923306 4.766469v26.759099q0 2.843157 1.923306 4.766468 1.923311 1.923305 4.766467 1.923305zM48.165739 127.94131q-2.675909 0-5.100953-1.00347-2.425044-1.00347-4.264732-2.84315L11.371979 96.666601q-1.8396907-1.839681-2.8431569-4.264726-1.0034666-2.425044-1.0034666-5.10095V48.165741q0-2.675908 1.0034666-5.100953 1.0034662-2.425045 2.8431569-4.264735l27.428075-27.428075q1.839688-1.8396907 4.264732-2.8431569 2.425044-1.0034664 5.100953-1.0034664h39.135186q2.675906 0 5.10095 1.0034664 2.425045 1.0034662 4.264735 2.8431569l27.42808 27.428075q1.83968 1.83969 2.84315 4.264735t1.00347 5.100953v39.135184q0 2.675906-1.00347 5.10095-1.00347 2.425045-2.84315 4.264726L96.66661 124.09469q-1.83969 1.83968-4.264735 2.84315-2.425044 1.00347-5.10095 1.00347zm.167244-13.37955h38.800699l27.428078-27.428083V48.332982L87.133682 20.904907H48.332983L20.904906 48.332982v38.800695Zm19.400349-46.828427Z"
+                    style="stroke-width:.167244" />
+            </svg>
+            <div l10n="bounty"
+                l10n-description="Links to a bug bounty program where we pay money to people who properly report security bugs. See https://en.wikipedia.org/wiki/Bug_bounty_program">
+                Bug Bounty</div>
+        </a>
     </div>
 
     <div class="changelog section" id="changelog">
-        <!-- Do not directly edit the changelog here! This section is generated by changelog/generate-changelogs.js -->
+        <!-- Do not directly edit the changelog here! This section is generated by scripts/generate-changelogs.js -->
         <h2 l10n="changelog">Changelog</h2>
         <div lang="en">
             <!-- CHANGELOG_START -->
             <div data-version="0.1.0">
                 <h3>v0.1.0 (August 31 2023)</h3>
                 <ul>
-                    <li>Added changelog functionality.</li>
+                    <li>Add changelog functionality.</li>
                 </ul>
             </div>
             <!-- CHANGELOG_END -->
@@ -1031,7 +1118,7 @@
     <div class="manual-installation section" id="windows">
         <h2 l10n="win">Install on Windows</h2>
         <p l10n="ms">Get it from the Microsoft Store to enable automatic updates.</p>
-        <a class="microsoft-store" href="https://apps.microsoft.com/store/detail/mixality/9P4DPZGV5ZKL">
+        <a class="microsoft-store" href="https://apps.microsoft.com/store/detail/mixality/[PROJECT-ID]">
             <div class="microsoft-icon"></div>
             <div>
                 <div l10n="getit"

@@ -1,5 +1,5 @@
-const APP_NAME = 'Sidekick Desktop';
-const PACKAGER_NAME = 'Sidekick Packager';
+const APP_NAME = 'SIDEKICK Desktop';
+const PACKAGER_NAME = "SIDEKICK Packager";
 
 module.exports = {
   APP_NAME,

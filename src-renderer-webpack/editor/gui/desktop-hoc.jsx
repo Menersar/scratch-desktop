@@ -1,18 +1,21 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import {openLoadingProject, closeLoadingProject} from 'scratch-gui/src/reducers/modals';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import {
+  openLoadingProject,
+  closeLoadingProject,
+} from "scratch-gui/src/reducers/modals";
 import {
   requestProjectUpload,
   setProjectId,
   defaultProjectId,
   onFetchedProjectData,
   onLoadedProject,
-  requestNewProject
-} from 'scratch-gui/src/reducers/project-state';
-import {setFileHandle} from 'scratch-gui/src/reducers/sidekick';
-import {WrappedFileHandle} from './filesystem-api-impl';
-import {setStrings} from '../prompt/prompt.js';
+  requestNewProject,
+} from "scratch-gui/src/reducers/project-state";
+import { setFileHandle, setUsername } from "scratch-gui/src/reducers/sidekick";
+import { WrappedFileHandle } from "./filesystem-api-impl";
+import { setStrings } from "../prompt/prompt.js";
 
 let mountedOnce = false;
 
@@ -52,19 +55,22 @@ const handleClickAbout = () => {
 
 const handleClickSourceCode = () => {
   // !!! CHANGE !!!
-  window.open('https://github.com/Menersar/Sidekick');
+  window.open("https://github.com/Menersar/Sidekick");
 };
 
 const handleClickDonate = () => {
-  window.open('https://github.com/sponsors/GarboMuffin');
+  window.open("https://github.com/sponsors/GarboMuffin");
 };
+
+const USERNAME_KEY = "sidekick:username";
+const DEFAULT_USERNAME = "player";
 
 const DesktopHOC = function (WrappedComponent) {
   class DesktopComponent extends React.Component {
-    constructor (props) {
+    constructor(props) {
       super(props);
       this.state = {
-        title: ''
+        title: "",
       };
       this.handleUpdateProjectTitle = this.handleUpdateProjectTitle.bind(this);
 
@@ -73,16 +79,24 @@ const DesktopHOC = function (WrappedComponent) {
       this.messages = stateFromMain.strings;
       this.isMAS = stateFromMain.mas;
       setStrings({
-        ok: this.messages['prompt.ok'],
-        cancel: this.messages['prompt.cancel']
+        ok: this.messages["prompt.ok"],
+        cancel: this.messages["prompt.cancel"],
       });
+
+      const storedUsername = localStorage.getItem(USERNAME_KEY);
+      if (typeof storedUsername === "string") {
+        this.props.onSetReduxUsername(storedUsername);
+      } else {
+        this.props.onSetReduxUsername(DEFAULT_USERNAME);
+      }
     }
-    componentDidMount () {
-      EditorPreload.setExportForPackager(() => this.props.vm.saveProjectSb3('arraybuffer')
-        .then((buffer) => ({
+    componentDidMount() {
+      EditorPreload.setExportForPackager(() =>
+        this.props.vm.saveProjectSb3("arraybuffer").then((buffer) => ({
           name: this.state.title,
-          data: buffer
-        })));
+          data: buffer,
+        }))
+      );
 
       // This component is re-mounted when the locale changes, but we only want to load
       // the initial project once.
@@ -102,7 +116,7 @@ const DesktopHOC = function (WrappedComponent) {
         }
 
         this.props.onHasInitialProject(true, this.props.loadingState);
-        const {name, type, data} = await EditorPreload.getFile(id);
+        const { name, type, data } = await EditorPreload.getFile(id);
 
         await this.props.vm.loadProject(data);
         this.props.onLoadingCompleted();
@@ -111,14 +125,14 @@ const DesktopHOC = function (WrappedComponent) {
         const title = getDefaultProjectTitle(name);
         if (title) {
           this.setState({
-            title
+            title,
           });
         }
 
-        if (type === 'file' && name.endsWith('.sb3')) {
+        if (type === "file" && name.endsWith(".sb3")) {
           this.props.onSetFileHandle(new WrappedFileHandle(id, name));
         }
-      })().catch(error => {
+      })().catch((error) => {
         console.error(error);
         alert(error);
 
@@ -128,7 +142,7 @@ const DesktopHOC = function (WrappedComponent) {
         this.props.onRequestNewProject();
       });
     }
-    componentDidUpdate (prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) {
       if (this.props.projectChanged !== prevProps.projectChanged) {
         EditorPreload.setChanged(this.props.projectChanged);
       }
@@ -144,10 +158,14 @@ const DesktopHOC = function (WrappedComponent) {
           EditorPreload.closedFile();
         }
       }
+
+      if (this.props.reduxUsername !== prevProps.reduxUsername) {
+        localStorage.setItem(USERNAME_KEY, this.props.reduxUsername);
+      }
     }
-    handleUpdateProjectTitle (newTitle) {
+    handleUpdateProjectTitle(newTitle) {
       this.setState({
-        title: newTitle
+        title: newTitle,
       });
     }
     render() {
@@ -156,6 +174,7 @@ const DesktopHOC = function (WrappedComponent) {
         loadingState,
         projectChanged,
         fileHandle,
+        reduxUsername,
         onFetchedInitialProjectData,
         onHasInitialProject,
         onLoadedProject,
@@ -163,6 +182,7 @@ const DesktopHOC = function (WrappedComponent) {
         onLoadingStarted,
         onRequestNewProject,
         onSetFileHandle,
+        onSetReduxUsername,
         vm,
         ...props
       } = this.props;
@@ -175,29 +195,31 @@ const DesktopHOC = function (WrappedComponent) {
           onClickPackager={handleClickPackager}
           onClickAbout={[
             {
-              title: this.messages['in-app-about.desktop-settings'],
-              onClick: handleClickDesktopSettings
+              title: this.messages["in-app-about.desktop-settings"],
+              onClick: handleClickDesktopSettings,
             },
             {
-              title: this.messages['in-app-about.privacy'],
-              onClick: handleClickPrivacy
+              title: this.messages["in-app-about.privacy"],
+              onClick: handleClickPrivacy,
             },
             {
-              title: this.messages['in-app-about.about'],
-              onClick: handleClickAbout
+              title: this.messages["in-app-about.about"],
+              onClick: handleClickAbout,
             },
             {
-              title: this.messages['in-app-about.source-code'],
-              onClick: handleClickSourceCode
+              title: this.messages["in-app-about.source-code"],
+              onClick: handleClickSourceCode,
             },
             // Donation link must be hidden in MAS builds for App store compliance
-            ...(this.isMAS ? [] : [
-              {
-                title: this.messages['in-app-about.donate'],
-                onClick: handleClickDonate
-              }
-            ])
-          ]}      
+            ...(this.isMAS
+              ? []
+              : [
+                  {
+                    title: this.messages["in-app-about.donate"],
+                    onClick: handleClickDonate,
+                  },
+                ]),
+          ]}
           {...props}
         />
       );
@@ -209,8 +231,9 @@ const DesktopHOC = function (WrappedComponent) {
     loadingState: PropTypes.string.isRequired,
     projectChanged: PropTypes.bool.isRequired,
     fileHandle: PropTypes.shape({
-      id: PropTypes.number.isRequired
+      id: PropTypes.number.isRequired,
     }),
+    reduxUsername: PropTypes.string.isRequired,
     onFetchedInitialProjectData: PropTypes.func.isRequired,
     onHasInitialProject: PropTypes.func.isRequired,
     onLoadedProject: PropTypes.func.isRequired,
@@ -218,20 +241,22 @@ const DesktopHOC = function (WrappedComponent) {
     onLoadingStarted: PropTypes.func.isRequired,
     onRequestNewProject: PropTypes.func.isRequired,
     onSetFileHandle: PropTypes.func.isRequired,
+    onSetReduxUsername: PropTypes.func.isRequired,
     vm: PropTypes.shape({
-      loadProject: PropTypes.func.isRequired
-    }).isRequired
+      loadProject: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
-  const mapStateToProps = state => ({
+  const mapStateToProps = (state) => ({
     locale: state.locales.locale,
     loadingState: state.scratchGui.projectState.loadingState,
     projectChanged: state.scratchGui.projectChanged,
     fileHandle: state.scratchGui.sidekick.fileHandle,
-    vm: state.scratchGui.vm
+    reduxUsername: state.scratchGui.sidekick.username,
+    vm: state.scratchGui.vm,
   });
 
-  const mapDispatchToProps = dispatch => ({
+  const mapDispatchToProps = (dispatch) => ({
     onLoadingStarted: () => dispatch(openLoadingProject()),
     onLoadingCompleted: () => dispatch(closeLoadingProject()),
     onHasInitialProject: (hasInitialProject, loadingState) => {
@@ -240,18 +265,19 @@ const DesktopHOC = function (WrappedComponent) {
       }
       return dispatch(setProjectId(defaultProjectId));
     },
-    onFetchedInitialProjectData: (projectData, loadingState) => dispatch(onFetchedProjectData(projectData, loadingState)),
+    onFetchedInitialProjectData: (projectData, loadingState) =>
+      dispatch(onFetchedProjectData(projectData, loadingState)),
     onLoadedProject: (loadingState, loadSuccess) => {
-      return dispatch(onLoadedProject(loadingState, /* canSave */ false, loadSuccess));
+      return dispatch(
+        onLoadedProject(loadingState, /* canSave */ false, loadSuccess)
+      );
     },
     onRequestNewProject: () => dispatch(requestNewProject(false)),
-    onSetFileHandle: fileHandle => dispatch(setFileHandle(fileHandle))
+    onSetFileHandle: (fileHandle) => dispatch(setFileHandle(fileHandle)),
+    onSetReduxUsername: (username) => dispatch(setUsername(username)),
   });
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(DesktopComponent);
+  return connect(mapStateToProps, mapDispatchToProps)(DesktopComponent);
 };
 
 export default DesktopHOC;

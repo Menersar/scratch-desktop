@@ -26,7 +26,8 @@ def get_versions(username, repository):
                 assets.append(
                     Asset(raw_asset["name"], raw_asset["browser_download_url"])
                 )
-            releases.append(Release(raw_release["name"], assets))
+            # releases.append(Release(raw_release["name"], assets))
+            releases.append(Release(raw_release["tag_name"], assets))
 
         return releases
 

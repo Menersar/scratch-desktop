@@ -1,31 +1,33 @@
-const fs = require('fs');
-const {promisify} = require('util');
-const path = require('path');
-const {app, dialog} = require('electron');
-const ProjectRunningWindow = require('./project-running-window');
-const AddonsWindow = require('./addons');
-const DesktopSettingsWindow = require('./desktop-settings');
-const PrivacyWindow = require('./privacy');
-const AboutWindow = require('./about');
-const PackagerWindow = require('./packager');
-const {createAtomicWriteStream} = require('../atomic-write-stream');
-const {translate, updateLocale, getStrings} = require('../l10n');
-const {APP_NAME} = require('../brand');
-const prompts = require('../prompts');
-const settings = require('../settings');
-const privilegedFetchAsBuffer = require('../fetch');
-const rebuildMenuBar = require('../menu-bar');
+const fs = require("fs");
+const { promisify } = require("util");
+const path = require("path");
+const { app, dialog } = require("electron");
+const ProjectRunningWindow = require("./project-running-window");
+const AddonsWindow = require("./addons");
+const DesktopSettingsWindow = require("./desktop-settings");
+const PrivacyWindow = require("./privacy");
+const AboutWindow = require("./about");
+const PackagerWindow = require("./packager");
+const { createAtomicWriteStream } = require("../atomic-write-stream");
+const { translate, updateLocale, getStrings } = require("../l10n");
+const { APP_NAME } = require("../brand");
+const prompts = require("../prompts");
+const settings = require("../settings");
+// const privilegedFetchAsBuffer = require("../fetch");
+const privilegedFetch = require("../fetch");
+// const rebuildMenuBar = require("../menu-bar");
 
 const readFile = promisify(fs.readFile);
 
-const TYPE_FILE = 'file';
-const TYPE_URL = 'url';
-const TYPE_SCRATCH = 'scratch';
-const TYPE_SAMPLE = 'sample';
+const TYPE_FILE = "file";
+const TYPE_URL = "url";
+const TYPE_SCRATCH = "scratch";
+const TYPE_SAMPLE = "sample";
 
 class OpenedFile {
-  constructor (type, path) {
-    /** @type {TYPE_FILE|TYPE_URL|TYPE_ID|TYPE_SAMPLE} */
+  constructor(type, path) {
+    // /** @type {TYPE_FILE|TYPE_URL|TYPE_ID|TYPE_SAMPLE} */
+    /** @type {TYPE_FILE|TYPE_URL|TYPE_SCRATCH|TYPE_SAMPLE} */
     this.type = type;
 
     /**
@@ -35,43 +37,57 @@ class OpenedFile {
     this.path = path;
   }
 
-  async read () {
+  async read() {
     if (this.type === TYPE_FILE) {
       return {
         name: path.basename(this.path),
-        data: await readFile(this.path)
+        data: await readFile(this.path),
       };
     }
 
     if (this.type === TYPE_URL) {
+      const response = await privilegedFetch(this.path);
       return {
         name: decodeURIComponent(path.basename(this.path)),
-        data: await privilegedFetchAsBuffer(this.path)
+        // data: await privilegedFetchAsBuffer(this.path),
+        data: await response.arrayBuffer(),
       };
     }
 
     if (this.type === TYPE_SCRATCH) {
-      const metadataBuffer = await privilegedFetchAsBuffer(`https://api.scratch.mit.edu/projects/${this.path}`);
-      const metadata = JSON.parse(metadataBuffer.toString());
+      //   const metadataBuffer = await privilegedFetchAsBuffer(
+      const metadataResponse = await privilegedFetch(
+        `https://api.scratch.mit.edu/projects/${this.path}`
+      );
+      //   const metadata = JSON.parse(metadataBuffer.toString());
+      const metadata = await metadataResponse.json();
       const token = metadata.project_token;
       const title = metadata.title;
-      const projectBuffer = await privilegedFetchAsBuffer(`https://projects.scratch.mit.edu/${this.path}?token=${token}`);
+
+      //   const projectBuffer = await privilegedFetchAsBuffer(
+      const projectResponse = await privilegedFetch(
+        `https://projects.scratch.mit.edu/${this.path}?token=${token}`
+      );
       return {
         name: title,
-        data: projectBuffer
+        // data: projectBuffer,
+        data: await projectResponse.arrayBuffer(),
       };
     }
 
     if (this.type === TYPE_SAMPLE) {
-      const sampleRoot = path.resolve(__dirname, '../../dist-extensions/samples/');
+      const sampleRoot = path.resolve(
+        __dirname,
+        "../../dist-extensions/samples/"
+      );
       const joined = path.join(sampleRoot, this.path);
       if (joined.startsWith(sampleRoot)) {
         return {
           name: this.path,
-          data: await readFile(joined)
+          data: await readFile(joined),
         };
       }
-      throw new Error('Unsafe join');
+      throw new Error("Unsafe join");
     }
 
     throw new Error(`Unknown type: ${this.type}`);
@@ -87,9 +103,11 @@ const parseOpenedFile = (file, workingDirectory) => {
   }
 
   if (url) {
-    if (url.protocol === 'http:' || url.protocol === 'https:') {
+    if (url.protocol === "http:" || url.protocol === "https:") {
       // Scratch URLs require special treatment as they are not direct downloads.
-      const scratchMatch = file.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)\/?/);
+      const scratchMatch = file.match(
+        /^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)\/?/
+      );
       if (scratchMatch) {
         return new OpenedFile(TYPE_SCRATCH, scratchMatch[1]);
       }
@@ -97,7 +115,9 @@ const parseOpenedFile = (file, workingDirectory) => {
       // Need to manually redirect extension samples to the copies we already have offline as the
       // fetching code will not go through web request handlers or custom protocols.
       // !!! CHANGE !!!
-      const sampleMatch = file.match(/^https?:\/\/menersar\.github\.io\/Sidekick\/sidekick-extensions\/samples\/(.+\.sb3)$/);
+      const sampleMatch = file.match(
+        /^https?:\/\/menersar\.github\.io\/Sidekick\/sidekick-extensions\/samples\/(.+\.sb3)$/
+      );
       if (sampleMatch) {
         return new OpenedFile(TYPE_SAMPLE, decodeURIComponent(sampleMatch[1]));
       }
@@ -106,7 +126,10 @@ const parseOpenedFile = (file, workingDirectory) => {
     }
 
     // It was a full valid URL, but we don't support this protocol
-    throw new Error(`Unsupported URL: ${url}`);
+    // throw new Error(`Unsupported URL: ${url}`);
+
+    // Don't throw an error just because we don't recognize the URL protocol as
+    // Windows paths look close enough to real URLs to be parsed successfully.
   }
 
   return new OpenedFile(TYPE_FILE, path.resolve(workingDirectory, file));
@@ -116,7 +139,7 @@ class EditorWindow extends ProjectRunningWindow {
   /**
    * @param {OpenedFile|null} file
    */
-  constructor (file) {
+  constructor(file) {
     super();
 
     // This file ID system is not quite perfect. Ideally we would completely revoke permission to access
@@ -131,35 +154,32 @@ class EditorWindow extends ProjectRunningWindow {
     }
 
     const getFileByIndex = (index) => {
-      if (typeof index !== 'number') {
-        throw new Error('File ID not number');
+      if (typeof index !== "number") {
+        throw new Error("File ID not number");
       }
       const value = this.openedFiles[index];
       if (!(value instanceof OpenedFile)) {
-        throw new Error('Invalid file ID');
+        throw new Error("Invalid file ID");
       }
       return this.openedFiles[index];
     };
 
-    this.window.webContents.on('will-prevent-unload', (event) => {
+    this.window.webContents.on("will-prevent-unload", (event) => {
       const choice = dialog.showMessageBoxSync(this.window, {
         title: APP_NAME,
-        type: 'info',
-        buttons: [
-          translate('unload.stay'),
-          translate('unload.leave')
-        ],
+        type: "info",
+        buttons: [translate("unload.stay"), translate("unload.leave")],
         cancelId: 0,
         defaultId: 0,
-        message: translate('unload.message'),
-        detail: translate('unload.detail')
+        message: translate("unload.message"),
+        detail: translate("unload.detail"),
       });
       if (choice === 1) {
         event.preventDefault();
       }
     });
 
-    this.window.on('page-title-updated', (event, title, explicitSet) => {
+    this.window.on("page-title-updated", (event, title, explicitSet) => {
       event.preventDefault();
       if (explicitSet && title) {
         this.window.setTitle(`${title} - ${APP_NAME}`);
@@ -171,65 +191,69 @@ class EditorWindow extends ProjectRunningWindow {
 
     const ipc = this.window.webContents.ipc;
 
-    ipc.handle('get-initial-file', () => {
+    ipc.handle("get-initial-file", () => {
       if (this.activeFileIndex === -1) {
         return null;
       }
       return this.activeFileIndex;
     });
 
-    ipc.handle('get-file', async (event, index) => {
+    ipc.handle("get-file", async (event, index) => {
       const file = getFileByIndex(index);
-      const {name, data} = await file.read();
+      const { name, data } = await file.read();
       return {
         name,
         type: file.type,
-        data
+        data,
       };
     });
 
-    ipc.on('set-locale', async (event, locale) => {
+    ipc.on("set-locale", async (event, locale) => {
       if (settings.locale !== locale) {
         settings.locale = locale;
         updateLocale(locale);
+
+        // Imported late due to circular dependency.
+        const rebuildMenuBar = require("../menu-bar");
         rebuildMenuBar();
+
         // Let the save happen in the background, not important
         Promise.resolve().then(() => settings.save());
       }
       event.returnValue = {
         strings: getStrings(),
-        mas: !!process.mas
+        mas: !!process.mas,
       };
     });
 
-    ipc.handle('set-changed', (event, changed) => {
+    ipc.handle("set-changed", (event, changed) => {
       this.window.setDocumentEdited(changed);
     });
 
-    ipc.handle('opened-file', (event, index) => {
+    ipc.handle("opened-file", (event, index) => {
       const file = getFileByIndex(index);
       if (file.type !== TYPE_FILE) {
-        throw new Error('Not a file');
+        throw new Error("Not a file");
       }
       this.activeFileIndex = index;
       this.window.setRepresentedFilename(file.path);
     });
 
-    ipc.handle('closed-file', () => {
+    ipc.handle("closed-file", () => {
       this.activeFileIndex = -1;
-      this.window.setRepresentedFilename('');
+      this.window.setRepresentedFilename("");
     });
 
-    ipc.handle('show-open-file-picker', async () => {
+    ipc.handle("show-open-file-picker", async () => {
       const result = await dialog.showOpenDialog(this.window, {
-        properties: ['openFile'],
+        properties: ["openFile"],
         defaultPath: settings.lastDirectory,
         filters: [
           {
-            name: 'Scratch Project',
-            extensions: ['sb3', 'sb2', 'sb'],
-          }
-        ]
+            name: "Scratch Project",
+            extensions: ["sb3", "sb2", "sb"],
+          },
+        ],
       });
       if (result.canceled) {
         return null;
@@ -242,19 +266,19 @@ class EditorWindow extends ProjectRunningWindow {
       this.openedFiles.push(new OpenedFile(TYPE_FILE, file));
       return {
         id: this.openedFiles.length - 1,
-        name: path.basename(file)
+        name: path.basename(file),
       };
     });
 
-    ipc.handle('show-save-file-picker', async (event, suggestedName) => {
+    ipc.handle("show-save-file-picker", async (event, suggestedName) => {
       const result = await dialog.showSaveDialog(this.window, {
         defaultPath: path.join(settings.lastDirectory, suggestedName),
         filters: [
           {
-            name: 'Scratch 3 Project',
-            extensions: ['sb3'],
-          }
-        ]
+            name: "Scratch 3 Project",
+            extensions: ["sb3"],
+          },
+        ],
       });
       if (result.canceled) {
         return null;
@@ -267,21 +291,21 @@ class EditorWindow extends ProjectRunningWindow {
       this.openedFiles.push(new OpenedFile(TYPE_FILE, file));
       return {
         id: this.openedFiles.length - 1,
-        name: path.basename(file)
+        name: path.basename(file),
       };
     });
 
-    ipc.handle('get-preferred-media-devices', () => {
+    ipc.handle("get-preferred-media-devices", () => {
       return {
         microphone: settings.microphone,
-        camera: settings.camera
+        camera: settings.camera,
       };
     });
 
-    ipc.on('start-write-stream', async (startEvent, index) => {
+    ipc.on("start-write-stream", async (startEvent, index) => {
       const file = getFileByIndex(index);
       if (file.type !== TYPE_FILE) {
-        throw new Error('Not a file');
+        throw new Error("Not a file");
       }
 
       const port = startEvent.ports[0];
@@ -290,9 +314,9 @@ class EditorWindow extends ProjectRunningWindow {
       let writeStream = null;
 
       const handleError = (error) => {
-        console.error('Write stream error', error);
+        console.error("Write stream error", error);
         port.postMessage({
-          error
+          error,
         });
 
         // Make sure the port is started in case we encounter an error before we normally
@@ -307,7 +331,7 @@ class EditorWindow extends ProjectRunningWindow {
         return;
       }
 
-      writeStream.on('atomic-error', handleError);
+      writeStream.on("atomic-error", handleError);
 
       const handleMessage = (data) => {
         if (data.write) {
@@ -316,23 +340,23 @@ class EditorWindow extends ProjectRunningWindow {
             return;
           }
           // Wait for the buffer to become empty before asking for more.
-          return new Promise(resolve => {
-            writeStream.once('drain', resolve);
+          return new Promise((resolve) => {
+            writeStream.once("drain", resolve);
           });
         } else if (data.finish) {
           // Wait for the atomic file write to complete.
-          return new Promise(resolve => {
-            writeStream.once('atomic-finish', resolve);
+          return new Promise((resolve) => {
+            writeStream.once("atomic-finish", resolve);
             writeStream.end();
           });
         } else if (data.abort) {
-          writeStream.emit('error', new Error('Aborted by renderer process'));
+          writeStream.emit("error", new Error("Aborted by renderer process"));
           return;
         }
-        throw new Error('Unknown message from renderer');
+        throw new Error("Unknown message from renderer");
       };
 
-      port.on('message', async (messageEvent) => {
+      port.on("message", async (messageEvent) => {
         try {
           const data = messageEvent.data;
           const id = data.id;
@@ -340,8 +364,8 @@ class EditorWindow extends ProjectRunningWindow {
           port.postMessage({
             response: {
               id,
-              result
-            }
+              result,
+            },
           });
         } catch (error) {
           handleError(error);
@@ -351,91 +375,102 @@ class EditorWindow extends ProjectRunningWindow {
       port.start();
     });
 
-    ipc.on('alert', (event, message) => {
+    ipc.on("alert", (event, message) => {
       event.returnValue = prompts.alert(this.window, message);
     });
 
-    ipc.on('confirm', (event, message) => {
+    ipc.on("confirm", (event, message) => {
       event.returnValue = prompts.confirm(this.window, message);
     });
 
-    ipc.handle('open-packager', () => {
+    ipc.handle("open-packager", () => {
       PackagerWindow.forEditor(this);
     });
 
-    ipc.handle('open-new-window', () => {
+    ipc.handle("open-new-window", () => {
       EditorWindow.newWindow();
     });
 
-    ipc.handle('open-addon-settings', () => {
+    ipc.handle("open-addon-settings", () => {
       AddonsWindow.show();
     });
 
-    ipc.handle('open-desktop-settings', () => {
+    ipc.handle("open-desktop-settings", () => {
       DesktopSettingsWindow.show();
     });
 
-    ipc.handle('open-privacy', () => {
+    ipc.handle("open-privacy", () => {
       PrivacyWindow.show();
     });
 
-    ipc.handle('open-about', () => {
+    ipc.handle("open-about", () => {
       AboutWindow.show();
     });
 
-    ipc.handle('get-advanced-customizations', async () => {
-      const USERSCRIPT_PATH = path.join(app.getPath('userData'), 'userscript.js');
-      const USERSTYLE_PATH = path.join(app.getPath('userData'), 'userstyle.css');
+    ipc.handle("get-advanced-customizations", async () => {
+      const USERSCRIPT_PATH = path.join(
+        app.getPath("userData"),
+        "userscript.js"
+      );
+      const USERSTYLE_PATH = path.join(
+        app.getPath("userData"),
+        "userstyle.css"
+      );
 
       const [userscript, userstyle] = await Promise.all([
-        readFile(USERSCRIPT_PATH, 'utf-8').catch(() => ''),
-        readFile(USERSTYLE_PATH, 'utf-8').catch(() => '')
+        readFile(USERSCRIPT_PATH, "utf-8").catch(() => ""),
+        readFile(USERSTYLE_PATH, "utf-8").catch(() => ""),
       ]);
 
       return {
         userscript,
-        userstyle
+        userstyle,
       };
     });
 
-    this.loadURL('sidekick-editor://./gui/gui.html');
+    this.loadURL("sidekick-editor://./gui/gui.html");
     this.show();
   }
 
-  getPreload () {
-    return 'editor';
+  getPreload() {
+    return "editor";
   }
 
-  getDimensions () {
+  getDimensions() {
     return {
       width: 1280,
-      height: 800
+      height: 800,
     };
   }
 
-  getBackgroundColor () {
-    return '#333333';
+  getBackgroundColor() {
+    return "#333333";
   }
 
-  applySettings () {
-    this.window.webContents.setBackgroundThrottling(settings.backgroundThrottling);
+  applySettings() {
+    this.window.webContents.setBackgroundThrottling(
+      settings.backgroundThrottling
+    );
   }
 
-  enumerateMediaDevices () {
+  enumerateMediaDevices() {
     // Used by desktop settings
     return new Promise((resolve, reject) => {
-      this.window.webContents.ipc.once('enumerated-media-devices', (event, result) => {
-        if (typeof result.error !== 'undefined') {
-          reject(result.error);
-        } else {
-          resolve(result.devices);
+      this.window.webContents.ipc.once(
+        "enumerated-media-devices",
+        (event, result) => {
+          if (typeof result.error !== "undefined") {
+            reject(result.error);
+          } else {
+            resolve(result.devices);
+          }
         }
-      });
-      this.window.webContents.send('enumerate-media-devices');
+      );
+      this.window.webContents.send("enumerate-media-devices");
     });
   }
 
-  handleWindowOpen (details) {
+  handleWindowOpen(details) {
     // Open extension sample projects in-app
     // const match = details.url.match(
     // // !!! CHANGE !!!
@@ -446,9 +481,7 @@ class EditorWindow extends ProjectRunningWindow {
       /^sidekick-editor:\/\/\.\/gui\/editor\?project_url=(https:\/\/menersar\.github\.io\/Sidekick\/sidekick-extensions\/samples\/.+\.sb3)$/
     );
     if (match) {
-      EditorWindow.openFiles([
-        match[1]
-      ]);
+      EditorWindow.openFiles([match[1]]);
     }
     return super.handleWindowOpen(details);
   }
@@ -457,7 +490,7 @@ class EditorWindow extends ProjectRunningWindow {
    * @param {string[]} files
    * @param {string} workingDirectory
    */
-  static openFiles (files, workingDirectory) {
+  static openFiles(files, workingDirectory) {
     if (files.length === 0) {
       EditorWindow.newWindow();
     } else {
@@ -467,7 +500,7 @@ class EditorWindow extends ProjectRunningWindow {
     }
   }
 
-  static newWindow () {
+  static newWindow() {
     new EditorWindow(null);
   }
 }

@@ -7,36 +7,69 @@ await_confirmation() {
 	read
 }
 
-echo "THINGS TO CHECK BEFORE RUNNING:"
-echo " - pacman -Syu"
-echo " - flatpak update"
-echo " - snap refresh"
-echo "THINGS TO CHECK FOR EACH BUILD:"
-echo " - (?) > About > Is the version right?"
-echo
-
-cd "$(dirname "$0")"
-src="$(pwd)/.."
-cd "$src"
-version="$(jq -r .version package.json)"
-commit="$(git rev-parse HEAD)"
-echo "src $src, version $version, commit $commit"
-await_confirmation
-
 # Set up an agent so we only need to enter any SSH passwords once
 echo "Setting up SSH agent"
 eval "$(ssh-agent)"
 ssh-add
 
-update_source() {
-	echo "Updating source"
+echo "THINGS TO CHECK BEFORE RUNNING:"
+echo " - git pull"
+echo " - pacman -Syu"
+echo " - flatpak update"
+echo " - snap refresh"
+echo "THINGS TO CHECK FOR EACH BUILD:"
+echo " - (?) > About > Is the version right?"
+# echo
+
+cd "$(dirname "$0")"
+src="$(pwd)/.."
+cd "$src"
+# version="$(jq -r .version package.json)"
+# commit="$(git rev-parse HEAD)"
+# echo "src $src, version $version, commit $commit"
+# echo "src: $src"
+
+
+# await_confirmation
+
+# Make sure we've been manually updated as I don't know what will happen if we pull changes
+# to this script while it's already running.
+git fetch
+if [ "$(git rev-parse HEAD)" == "$(git rev-parse @{u})" ]; then
+	echo "Source is up-to-date"
+else
+	echo "Source is outdated, please run: git pull"
+	exit 1
+fi
+
+
+# # Set up an agent so we only need to enter any SSH passwords once
+# echo "Setting up SSH agent"
+# eval "$(ssh-agent)"
+# ssh-add
+
+version="$(jq -r .version package.json)"
+commit="$(git rev-parse HEAD)"
+echo "version $version, commit $commit"
+await_confirmation
+
+# update_source() {
+# 	echo "Updating source"
+prepare_source() {
+	echo "Preparing source"
 	cd "$src"
-	git checkout sidekick
-	git pull
+	# git checkout sidekick
+	# git pull
 	git submodule update
 	npm ci
 	npm run fetch
 }
+
+# update_source
+# version="$(jq -r .version package.json)"
+# commit="$(git rev-parse HEAD)"
+# echo "version $version, commit $commit"
+# await_confirmation
 
 update_flatpak() {
 	echo "Updating flatpak"
@@ -46,12 +79,15 @@ update_flatpak() {
 	git branch -D "$version" || true
 	git branch "$version"
 	git checkout "$version"
-	sed -E -i "s/commit: [a-f0-9]{40}/commit: $commit/" org.mixality.Sidekick.yaml
+    # # Copy changes from beta branch for when the build process changes
+	# git rebase "$version-beta" || true
+    # git merge "origin/$version-beta" || true
+	sed -E -i "s/commit: [a-f0-9]{40}/commit: $commit/" de.mixality.Sidekick.yaml
 	python3 update-library.py
 	python3 update-packager.py
 	flatpak-node-generator npm ../sidekick-desktop/package-lock.json
-	flatpak-builder build org.mixality.Sidekick.yaml --force-clean --install --user
-	flatpak run org.mixality.Sidekick
+	flatpak-builder build de.mixality.Sidekick.yaml --force-clean --install --user
+	flatpak run de.mixality.Sidekick
 	await_confirmation
 	git stage .
 	git commit -m "Update to $version" -m "Automated"
@@ -95,7 +131,8 @@ update_debian() {
 	./everything.sh
 }
 
-update_source
+# update_source
+prepare_source
 update_flatpak
 update_aur
 update_snap
@@ -103,7 +140,7 @@ update_debian
 
 # !!! TODO? ???
 echo "THINGS YOU STILL NEED TO DO:"
-echo " - Merge flatpak/org.mixality.Sidekick PR"
+echo " - Merge flatpak/de.mixality.Sidekick PR"
 echo " - Delete old binaries from Debian repository"
 echo " - Upload to Microsoft Store"
 echo " - Announcements"
