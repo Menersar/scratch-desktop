@@ -91,7 +91,7 @@ class PackagerWindow extends BaseWindow {
 
   onBeforeRequest (details, callback) {
     const parsed = new URL(details.url);
-    if (parsed.origin === 'https://menersar.github.io/Sidekick/sidekick-extensions') {
+    if (parsed.origin === 'https://menersar.github.io/sidekick-extensions') {
       return callback({
         redirectURL: `sidekick-extensions://./${parsed.pathname}`
       });

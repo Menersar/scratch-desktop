@@ -13,7 +13,7 @@ try {
 //     );
 //   } else {
   console.error(
-    "Could not load Sidekick/sidekick-extensions build scripts, most likely because the submodule is missing."
+    "Could not load sidekick-extensions build scripts, most likely because the submodule is missing."
   );
   console.error("Try running: `git submodule init` and `git submodule update`");
   console.error(e);
@@ -30,7 +30,7 @@ build.export(outputDirectory);
 
 // !!! CHANGE !!!
 // console.log(`Built ${mode} copy of extensions.turbowarp.org to ${outputDirectory}`);
-// console.log(`Built ${mode} copy of menersar.github.io/Sidekick/sidekick-extensions to ${outputDirectory}`);
+// console.log(`Built ${mode} copy of menersar.github.io/sidekick-extensions to ${outputDirectory}`);
 // console.log(`Built ${mode} copy of sidekick-extensions to ${outputDirectory}`);
 console.log(
   `Built ${mode} copy of sidekick-extensions.mixality.de to ${outputDirectory}`

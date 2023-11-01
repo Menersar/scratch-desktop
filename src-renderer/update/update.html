@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src https://menersar.github.io/Sidekick/sidekick-desktop">
+        content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src https://menersar.github.io/sidekick-desktop">
     <style>
         body {
             margin: 0;
@@ -185,7 +185,7 @@
 
             const changelog = document.querySelector('.update-log');
             // !!! CHANGE !!!
-            fetch(`https://menersar.github.io/Sidekick/sidekick-desktop/changelog.json?version=${info.latestVersion}`)
+            fetch(`https://menersar.github.io/sidekick-desktop/changelog.json?version=${info.latestVersion}`)
                 .then((res) => {
                     if (!res.ok) {
                         throw new Error(`HTTP error ${res.status}`);

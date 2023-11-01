@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sidekick Desktop – Offline editor of the assistance system utilizing the Scratch 3 programming interface
     </title>
-    <link rel="canonical" href="https://menersar.github.io/Sidekick/sidekick-desktop/" />
+    <link rel="canonical" href="https://menersar.github.io/sidekick-desktop/" />
     <meta name="description"
         content="Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.">
     <meta name="theme-color" content="#62ad44">
@@ -20,8 +20,8 @@
         content="Sidekick Desktop – Offline editor of the assistance system utilizing the Scratch 3 programming interface" />
     <meta property="og:description"
         content="Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface." />
-    <meta property="og:url" content="https://menersar.github.io/Sidekick/sidekick-desktop/" />
-    <meta property="og:image" content="https://menersar.github.io/Sidekick/sidekick-desktop/screenshot-win-light.png" />
+    <meta property="og:url" content="https://menersar.github.io/sidekick-desktop/" />
+    <meta property="og:image" content="https://menersar.github.io/sidekick-desktop/screenshot-win-light.png" />
     <meta property="og:image:width" content="1280" />
     <meta property="og:image:height" content="800" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -913,10 +913,9 @@
                 <li><a href="#linux">Linux</a></li>
             </ul>
         </div>
-        <div><b l10n="webapp" l10n-description="Followed by link to menersar.github.io/Sidekick/sidekick-editor">Or use
+        <div><b l10n="webapp" l10n-description="Followed by link to menersar.github.io/sidekick-editor">Or use
                 our web app in any
-                browser:</b> <a
-                href="https://menersar.github.io/Sidekick/sidekick-editor">menersar.github.io/Sidekick/sidekick-editor</a>
+                browser:</b> <a href="https://menersar.github.io/sidekick-editor">menersar.github.io/sidekick-editor</a>
         </div>
 
         <!-- <div>
@@ -1163,8 +1162,8 @@
         <code class="terminal">
         <!-- !!! CHANGE !!! -->
         <!-- !!! ??? -->
-        <div class="command">wget https://menersar.github.io/Sidekick/sidekick-desktop/release-signing-key.gpg -qO- | gpg --dearmor | sudo tee /usr/share/keyrings/sidekick.gpg > /dev/null</div>
-        <div class="command">echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/sidekick.gpg] https://menersar.github.io/Sidekick/sidekick-releases/deb stable main" | sudo tee /etc/apt/sources.list.d/sidekick.list</div>
+        <div class="command">wget https://menersar.github.io/sidekick-desktop/release-signing-key.gpg -qO- | gpg --dearmor | sudo tee /usr/share/keyrings/sidekick.gpg > /dev/null</div>
+        <div class="command">echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/sidekick.gpg] https://menersar.github.io/sidekick-releases/deb stable main" | sudo tee /etc/apt/sources.list.d/sidekick.list</div>
         <div class="command">sudo apt update</div>
         <div class="command">sudo apt install sidekick-desktop</div>
       </code>
@@ -1219,7 +1218,7 @@
             <code class="terminal">
           <!-- !!! CHANGE !!! -->
           <!-- !!! ??? -->
-          <div class="command">wget https://menersar.github.io/Sidekick/sidekick-desktop/snap-mime.xml -qO- | sudo tee /usr/share/mime/packages/sidekick-desktop-snap.xml > /dev/null</div>
+          <div class="command">wget https://menersar.github.io/sidekick-desktop/snap-mime.xml -qO- | sudo tee /usr/share/mime/packages/sidekick-desktop-snap.xml > /dev/null</div>
           <div class="command">sudo update-mime-database /usr/share/mime</div>
         </code>
         </details>

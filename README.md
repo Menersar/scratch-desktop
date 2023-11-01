@@ -1,5 +1,15 @@
 # scratch-desktop
 
+npm install
+npm run fetch
+npm run webpack:prod
+electron:package:dir
+
+## Packager
+
+Standalone download under:
+scripts\packager.json
+
 Scratch 3.0 as a standalone desktop application
 
 ## Developer Instructions

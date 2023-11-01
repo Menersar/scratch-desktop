@@ -89,7 +89,7 @@ module.exports = [
         ),
         "scratch-render-fonts$": path.resolve(
           __dirname,
-          "node_modules/scratch-gui/src/lib/sidekick-scratch-render-fonts"
+          "node_modules/scratch-gui/src/lib/tw-scratch-render-fonts"
         ),
       },
     },

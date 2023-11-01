@@ -15,7 +15,7 @@ thumbs.db
 
 # Build
 # /build
-/dist
+dist
 dist-renderer-webpack
 dist-library-files
 dist-extensions

@@ -48,7 +48,7 @@
         "url": "https://github.com/Menersar/sidekick-desktop/issues",
         "email": "contact@mixality.de"
     },
-    "homepage": "https://menersar.github.io/Sidekick/sidekick-desktop/",
+    "homepage": "https://menersar.github.io/sidekick-desktop/",
     "main": "./src-main/index.js",
     "dependencies": {
         "semver": "^7.5.3"

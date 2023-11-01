@@ -9,22 +9,24 @@
     "version": "0.1.0",
     "license": "BSD-3-Clause",
     "scripts": {
+        "fetch": "node scripts/update-packager.js && node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
+        "fetch2": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
+        "webpack:compile": "webpack",
+        "webpack:watch": "webpack --watch",
+        "webpack:prod": "cross-env NODE_ENV=production webpack",
+        "electron:start": "electron src-main/entrypoint.js",
+        "electron:package:dir": "electron-builder --dir",
+        "electron:package:dir_": "npx electron-builder --dir",
         "//": "postinstall1: node scripts/postinstall.js",
         "dev": "npm run start",
         "start": "mkdirp ./dist && electron-webpack dev",
         "compile": "mkdirp ./dist && electron-webpack",
         "dist": "npm run clean && npm run compile && electron-builder",
         "dist:dir": "npm run compile && electron-builder --dir",
-        "fetch": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "clean": "rimraf ./dist ./static/assets",
         "make:icons": "cd build && bash make-icons.sh",
-        "webpack:compile": "webpack",
-        "webpack:watch": "webpack --watch",
-        "webpack:prod": "cross-env NODE_ENV=production webpack",
         "webpack:prod2": "set NODE_ENV=production && webpack",
         "webpack:prod1": "cross-env NODE_ENV=production webpack",
-        "electron:start": "electron src-main/entrypoint.js",
-        "electron:package:dir": "npx electron-builder --dir",
         "electron:package:dir4": "npx electron-builder",
         "electron:package:dir2": "electron-builder --windows nsis --x64",
         "electron:package:dir3": "electron-builder --dir",
@@ -43,25 +45,14 @@
         "scratch:test:lint": "eslint --cache --color --ext .jsx,.js .",
         "scratch:mklink:blocks": "python build-blocks.py"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Menersar/sidekick-desktop.git"
-    },
-    "bugs": {
-        "url": "https://github.com/Menersar/sidekick-desktop/issues",
-        "email": "contact@mixality.de"
-    },
-    "homepage": "https://menersar.github.io/Sidekick/sidekick-desktop/",
-    "main": "./src-main/entrypoint.js",
     "dependencies": {
         "semver": "^7.5.3"
     },
     "devDependencies": {
-        "@babel/core": "^7.22.17",
+        "@babel/core": "^7.23.0",
         "@babel/preset-env": "^7.12.16",
         "@babel/preset-react": "^7.13.13",
         "@electron/notarize": "^2.1.0",
-        "@sidekick/electron-webpack": "git+https://github.com/Menersar/sidekick-electron-webpack.git#sidekick",
         "adm-zip": "^0.5.10",
         "async-limiter": "^2.0.0",
         "autoprefixer": "^9.8.8",
@@ -81,6 +72,16 @@
         "webpack": "^4.47.0",
         "webpack-cli": "^4.10.0"
     },
+    "homepage": "https://menersar.github.io/sidekick-desktop/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Menersar/sidekick-desktop.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Menersar/sidekick-desktop/issues",
+        "email": "contact@mixality.de"
+    },
+    "main": "./src-main/entrypoint.js",
     "//": "!!! Oder besser 'de.mixality.sidekick.sidekick-desktop' für 'appId' setzen? ???",
     "build": {
         "appId": "de.mixality.sidekick-desktop",
@@ -229,7 +230,7 @@
             {
                 "provider": "github",
                 "repo": "sidekick-desktop",
-                "owner": "Mixality"
+                "owner": "Menersar"
             }
         ],
         "afterSign": "scripts/after-sign.js"

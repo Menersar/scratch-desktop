@@ -1,4 +1,4 @@
-# Fastlane Match setup
+<!-- # Fastlane Match setup
 
 ## You might not need to do this!
 
@@ -28,4 +28,4 @@ To initialize Fastlane Match:
 1. If you plan to make and internally share development builds for testing purposes, run:
    * `fastlane match_dev`
 2. If you plan to make builds for release, run:
-   * `fastlane match_dist`
+   * `fastlane match_dist` -->

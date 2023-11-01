@@ -140,7 +140,7 @@ const rebuildMenuBar = () => {
             {
               label: translate("menu.learn-more"),
               click: () => {
-                openExternal("https://menersar.github.io/Sidekick/sidekick-desktop/");
+                openExternal("https://menersar.github.io/sidekick-desktop/");
               },
             },
           ],

@@ -38,5 +38,6 @@
     },
     "[github-actions-workflow]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "svg.preview.background": "editor"
 }

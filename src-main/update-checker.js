@@ -6,7 +6,7 @@ const packageJSON = require("../package.json");
 const privilegedFetch = require("./fetch");
 
 const currentVersion = packageJSON.version;
-const URL = "https://menersar.github.io/Sidekick/sidekick-desktop/version.json";
+const URL = "https://menersar.github.io/sidekick-desktop/version.json";
 
 const isEnabledAtBuildTime = () => packageJSON.sidekick_update === "yes";
 

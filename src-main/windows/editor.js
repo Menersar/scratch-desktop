@@ -1,5 +1,6 @@
-const fs = require("fs");
-const { promisify } = require("util");
+// const fs = require("fs");
+// const { promisify } = require("util");
+const fsPromises = require("fs/promises");
 const path = require("path");
 const { app, dialog } = require("electron");
 const ProjectRunningWindow = require("./project-running-window");
@@ -17,7 +18,7 @@ const settings = require("../settings");
 const privilegedFetch = require("../fetch");
 // const rebuildMenuBar = require("../menu-bar");
 
-const readFile = promisify(fs.readFile);
+// const readFile = promisify(fs.readFile);
 
 const TYPE_FILE = "file";
 const TYPE_URL = "url";
@@ -41,7 +42,8 @@ class OpenedFile {
     if (this.type === TYPE_FILE) {
       return {
         name: path.basename(this.path),
-        data: await readFile(this.path),
+        // data: await readFile(this.path),
+        data: await fsPromises.readFile(this.path),
       };
     }
 
@@ -84,7 +86,8 @@ class OpenedFile {
       if (joined.startsWith(sampleRoot)) {
         return {
           name: this.path,
-          data: await readFile(joined),
+          // data: await readFile(joined),
+          data: await fsPromises.readFile(joined),
         };
       }
       throw new Error("Unsafe join");
@@ -418,8 +421,10 @@ class EditorWindow extends ProjectRunningWindow {
       );
 
       const [userscript, userstyle] = await Promise.all([
-        readFile(USERSCRIPT_PATH, "utf-8").catch(() => ""),
-        readFile(USERSTYLE_PATH, "utf-8").catch(() => ""),
+        // readFile(USERSCRIPT_PATH, "utf-8").catch(() => ""),
+        // readFile(USERSTYLE_PATH, "utf-8").catch(() => ""),
+        fsPromises.readFile(USERSCRIPT_PATH, "utf-8").catch(() => ""),
+        fsPromises.readFile(USERSTYLE_PATH, "utf-8").catch(() => ""),
       ]);
 
       return {

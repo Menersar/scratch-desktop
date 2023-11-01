@@ -3,7 +3,7 @@ const path = require("path");
 
 const NUMBER_OF_ADDONS = 50;
 const CHANGELOG_LINK =
-  "https://menersar.github.io/Sidekick/sidekick-desktop/?changelog";
+  "https://menersar.github.io/sidekick-desktop/?changelog";
 const SCREENSHOT_PROJECT_LINK = "https://scratch.mit.edu/projects/425020125/";
 const translations = require("./imported.json");
 

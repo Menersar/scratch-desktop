@@ -33,7 +33,7 @@ class UpdateWindow extends BaseWindow {
       const params = new URLSearchParams();
       params.set('from', currentVersion);
       params.set('to', latestVersion);
-      openExternal(`https://menersar.github.io/Sidekick/sidekick-desktop/update_available?${params}`);
+      openExternal(`https://menersar.github.io/sidekick-desktop/update_available?${params}`);
     });
 
     const ignore = (permanently) => {

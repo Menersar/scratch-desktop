@@ -71,7 +71,8 @@ class MigrateWindow extends BaseWindow {
     try {
       await settings.save();
     } catch (error) {
-      // If someone clicked "Continue Anyways", ignore this error
+      // If 'Continue Anyways' is selected:
+      // Ignore this error.
       if (success) {
         throw error;
       }
