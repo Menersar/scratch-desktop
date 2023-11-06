@@ -253,3 +253,19 @@ More examples in the [release script](https://github.com/Menersar/sidekick-deskt
 
 It is possible to give each packaged version of the app a unique distribution ID to help uniquely identify them – it appears in the "About" window.
 Add `--config.extraMetadata.sidekick_dist=your-dist-id-here` to electron-builder's arguments to set the distribution ID. Additionally, to enable the in-app update checker, also add `--config.extraMetadata.tw_update=yes`.
+
+## 'packagerInfo' file
+
+file location:
+
+- `scripts/packager.json`
+
+src:
+
+- <https://github.com/Menersar/sidekick-packager/releases>
+- <https://github.com/Menersar/sidekick-packager/releases/download/v0.1.0/sidekick-packager-standalone-v0.1.0.html>
+
+sha256:
+
+- npm run build-standalone-prod
+- Scaffolding build ID

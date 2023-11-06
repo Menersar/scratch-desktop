@@ -11,6 +11,7 @@
     "scripts": {
         "fetch": "node scripts/update-packager.js && node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "fetch2": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
+        "fetch3": "node scripts/download-packager.js",
         "webpack:compile": "webpack",
         "webpack:watch": "webpack --watch",
         "webpack:prod": "cross-env NODE_ENV=production webpack",
@@ -49,7 +50,7 @@
         "semver": "^7.5.3"
     },
     "devDependencies": {
-        "@babel/core": "^7.23.0",
+        "@babel/core": "^7.23.2",
         "@babel/preset-env": "^7.12.16",
         "@babel/preset-react": "^7.13.13",
         "@electron/notarize": "^2.1.0",
@@ -60,7 +61,7 @@
         "copy-webpack-plugin": "^6.4.1",
         "cross-env": "^7.0.3",
         "css-loader": "^1.0.1",
-        "electron": "^26.2.1",
+        "electron": "^26.2.4",
         "electron-builder": "^24.6.4",
         "postcss": "^8.4.13",
         "postcss-import": "^14.0.0",

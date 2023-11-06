@@ -1,6 +1,4 @@
 const fs = require("fs");
-// const fs = require("fs");
-// const { promisify } = require("util");
 const fsPromises = require("fs/promises");
 const nodeCrypto = require("crypto");
 const pathUtil = require("path");
@@ -15,21 +13,10 @@ const { app } = require("electron");
  * @returns {string}
  */
 const getTemporaryPath = (originalPath, mustUseTempDir) => {
-  // // The temporary file needs to be located on the same physical disk as the actual file,
-  // // otherwise we won't be able to rename it.
-  // let random = "";
-  // //   for (let i = 0; i < 4; i++) {
-  // // for (let i = 0; i < 7; i++) {
-  // for (let i = 0; i < 4; i++) {
-  //   random += Math.floor(Math.random() * 10).toString();
-  // }
-  // // return originalPath + ".temp" + random;
-  // // return `${originalPath}.${random}`;
-  // return originalPath + ".sidekick" + random;
   const randomNumbers = Math.floor(Math.random() * 10000)
     .toString()
     .padStart(4, "0");
-  const randomSuffix = `.sidekick${randomNumbers}`;
+  const randomSuffix = `.tw${randomNumbers}`;
 
   // Ideally the temporary file and destination file should be located on the
   // same drive and partition.
@@ -44,11 +31,9 @@ const getTemporaryPath = (originalPath, mustUseTempDir) => {
 
 const getOriginalMode = async (path) => {
   try {
-    // const stat = await promisify(fs.stat)(path);
     const stat = await fsPromises.stat(path);
     return stat.mode;
   } catch (e) {
-    // !!! 'TODO'? ???
     // TODO: we do this because write-file-atomic did it but that seems kinda not great??
     // read and write for all users
     return 0o666;
@@ -72,7 +57,6 @@ const acquireFileLock = async (path) => {
 
   let released = false;
   const releaseFileLock = () => {
-    // // Fix file locking breaking when release called multiple times.
     if (released) {
       return;
     }
@@ -90,8 +74,8 @@ const acquireFileLock = async (path) => {
 };
 
 /**
- * @param {string} file path.
- * @returns {Promise<string>} hex digest.
+ * @param {string} file path
+ * @returns {Promise<string>} hex digest
  */
 const sha512 = (file) =>
   new Promise((resolve, reject) => {
@@ -109,9 +93,9 @@ const sha512 = (file) =>
   });
 
 /**
- * @param {string} a Path 1.
- * @param {string} b Path 2.
- * @returns {Promise<boolean>} `true` if the data in the files is identical; `false` if not.
+ * @param {string} a Path 1
+ * @param {string} b Path 2
+ * @returns {Promise<boolean>} true if the data in the files is identical
  */
 const areSameFile = async (a, b) => {
   try {
@@ -125,7 +109,7 @@ const areSameFile = async (a, b) => {
 /**
  * @param {string} from
  * @param {string} to
- * @returns {Promise<void>} Not waiting for file to be synced to disk.
+ * @returns {Promise<void>} Does not wait for file to be synced to disk
  */
 const copy = (from, to) =>
   new Promise((resolve, reject) => {
@@ -150,15 +134,12 @@ const createAtomicWriteStream = async (path) => {
   const releaseFileLock = await acquireFileLock(path);
 
   const originalMode = await getOriginalMode(path);
-  // const tempPath = getTemporaryPath(path);
 
-  // Mac App Store sandbox prevents saving the temporary file in the same directory as the destination file.
+  // Mac App Store sandbox prevents us from saving the temporary file in the
+  // same directory as the destination file.
   const isSeverelySandboxed = !!process.mas;
 
   const tempPath = getTemporaryPath(path, isSeverelySandboxed);
-  // let fd = await promisify(fs.open)(tempPath, "w", originalMode);
-  // const writeStream = fs.createWriteStream(null, {
-  //   fd,
   const fileHandle = await fsPromises.open(tempPath, "w", originalMode);
   const writeStream = fileHandle.createWriteStream({
     autoClose: false,
@@ -168,15 +149,6 @@ const createAtomicWriteStream = async (path) => {
     highWaterMark: 1024 * 1024 * 5,
   });
 
-  //   writeStream.on("error", async (error) => {
-  //     if (fd !== null) {
-  //       try {
-  //         await promisify(fs.close)(fd);
-  //         fd = null;
-  //       } catch (e) {
-  //         // ignore; file might already be closed
-  //       }
-  //     }
   const handleError = async (error) => {
     await new Promise((resolve) => {
       writeStream.destroy(null, () => {
@@ -184,31 +156,14 @@ const createAtomicWriteStream = async (path) => {
       });
     });
 
-    // if (atomicSupported) {
     try {
-      // // !!! 'TODO'? ???
-      // // TODO: it might make sense to leave the broken file on the disk so that there is a chance
-      // // of recovery?
-      // await promisify(fs.unlink)(tempPath);
-      // !!! 'TODO'? ???
       // TODO: it might make sense to leave the broken file on the disk so that
       // there is a chance of recovery?
       await fsPromises.unlink(tempPath);
     } catch (e) {
-        // // ignore; file might have been removed already
-        // Ignore, as:
-        // File might have been removed already or:
-        // Was never successfully created.
+      // ignore; file might have been removed already or was never successfully
+      // created
     }
-    // }
-
-    // try {
-    //   // TODO: it might make sense to leave the broken file on the disk so that there is a chance
-    //   // of recovery?
-    //   await promisify(fs.unlink)(tempPath);
-    // } catch (e) {
-    //   // ignore; file might have been removed already
-    // }
 
     writeStream.emit("atomic-error", error);
     releaseFileLock();
@@ -220,23 +175,9 @@ const createAtomicWriteStream = async (path) => {
 
   writeStream.on("finish", async () => {
     try {
-      //   await promisify(fs.fsync)(fd);
-
-      // Received a bug report that this can fail with EBADF. I'm not sure why
-      // that happens, but I think we can ignore it as it effectively means our
-      // descriptor is already closed.
-      // At least at this point fsync has succeeded and the rename still has to
-      // succeed. Should be safe.
-      //   try {
-      //   await promisify(fs.close)(fd);
-      // await promisify(fs.rename)(tempPath, path);
-      //   fd = null;
-      //   } catch (e) {
-      //     console.error("Error closing fd", fd, e);
-      //   }
       await fileHandle.sync();
 
-      // 'destroy()' will close the file handle.
+      // destroy() will close the file handle
       await new Promise((resolve, reject) => {
         writeStream.destroy(null, (err) => {
           if (err) {
@@ -247,22 +188,19 @@ const createAtomicWriteStream = async (path) => {
         });
       });
 
-      // if (atomicSupported) {
-      //   await promisify(fs.rename)(tempPath, path);
-      //   await fsPromises.rename(tempPath, path);
       try {
         await fsPromises.rename(tempPath, path);
       } catch (err) {
         if (err.code === "EXDEV") {
-          // !!! ???
-          // The temporary file and the destination file were located on separate drives or partitions, so we need to copy instead.
-          //   This is not ideal and not atomic, but:
-          //  - This is a relatively rare edge case.
-          //  - Much of the file saving process is still safe to abort at any time (Pure IO should be faster than zipping the project).
-          //  - We still avoid keeping the entire file in memory at once.
+          // The temporary file and the destination file were located on separate
+          // drives or partitions, so we need to copy instead. This is not ideal
+          // and is not atomic, but:
+          //  - This is a relatively rare edge case
+          //  - Much of the file saving process is still safe to abort at any time
+          //    (Pure IO should be faster than zipping the project)
+          //  - We still avoid keeping the entire file in memory at once
           await copy(tempPath, path);
 
-          // !!! ???
           // Per man fsync(2):
           // On some UNIX systems (but not Linux), fd must be a writable file descriptor.
           // Ideally we would only open the destination once, but this works fine.
@@ -272,7 +210,6 @@ const createAtomicWriteStream = async (path) => {
 
           await fsPromises.unlink(tempPath);
         } else if (
-          // !!! ???
           // On Windows, the rename can fail with EPERM even though it succeeded.
           // https://github.com/npm/fs-write-stream-atomic/commit/2f51136f24aaefebd446455a45fa108909b18ca9
           process.platform === "win32" &&
@@ -280,20 +217,16 @@ const createAtomicWriteStream = async (path) => {
           err.code === "EPERM" &&
           (await areSameFile(path, tempPath))
         ) {
-          // The rename did actually succeed, so:
-          // The temporary file can be removed.
+          // The rename did actually succeed, so we can remove the temporary file
           await fsPromises.unlink(tempPath);
         } else {
           throw err;
         }
       }
-    //   }
 
       writeStream.emit("atomic-finish");
       releaseFileLock();
     } catch (error) {
-      // !!! ???
-      // writeStream.destroy(error);
       handleError(error);
     }
   });
@@ -302,13 +235,6 @@ const createAtomicWriteStream = async (path) => {
 };
 
 const writeFileAtomic = async (path, data) => {
-  // const stream = await createAtomicWriteStream(path);
-  // return new Promise((resolve, reject) => {
-  //   stream.on("atomic-finish", resolve);
-  //   stream.on("atomic-error", reject);
-  //   stream.write(data);
-  //   stream.end();
-  // });
   try {
     const stream = await createAtomicWriteStream(path);
     await new Promise((resolve, reject) => {
@@ -318,11 +244,7 @@ const writeFileAtomic = async (path, data) => {
       stream.end();
     });
   } catch (atomicError) {
-    // !!! ???
-    // Try writing it non-atomically:
-    // !!! ???
-    // !!! ???
-    // It is not 'safe', but should improve reliability on some weird systems.
+    // Try to write it non-atomically. This isn't "safe", but it should improve reliability on some weird systems.
     try {
       await fsPromises.writeFile(path, data);
     } catch (simpleError) {
