@@ -8,7 +8,16 @@
     },
     "version": "0.1.0",
     "license": "BSD-3-Clause",
+    "homepage": "https://menersar.github.io/sidekick-desktop/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Menersar/sidekick-desktop.git"
+    },
     "scripts": {
+        "release:win": "npm run fetch && npm run webpack:prod && npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
+        "release:linux": "npm run fetch && npm run webpack:prod && npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
+        "build:win": "npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
+        "build:linux": "npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
         "fetch": "node scripts/update-packager.js && node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "fetch2": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "fetch3": "node scripts/download-packager.js",
@@ -75,11 +84,6 @@
         "url-loader": "^4.1.1",
         "webpack": "^4.47.0",
         "webpack-cli": "^4.10.0"
-    },
-    "homepage": "https://menersar.github.io/sidekick-desktop/",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Menersar/sidekick-desktop.git"
     },
     "bugs": {
         "url": "https://github.com/Menersar/sidekick-desktop/issues",
