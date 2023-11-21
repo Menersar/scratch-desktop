@@ -269,3 +269,82 @@ sha256:
 
 - npm run build-standalone-prod
 - Scaffolding build ID
+
+## Create build for the Raspberry Pi 4 (!!tested for the 8 GB model!!; arm64 architecture; deb package)
+
+- [Install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+  - Open PowerShell or Windows Command Prompt.
+  - Use prompt:
+
+    ```console
+    wsl --install
+    ```
+
+- [Ubuntu WSL Terminal](https://ubuntu.com/wsl) on Windows.
+- Navigate to the local SIDEKICK-Desktop folder.
+  - To navigate to the Windows User folder:
+    - Use prompt:
+
+      ```console
+      cd /mnt/c/Users/
+      ```
+
+- Optional: Install and update packages.
+  - (Resolved my problem with an error stating "/usr/bin/env: 'bash\r': No such file or directory" once using the prompt to build the project as stated in the next step.)
+  
+  ```console
+  sudo apt-get update
+  sudo apt-get upgrade
+  sudo apt install nodejs npm
+  sudo npm install --global n
+  sudo n 16.0.0
+  ```
+
+- Build the project.
+  - Use prompt in the Terminal:
+  <!-- npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes -->
+  <!-- npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes -->
+  ```console
+  npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes  
+  ```
+
+## [Install debian package](https://unix.stackexchange.com/questions/159094/how-to-install-a-deb-file-by-dpkg-i-or-by-apt) on the Raspberry Pi
+
+- Run prompt in the Terminal:
+
+  ``` console
+  sudo apt install /path/to/package/name.deb
+  ```
+
+  or
+
+1. Run prompt in the Terminal:
+
+   ``` console
+    sudo apt install gdebi 
+    ```
+
+2. Open the .deb package file using it.
+
+   - Via: [Right-click] -> "Install Package".
+     - or via: [Right-click] -> "Open With" -> Choose: "GDebi Package Installer" -> Click on: "Install Package".
+     - The .deb package with all its dependencies get installed.
+
+## Extract GPIO extension from the Raspberry Pi OS Scratch Version
+
+Unpack Scratch / Electron Software:
+
+- [Decompiling and repacking Electron Apps](https://medium.com/@libaration/decompiling-and-repacking-electron-apps-b9bfbc8390d5)
+
+- [Unbundle a webpack bundle.js with the SourceMap](https://stackoverflow.com/questions/46590905/unbundle-a-webpack-bundle-js-with-the-sourcemap)
+  - Reverse engineering JavaScript and CSS sources from sourcemaps:
+    - [shuji npm package](https://www.npmjs.com/package/shuji)
+
+- [webpack - How to extract bundle to respective components](https://stackoverflow.com/questions/44276097/webpack-how-to-extract-bundle-to-respective-components)
+  - [debundle](https://github.com/1egoman/debundle)
+    `npm i -g debundle`
+
+Scratch Desktop (Scratch 3.0 Offline Editor) on GNU/Linux:
+<https://gist.github.com/lyshie/0c49393076b8b375ca1bd98c28f95fb0?permalink_comment_id=4492637#gistcomment-4492637>
+
+- "But this version of Scratch won't have access to the GPIO and SenseHat extensions for the Raspberry Pi, sadly, since those extensions are exclusive to the special version of Scratch Desktop that comes with the official Raspberry Pi OS."
