@@ -217,7 +217,8 @@ class BaseWindow {
     if (process.platform !== "darwin") {
       const webContents = this.window.webContents;
 
-      // Ctrl+Shift+I to open dev tools
+      // Press Ctrl + Shift + I:
+      //   To open dev tools ('toggleDevTools').
       if (
         input.control &&
         input.shift &&
