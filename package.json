@@ -1,7 +1,7 @@
 {
     "name": "sidekick-desktop",
-    "productName": "Sidekick",
-    "description": "Scratch 3.0 as a self-contained desktop application; version customized for Sidekick.",
+    "productName": "SIDEKICK",
+    "description": "Scratch 3.0 as a self-contained desktop application; version customized for SIDEKICK.",
     "author": {
         "email": "contact@mixality.de",
         "name": "Mixality"
@@ -18,6 +18,7 @@
         "release:linux": "npm run fetch && npm run webpack:prod && npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
         "build:win": "npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
         "build:linux": "npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
+        "build:rpi4b8gb": "npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes",
         "fetch": "node scripts/update-packager.js && node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "fetch2": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "fetch3": "node scripts/download-packager.js",
@@ -93,7 +94,7 @@
     "//": "!!! Oder besser 'de.mixality.sidekick.sidekick-desktop' für 'appId' setzen? ???",
     "build": {
         "appId": "de.mixality.sidekick-desktop",
-        "productName": "Sidekick",
+        "productName": "SIDEKICK",
         "files": [
             "node_modules/**/*",
             "src-main/**/*",
@@ -107,6 +108,10 @@
             {
                 "from": "art/icon.png",
                 "to": "icon.png"
+            },
+            {
+                "from": "src-main/static/gpiolib.node",
+                "to": "static/gpiolib.node"
             }
         ],
         "win": {
@@ -125,19 +130,16 @@
         },
         "appx": {
             "artifactName": "${productName} MS Store ${version} ${arch}.${ext}",
-            "applicationId": "Sidekick",
-            "displayName": "Sidekick",
-            "identityName": "Mixality.SidekickDesktop",
+            "applicationId": "SIDEKICK",
+            "displayName": "SIDEKICK",
+            "identityName": "Mixality.SIDEKICKDesktop",
             "publisher": "CN=5b744553-b6ec-446a-aa4e-d77024aa8c74",
             "publisherDisplayName": "Mixality",
             "backgroundColor": "#5ea82d",
             "showNameOnTiles": true,
             "languages": [
                 "en-US",
-                "nl",
-                "de",
-                "it",
-                "ko"
+                "de"
             ]
         },
         "nsis": {
@@ -182,7 +184,7 @@
             "artifactName": "${productName}-${os}-${arch}-${version}.${ext}",
             "icon": "./build/",
             "synopsis": "Assistance system for the manual assembly utilizing the Scratch programming interface to create workflows.",
-            "description": "Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.",
+            "description": "SIDEKICK is based on Scratch and features of the Scratch mod TurboWarp. SIDEKICK serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.",
             "category": "Development",
             "extraFiles": [
                 "linux-files"

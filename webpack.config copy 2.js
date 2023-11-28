@@ -65,14 +65,6 @@ const base = {
   //   plugins: [
   //     new CopyWebpackPlugin([
   //       {
-  //         from: "src/static",
-  //         to: "static",
-  //       },
-  //     ]),
-  //   ],
-  //   plugins: [
-  //     new CopyWebpackPlugin([
-  //       {
   //         from: "src-main/static",
   //         to: "static",
   //       },
@@ -155,25 +147,6 @@ module.exports = [
       }),
     ],
   },
-
-//   {
-//     ...base,
-//     output: {
-//       path: path.resolve(__dirname, "dist-renderer-webpack/editor/addons"),
-//       filename: "index.js",
-//     },
-//     entry: "./src-renderer-webpack/editor/addons/index.jsx",
-//     plugins: [
-//       new CopyWebpackPlugin({
-//         patterns: [
-//           {
-//             context: "src-renderer-webpack/editor/addons/",
-//             from: "*.html",
-//           },
-//         ],
-//       }),
-//     ],
-//   },
   //   {
   //     ...base,
   //     output: {
