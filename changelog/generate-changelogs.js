@@ -114,7 +114,7 @@
 //     xml += '    </release>\n';
 //   }
 
-//   const path = pathUtil.join(__dirname, '../linux-files/de.mixality.Sidekick.metainfo.xml');
+//   const path = pathUtil.join(__dirname, '../linux-files/de.mixality.SIDEKICK.metainfo.xml');
 //   let source = fs.readFileSync(path, 'utf-8');
 //   source = source.replace(
 //     /<releases>[\s\S]*<\/releases>/m,

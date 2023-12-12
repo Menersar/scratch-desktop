@@ -61,6 +61,9 @@ MIME_TYPES.set(".wav", "audio/wav");
 MIME_TYPES.set(".ogg", "audio/ogg");
 MIME_TYPES.set(".ttf", "font/ttf");
 MIME_TYPES.set(".otf", "font/otf");
+// if (process.platform === "linux") {
+    MIME_TYPES.set(".node", "file/node");
+// }
 
 protocol.registerSchemesAsPrivileged(
   Object.entries(FILE_SCHEMES).map(([scheme, metadata]) => ({
@@ -91,13 +94,14 @@ app.whenReady().then(() => {
           status: 404,
         });
       }
-
-    //   if (metadata.brotli) {
+    
+      // !!! ???
+      //   if (metadata.brotli) {
       const fileExtension = path.extname(url.pathname);
 
-        // if (!resolved.startsWith(root) || !MIME_TYPES.has(fileExtension)) {
-        //   callback({
-        //     statusCode: 404,
+      // if (!resolved.startsWith(root) || !MIME_TYPES.has(fileExtension)) {
+      //   callback({
+      //     statusCode: 404,
       const mimeType = MIME_TYPES.get(fileExtension);
       if (!mimeType) {
         // Use a different error message for invalid file extensions.
@@ -115,7 +119,7 @@ app.whenReady().then(() => {
         fileStream.pipe(decompressStream);
 
         return new Promise((resolve) => {
-            // !!! 'TODO'? ???
+          // !!! 'TODO'? ???
           // TODO: This still returns 200 OK when brotli stream errors.
           fileStream.on("open", () => {
             resolve(
@@ -152,56 +156,56 @@ app.whenReady().then(() => {
         });
       });
     });
-          //   return;
-          // }
+    //   return;
+    // }
 
-          // readFile(resolved)
-          //   .then((compressed) => brotliDecompress(compressed))
-          //   .then((decompressed) => {
-          //     callback({
-          //       data: decompressed,
-          //       mimeType: MIME_TYPES.get(fileExtension),
-          //     });
-          //   })
-          //   .catch((error) => {
-          //     console.error(error);
-          //     callback({
-          //       statusCode: 404,
-          //     });
-        // }
+    // readFile(resolved)
+    //   .then((compressed) => brotliDecompress(compressed))
+    //   .then((decompressed) => {
+    //     callback({
+    //       data: decompressed,
+    //       mimeType: MIME_TYPES.get(fileExtension),
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     callback({
+    //       statusCode: 404,
+    //     });
+    // }
 
-        // // Would be best if we could somehow stream this (ideally using
-        // // Content-Encoding: br), but that doesn't seem to work very easily
-        // // right now.
-        // const compressed = await new Promise((resolve, reject) => {
-        //   fs.readFile(`${resolved}.br`, (error, data) => {
-        //     if (error) {
-        //       reject(error);
-        //     } else {
-        //       resolve(data);
-        //     }
-        //   });
-        // });
+    // // Would be best if we could somehow stream this (ideally using
+    // // Content-Encoding: br), but that doesn't seem to work very easily
+    // // right now.
+    // const compressed = await new Promise((resolve, reject) => {
+    //   fs.readFile(`${resolved}.br`, (error, data) => {
+    //     if (error) {
+    //       reject(error);
+    //     } else {
+    //       resolve(data);
+    //     }
+    //   });
+    // });
 
-        // // } else {
-        // //   protocol.registerFileProtocol(scheme, (request, callback) => {
-        // //     // Don't need to check mime types ourselves as Electron will do it for us.
-        // //     const url = new URL(request.url);
-        // //     const resolved = path.join(root, url.pathname);
-        // //     if (resolved.startsWith(root)) {
-        // //       callback(resolved);
-        // const decompressed = await new Promise((resolve, reject) => {
-        //   zlib.brotliDecompress(compressed, (error, result) => {
-        //     if (error) {
-        //       reject(error);
-        //     } else {
-        //       //   callback({
-        //       //     statusCode: 404,
-        //       //   });
-        //       resolve(result);
-        //     }
-        //   });
-        // });
+    // // } else {
+    // //   protocol.registerFileProtocol(scheme, (request, callback) => {
+    // //     // Don't need to check mime types ourselves as Electron will do it for us.
+    // //     const url = new URL(request.url);
+    // //     const resolved = path.join(root, url.pathname);
+    // //     if (resolved.startsWith(root)) {
+    // //       callback(resolved);
+    // const decompressed = await new Promise((resolve, reject) => {
+    //   zlib.brotliDecompress(compressed, (error, result) => {
+    //     if (error) {
+    //       reject(error);
+    //     } else {
+    //       //   callback({
+    //       //     statusCode: 404,
+    //       //   });
+    //       resolve(result);
+    //     }
+    //   });
+    // });
 
     //     return new Response(decompressed, {
     //       headers: {

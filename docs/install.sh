@@ -58,8 +58,8 @@ if command_exists apt; then
         fatal "Unknown architecture"
     fi
     # !!! CHANGE !!!
-    # wget -O "$TMPFILE" "https://github.com/Mixality/sidekick-desktop/releases/download/v$VERSION/Sidekick-linux-$filearch-$VERSION.deb"
-    wget -O "$TMPFILE" "https://github.com/Menersar/sidekick-desktop/releases/download/v$VERSION/Sidekick-linux-$filearch-$VERSION.deb"
+    # wget -O "$TMPFILE" "https://github.com/Mixality/sidekick-desktop/releases/download/v$VERSION/SIDEKICK-linux-$filearch-$VERSION.deb"
+    wget -O "$TMPFILE" "https://github.com/Menersar/sidekick-desktop/releases/download/v$VERSION/SIDEKICK-linux-$filearch-$VERSION.deb"
     chown _apt:root "$TMPFILE"
     apt install -y "$TMPFILE"
     rm "$TMPFILE"
@@ -81,20 +81,20 @@ else
     fatal "Unknown architecture"
 fi
 # !!! CHANGE !!!
-# wget -O "$TMPFILE" "https://github.com/Mixality/sidekick-desktop/releases/download/v$VERSION/Sidekick-linux-$filearch-$VERSION.tar.gz"
-wget -O "$TMPFILE" "https://github.com/Menersar/sidekick-desktop/releases/download/v$VERSION/Sidekick-linux-$filearch-$VERSION.tar.gz"
-mkdir -p /opt/Sidekick
-tar -xvf "$TMPFILE" --strip-components=1 -C /opt/Sidekick
-cp /opt/Sidekick/resources/static/icon.png /usr/share/icons/hicolor/512x512/apps/sidekick-desktop.png
+# wget -O "$TMPFILE" "https://github.com/Mixality/sidekick-desktop/releases/download/v$VERSION/SIDEKICK-linux-$filearch-$VERSION.tar.gz"
+wget -O "$TMPFILE" "https://github.com/Menersar/sidekick-desktop/releases/download/v$VERSION/SIDEKICK-linux-$filearch-$VERSION.tar.gz"
+mkdir -p /opt/SIDEKICK
+tar -xvf "$TMPFILE" --strip-components=1 -C /opt/SIDEKICK
+cp /opt/SIDEKICK/resources/static/icon.png /usr/share/icons/hicolor/512x512/apps/sidekick-desktop.png
 cat > /usr/share/applications/sidekick-desktop.desktop << EOF
 [Desktop Entry]
-Name=Sidekick
-Exec=/opt/Sidekick/sidekick-desktop %U
+Name=SIDEKICK
+Exec=/opt/SIDEKICK/sidekick-desktop %U
 Terminal=false
 Type=Application
 Icon=sidekick-desktop
-StartupWMClass=Sidekick
-Comment=Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.
+StartupWMClass=SIDEKICK
+Comment=SIDEKICK is based on Scratch and features of the Scratch mod TurboWarp. SIDEKICK serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.
 MimeType=application/x.scratch.sb3;
 Categories=Development;
 EOF
@@ -107,8 +107,8 @@ cat > /usr/share/mime/packages/sidekick-desktop.xml << EOF
 </mime-type>
 </mime-info>
 EOF
-chmod 4755 /opt/Sidekick/chrome-sandbox
-ln -sf /opt/Sidekick/sidekick-desktop /usr/bin/sidekick-desktop
+chmod 4755 /opt/SIDEKICK/chrome-sandbox
+ln -sf /opt/SIDEKICK/sidekick-desktop /usr/bin/sidekick-desktop
 update-mime-database /usr/share/mime
 update-desktop-database /usr/share/applications
 gtk-update-icon-cache -f /usr/share/icons/hicolor/

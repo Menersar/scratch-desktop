@@ -5,7 +5,11 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const base = {
   mode: process.env.NODE_ENV === "production" ? "production" : "development",
   devtool: "",
+  // target: "web",
   target: "web",
+  node: {
+    __dirname: false,
+  },
   module: {
     rules: [
       {
@@ -52,50 +56,22 @@ const base = {
           },
         ],
       },
+      // ,
       {
         test: /\.node$/,
-        loader: "node-loader",
+        loader: "file-loader",
         // include: path.resolve(__dirname, 'src')
         options: {
           outputPath: "static/",
+          // Emit file from the context directory into the output directory retaining the full directory structure:
+          // (https://v4.webpack.js.org/loaders/file-loader/)
+          // name: "[path][name].[ext]",
+          name: "[name].[ext]",
+          // esModule: false,
         },
       },
     ],
   },
-  //   plugins: [
-  //     new CopyWebpackPlugin([
-  //       {
-  //         from: "src/static",
-  //         to: "static",
-  //       },
-  //     ]),
-  //   ],
-  //   plugins: [
-  //     new CopyWebpackPlugin([
-  //       {
-  //         from: "src-main/static",
-  //         to: "static",
-  //       },
-  //     ]),
-  //   ],
-
-  //   plugins: [
-  //     new DefinePlugin({
-  //       "process.env.ROOT": '""',
-  //     }),
-  //     new CopyWebpackPlugin({
-  //       patterns: [
-  //         {
-  //           from: "src-main/static",
-  //           to: "static",
-  //         },
-  //         {
-  //           context: "src-main/static/",
-  //           from: "*.node",
-  //         },
-  //       ],
-  //     }),
-  //   ],
 };
 
 module.exports = [
@@ -115,6 +91,22 @@ module.exports = [
           {
             from: "node_modules/scratch-blocks/media",
             to: "static/blocks-media",
+          },
+          {
+            from: "node_modules/scratch-vm/src/static",
+            to: "static/",
+          },
+          {
+            context: "src-renderer-webpack/editor/gui/",
+            from: "*.html",
+          },
+        ],
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "node_modules/scratch-vm/src/static",
+            to: "static/",
           },
           {
             context: "src-renderer-webpack/editor/gui/",
@@ -156,41 +148,77 @@ module.exports = [
     ],
   },
 
-//   {
-//     ...base,
-//     output: {
-//       path: path.resolve(__dirname, "dist-renderer-webpack/editor/addons"),
-//       filename: "index.js",
-//     },
-//     entry: "./src-renderer-webpack/editor/addons/index.jsx",
-//     plugins: [
-//       new CopyWebpackPlugin({
-//         patterns: [
-//           {
-//             context: "src-renderer-webpack/editor/addons/",
-//             from: "*.html",
-//           },
-//         ],
-//       }),
-//     ],
-//   },
-  //   {
-  //     ...base,
-  //     output: {
-  //       path: path.resolve(__dirname, "../static"),
-  //       filename: "gpiolib.node",
-  //     },
-  //     entry:
-  //       "./node_modules/scratch-vm/src/extensions/scratch3_pigpio/index.js",
-  //     plugins: [
-  //       new CopyWebpackPlugin({
-  //         patterns: [
-  //           {
-  //             from: "node_modules/scratch-gui/build/static",
-  //             to: "static",
-  //           },
-  //         ],
-  //       }),
+  {
+    ...base,
+    output: {
+      path: path.resolve(__dirname, "dist-renderer-webpack/editor/gui"),
+      filename: "index.js",
+    },
+    entry: "./src-renderer-webpack/editor/gui/index.jsx",
+    plugins: [
+      new DefinePlugin({
+        "process.env.ROOT": '""',
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "node_modules/scratch-vm/src/static",
+            to: "static/",
+          },
+          {
+            context: "src-renderer-webpack/editor/gui/",
+            from: "*.html",
+          },
+        ],
+      }),
+    ],
+    resolve: {
+      alias: {
+        "scratch-gui$": path.resolve(
+          __dirname,
+          "node_modules/scratch-gui/src/index.js"
+        ),
+        "scratch-render-fonts$": path.resolve(
+          __dirname,
+          "node_modules/scratch-gui/src/lib/sidekick-scratch-render-fonts"
+        ),
+      },
+    },
+  },
+
+  // {
+  //   ...base,
+  //   target: "node",
+  //   node: {
+  //     __dirname: false,
+  //   },
+  //   module: {
+  //     rules: [
+  //       {
+  //         // output: {
+  //         //   path: path.resolve(__dirname, "dist-renderer-webpack/editor/addons"),
+  //         //   filename: "index.js",
+  //         // },
+  //         // entry: "./src-renderer-webpack/editor/addons/index.jsx",
+  //         // plugins: [
+  //         //   new CopyWebpackPlugin({
+  //         //     patterns: [
+  //         //       {
+  //         //         context: "src-renderer-webpack/editor/addons/",
+  //         //         from: "*.html",
+  //         //       },
+  //         //     ],
+  //         //   }),
+  //         // ],
+
+  //         test: /\.node$/,
+  //         loader: "node-loader",
+  //         // include: path.resolve(__dirname, 'src')
+  //         // options: {
+  //         //   outputPath: "static/",
+  //         // },
+  //       },
   //     ],
   //   },
+  // },
 ];

@@ -297,11 +297,11 @@
     },
     "update.normal-description": {
         "string": "{appNameVersion} is now available.",
-        "developer_comment": "Description of update available window for normal update. {appNameVersion} will be replaced with something like 'Sidekick Desktop v0.1.0'."
+        "developer_comment": "Description of update available window for normal update. {appNameVersion} will be replaced with something like 'SIDEKICK Desktop v0.1.0'."
     },
     "update.security-description": {
         "string": "{appNameVersion} is now available. This release contains security fixes. Updating is highly recommended.",
-        "developer_comment": "Description of update available window for security update. {appNameVersion} will be replaced with something like 'Sidekick Desktop v0.1.0'."
+        "developer_comment": "Description of update available window for security update. {appNameVersion} will be replaced with something like 'SIDEKICK Desktop v0.1.0'."
     },
     "update.loading": {
         "string": "Loading...",

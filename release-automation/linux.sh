@@ -73,7 +73,7 @@ prepare_source() {
 
 update_flatpak() {
 	echo "Updating flatpak"
-	cd "$src/../de.mixality.Sidekick"
+	cd "$src/../de.mixality.SIDEKICK"
 	git checkout sidekick
 	git pull
 	git branch -D "$version" || true
@@ -82,12 +82,12 @@ update_flatpak() {
     # # Copy changes from beta branch for when the build process changes
 	# git rebase "$version-beta" || true
     # git merge "origin/$version-beta" || true
-	sed -E -i "s/commit: [a-f0-9]{40}/commit: $commit/" de.mixality.Sidekick.yaml
+	sed -E -i "s/commit: [a-f0-9]{40}/commit: $commit/" de.mixality.SIDEKICK.yaml
 	python3 update-library.py
 	python3 update-packager.py
 	flatpak-node-generator npm ../sidekick-desktop/package-lock.json
-	flatpak-builder build de.mixality.Sidekick.yaml --force-clean --install --user
-	flatpak run de.mixality.Sidekick
+	flatpak-builder build de.mixality.SIDEKICK.yaml --force-clean --install --user
+	flatpak run de.mixality.SIDEKICK
 	await_confirmation
 	git stage .
 	git commit -m "Update to $version" -m "Automated"
@@ -119,10 +119,10 @@ update_snap() {
 	rm dist/*.snap || true
 	npm run webpack:prod
     npx electron-builder --linux snap --publish never --config.extraMetadata.sidekick_dist="prod-snap-$(uname -m)"
-	snap install --dangerous dist/Sidekick-*.snap
+	snap install --dangerous dist/SIDEKICK-*.snap
 	snap run sidekick-desktop
 	await_confirmation
-	snapcraft upload --release=stable dist/Sidekick-*.snap
+	snapcraft upload --release=stable dist/SIDEKICK-*.snap
 }
 
 update_debian() {
@@ -140,7 +140,7 @@ update_debian
 
 # !!! TODO? ???
 echo "THINGS YOU STILL NEED TO DO:"
-echo " - Merge flatpak/de.mixality.Sidekick PR"
+echo " - Merge flatpak/de.mixality.SIDEKICK PR"
 echo " - Delete old binaries from Debian repository"
 echo " - Upload to Microsoft Store"
 echo " - Announcements"

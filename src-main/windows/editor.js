@@ -19,6 +19,7 @@ const privilegedFetch = require("../fetch");
 // const rebuildMenuBar = require("../menu-bar");
 
 // const readFile = promisify(fs.readFile);
+const gpio = require("ModuleGpiolib");
 
 const TYPE_FILE = "file";
 const TYPE_URL = "url";
@@ -211,6 +212,15 @@ class EditorWindow extends ProjectRunningWindow {
       };
     });
 
+    // ipc.handle("get-module", async (event, moduleName) => {
+    //   // const module = require("../static/" + moduleName);
+    //   const module = require("../static/gpiolib.node");
+    //   // const { name, data } = await file.read();
+    //   return {
+    //     module,
+    //   };
+    // });
+
     ipc.on("set-locale", async (event, locale) => {
       if (settings.locale !== locale) {
         settings.locale = locale;
@@ -380,6 +390,14 @@ class EditorWindow extends ProjectRunningWindow {
 
     ipc.on("alert", (event, message) => {
       event.returnValue = prompts.alert(this.window, message);
+    });
+
+    ipc.on("set-gpio", (event, gpioPin, drive) => {
+      gpio.set(gpioPin, drive);
+    });
+
+    ipc.on("get-gpio", (event, gpioPin) => {
+      event.returnValue = gpio.get(gpioPin, -1, -1);
     });
 
     ipc.on("confirm", (event, message) => {

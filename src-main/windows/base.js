@@ -173,6 +173,7 @@ class BaseWindow {
     if (process.platform === "linux") {
       // This path won't work in development but it will work in production
       options.icon = path.resolve(__dirname, "../../../icon.png");
+      // options.gpiolib = path.resolve(__dirname, "../../../static/gpiolib.node");
     }
 
     return options;
@@ -286,7 +287,7 @@ class BaseWindow {
     // Don't use webContents.reload() because it allows the page to navigate by using
     // history.pushState() then location.reload()
     if (this.initialURL !== null) {
-        // webContents.loadURL(this.initialURL);
+      // webContents.loadURL(this.initialURL);
       this.window.webContents.loadURL(this.initialURL);
     }
   }

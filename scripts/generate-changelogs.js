@@ -128,7 +128,7 @@ const generateMetainfo = (releases) => {
 
   const path = pathUtil.join(
     __dirname,
-    "../linux-files/de.mixality.Sidekick.metainfo.xml"
+    "../linux-files/de.mixality.SIDEKICK.metainfo.xml"
   );
   let source = fs.readFileSync(path, "utf-8");
   source = source.replace(

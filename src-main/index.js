@@ -1,4 +1,5 @@
-const {app, dialog} = require('electron');
+const { app, dialog } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
 // requestSingleInstanceLock() crashes the app in signed MAS builds
 // https://github.com/electron/electron/issues/15958
@@ -6,59 +7,69 @@ if (!process.mas && !app.requestSingleInstanceLock()) {
   app.exit();
 }
 
-const path = require('path');
-const openExternal = require('./open-external');
-const BaseWindow = require('./windows/base');
-const EditorWindow = require('./windows/editor');
-const {checkForUpdates} = require('./update-checker');
-const {translate, tranlateOrNull} = require('./l10n');
-const migrate = require('./migrate');
-const {APP_NAME} = require('./brand');
-require('./protocols');
-require('./context-menu');
-require('./menu-bar');
-require('./crash-messages');
+const path = require("path");
+const openExternal = require("./open-external");
+const BaseWindow = require("./windows/base");
+const EditorWindow = require("./windows/editor");
+const { checkForUpdates } = require("./update-checker");
+const { translate, tranlateOrNull } = require("./l10n");
+const migrate = require("./migrate");
+const { APP_NAME } = require("./brand");
+require("./protocols");
+require("./context-menu");
+require("./menu-bar");
+require("./crash-messages");
+// if (process.platform === "linux") {
+// require("../../static/gpiolib.node");
+// }
 
 app.enableSandbox();
 
 // Allows certain versions of Scratch Link to work without an internet connection
 // https://github.com/LLK/scratch-desktop/blob/4b462212a8e406b15bcf549f8523645602b46064/src/main/index.js#L45
-app.commandLine.appendSwitch('host-resolver-rules', 'MAP device-manager.scratch.mit.edu 127.0.0.1');
+app.commandLine.appendSwitch(
+  "host-resolver-rules",
+  "MAP device-manager.scratch.mit.edu 127.0.0.1"
+);
 
-app.on('session-created', (session) => {
+app.on("session-created", (session) => {
   // Permission requests are delegated to BaseWindow
 
-  session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
-    if (!details.isMainFrame) {
-      return false;
+  session.setPermissionCheckHandler(
+    (webContents, permission, requestingOrigin, details) => {
+      if (!details.isMainFrame) {
+        return false;
+      }
+      const window = BaseWindow.getWindowByWebContents(webContents);
+      if (!window) {
+        return false;
+      }
+      const allowed = window.handlePermissionCheck(permission, details);
+      return allowed;
     }
-    const window = BaseWindow.getWindowByWebContents(webContents);
-    if (!window) {
-      return false;
-    }
-    const allowed = window.handlePermissionCheck(permission, details);
-    return allowed;
-  });
+  );
 
-  session.setPermissionRequestHandler((webContents, permission, callback, details) => {
-    if (!details.isMainFrame) {
-      callback(false);
-      return;
+  session.setPermissionRequestHandler(
+    (webContents, permission, callback, details) => {
+      if (!details.isMainFrame) {
+        callback(false);
+        return;
+      }
+      const window = BaseWindow.getWindowByWebContents(webContents);
+      if (!window) {
+        callback(false);
+        return;
+      }
+      window.handlePermissionRequest(permission, details).then((allowed) => {
+        callback(allowed);
+      });
     }
-    const window = BaseWindow.getWindowByWebContents(webContents);
-    if (!window) {
-      callback(false);
-      return;
-    }
-    window.handlePermissionRequest(permission, details).then((allowed) => {
-      callback(allowed);
-    });
-  });
+  );
 
   session.webRequest.onBeforeRequest((details, callback) => {
     const url = details.url.toLowerCase();
     // Always allow devtools
-    if (url.startsWith('devtools:')) {
+    if (url.startsWith("devtools:")) {
       return callback({});
     }
 
@@ -66,7 +77,7 @@ app.on('session-created', (session) => {
     const window = BaseWindow.getWindowByWebContents(webContents);
     if (!webContents || !window) {
       return callback({
-        cancel: true
+        cancel: true,
       });
     }
 
@@ -81,21 +92,24 @@ app.on('session-created', (session) => {
     window.onHeadersReceived(details, callback);
   });
 
-  session.on('will-download', (event, item, webContents) => {
+  session.on("will-download", (event, item, webContents) => {
     const options = {
       // The default filename is a better title than "blob:..."
-      title: item.getFilename()
+      title: item.getFilename(),
     };
 
     // Ensure that the type selector shows proper names on Windows instead of things like "SPRITE3 File"
-    const extension = path.extname(item.getFilename()).replace(/^\./, '').toLowerCase();
+    const extension = path
+      .extname(item.getFilename())
+      .replace(/^\./, "")
+      .toLowerCase();
     const translated = tranlateOrNull(`files.${extension}`);
     if (translated !== null) {
       options.filters = [
         {
           name: translated,
-          extensions: [extension]
-        }
+          extensions: [extension],
+        },
       ];
     }
 
@@ -103,8 +117,8 @@ app.on('session-created', (session) => {
   });
 });
 
-app.on('web-contents-created', (event, webContents) => {
-  webContents.on('will-navigate', (event, url) => {
+app.on("web-contents-created", (event, webContents) => {
+  webContents.on("will-navigate", (event, url) => {
     // Only allow windows to refresh, not navigate anywhere.
     const window = BaseWindow.getWindowByWebContents(webContents);
     if (!window || url !== window.initialURL) {
@@ -115,31 +129,35 @@ app.on('web-contents-created', (event, webContents) => {
 
   // Overwritten by BaseWindow. We just set this here as a safety measure.
   webContents.setWindowOpenHandler((details) => ({
-    action: 'deny'
+    action: "deny",
   }));
 });
 
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   if (!isMigrating) {
     app.quit();
   }
 });
 
 // macOS
-app.on('activate', () => {
-  if (app.isReady() && !isMigrating && BaseWindow.getWindowsByClass(EditorWindow).length === 0) {
+app.on("activate", () => {
+  if (
+    app.isReady() &&
+    !isMigrating &&
+    BaseWindow.getWindowsByClass(EditorWindow).length === 0
+  ) {
     EditorWindow.newWindow();
   }
 });
 
 // macOS
 const filesQueuedToOpen = [];
-app.on('open-file', (event, path) => {
+app.on("open-file", (event, path) => {
   event.preventDefault();
   // This event can be called before ready.
   if (app.isReady() && !isMigrating) {
     // The path we get should already be absolute
-    EditorWindow.openFiles([path], '');
+    EditorWindow.openFiles([path], "");
   } else {
     filesQueuedToOpen.push(path);
   }
@@ -152,7 +170,7 @@ const parseFilesFromArgv = (argv) => {
   // electron.exe main.js project.sb3
 
   // Remove --inspect= and other flags
-  argv = argv.filter((i) => !i.startsWith('--'));
+  argv = argv.filter((i) => !i.startsWith("--"));
 
   // Remove sidekick.exe, electron.exe, etc. and the path to the app if it exists
   // defaultApp is true when the path to the app is in argv
@@ -164,11 +182,15 @@ const parseFilesFromArgv = (argv) => {
 let isMigrating = true;
 let migratePromise = null;
 
-app.on('second-instance', (event, argv, workingDirectory) => {
+app.on("second-instance", (event, argv, workingDirectory) => {
   migratePromise.then(() => {
     EditorWindow.openFiles(parseFilesFromArgv(argv), workingDirectory);
   });
 });
+
+// app.on("get-module", (event, argv) => {
+//   event.reply("return-module", returnedModule);
+// });
 
 app.whenReady().then(() => {
   BaseWindow.settingsChanged();
@@ -179,16 +201,19 @@ app.whenReady().then(() => {
     if (app.runningUnderARM64Translation) {
       dialog.showMessageBox({
         title: APP_NAME,
-        type: 'warning',
-        message: translate('arm-translation.title'),
-        detail: translate('arm-translation.detail').replace('{APP_NAME}', APP_NAME)
+        type: "warning",
+        message: translate("arm-translation.title"),
+        detail: translate("arm-translation.detail").replace(
+          "{APP_NAME}",
+          APP_NAME
+        ),
       });
     }
 
-    EditorWindow.openFiles([
-      ...filesQueuedToOpen,
-      ...parseFilesFromArgv(process.argv)
-    ], process.cwd());
+    EditorWindow.openFiles(
+      [...filesQueuedToOpen, ...parseFilesFromArgv(process.argv)],
+      process.cwd()
+    );
 
     // If no windows successfully opened:
     if (BaseWindow.getAllWindows().length === 0) {

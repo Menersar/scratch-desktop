@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2022-2023 Mixality -->
 <component type="desktop-application">
-    <id>de.mixality.Sidekick</id>
-    <launchable type="desktop-id">de.mixality.Sidekick.sidekick-desktop</launchable>
+    <id>de.mixality.SIDEKICK</id>
+    <launchable type="desktop-id">de.mixality.SIDEKICK.sidekick-desktop</launchable>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>BSD-3-Clause</project_license>
-    <name>Sidekick</name>
+    <name>SIDEKICK</name>
     <developer_name>Mixality</developer_name>
     <summary>Assistance system for the manual assembly utilizing the Scratch programming interface to create workflows</summary>
     <description>
-        <p>Sidekick is based on Scratch and features of the Scratch mod TurboWarp.</p>
+        <p>SIDEKICK is based on Scratch and features of the Scratch mod TurboWarp.</p>
         <p>Features:</p>
         <ul>
             <li>Serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps.</li>
             <li>Workflows can be created via the Scratch programming interface.</li>
         </ul>
-        <p>Sidekick can also be used in your browser at https://mixality.de/editor</p>
+        <p>SIDEKICK can also be used in your browser at https://mixality.de/editor</p>
         <p>Project shown in screenshots is https://scratch.mit.edu/projects/425020125/</p>
     </description>
     <screenshots>

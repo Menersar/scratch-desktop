@@ -14,11 +14,14 @@
         "url": "https://github.com/Menersar/sidekick-desktop.git"
     },
     "scripts": {
-        "release:win": "npm run fetch && npm run webpack:prod && npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
-        "release:linux": "npm run fetch && npm run webpack:prod && npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
-        "build:win": "npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
-        "build:linux": "npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
-        "build:rpi4b8gb": "npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes",
+        "build": "cd build-automation && node build.js",
+        "postinstall": "npm run install-native-module && npm run fetch && npm run webpack:prod",
+        "install-native-module": "cp-cli src-main/static/gpiolib.node ./node_modules/ModuleGpiolib/",
+        "release:win": "npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
+        "release:linux": "npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
+        "build:win": "",
+        "build:lin": "",
+        "build:rpi": "npm run build l arm64 deb",
         "fetch": "node scripts/update-packager.js && node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "fetch2": "node scripts/download-library-files.js && node scripts/download-packager.js && node scripts/prepare-extensions.js",
         "fetch3": "node scripts/download-packager.js",
@@ -57,10 +60,12 @@
         "scratch:distDev": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dev",
         "scratch:test": "npm run test:lint",
         "scratch:test:lint": "eslint --cache --color --ext .jsx,.js .",
-        "scratch:mklink:blocks": "python build-blocks.py"
+        "scratch:mklink:blocks": "python build-blocks.py",
+        "roni": "node roni.js"
     },
     "dependencies": {
-        "semver": "^7.5.3"
+        "semver": "^7.5.3",
+        "tslib": "^2.6.2"
     },
     "devDependencies": {
         "@babel/core": "^7.23.2",
@@ -72,10 +77,12 @@
         "autoprefixer": "^9.8.8",
         "babel-loader": "^8.3.0",
         "copy-webpack-plugin": "^6.4.1",
+        "cp-cli": "^2.0.0",
         "cross-env": "^7.0.3",
         "css-loader": "^1.0.1",
         "electron": "^26.2.4",
         "electron-builder": "^24.6.4",
+        "file-loader": "2.0.0",
         "postcss": "^8.4.13",
         "postcss-import": "^14.0.0",
         "postcss-loader": "^4.2.0",
@@ -95,9 +102,11 @@
     "build": {
         "appId": "de.mixality.sidekick-desktop",
         "productName": "SIDEKICK",
+        "assets": ["node_modules/ModuleGpiolib"],
         "files": [
             "node_modules/**/*",
             "src-main/**/*",
+            "src-main/static/gpiolib.node",
             "src-preload/**/*",
             "src-renderer/**/*",
             "dist-renderer-webpack/**/*",

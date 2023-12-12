@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=Sidekick
+Name=SIDEKICK
 # Change the path to match where you install the app.
-Exec=/opt/Sidekick/sidekick-desktop %U
+Exec=/opt/SIDEKICK/sidekick-desktop %U
 Terminal=false
 Type=Application
-Icon=de.mixality.Sidekick
-StartupWMClass=Sidekick
-Comment=Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.
+Icon=de.mixality.SIDEKICK
+StartupWMClass=SIDEKICK
+Comment=SIDEKICK is based on Scratch and features of the Scratch mod TurboWarp. SIDEKICK serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.
 MimeType=application/x.scratch.sb3;application/x.scratch.sb2;application/x.scratch.sb;
 Categories=Development;

@@ -2,14 +2,14 @@
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
     <mime-type type="application/x.scratch.sb3">
         <glob pattern="*.sb3" />
-        <icon name="de.mixality.Sidekick" />
+        <icon name="de.mixality.SIDEKICK" />
     </mime-type>
     <mime-type type="application/x.scratch.sb2">
         <glob pattern="*.sb2" />
-        <icon name="de.mixality.Sidekick" />
+        <icon name="de.mixality.SIDEKICK" />
     </mime-type>
     <mime-type type="application/x.scratch.sb">
         <glob pattern="*.sb" />
-        <icon name="de.mixality.Sidekick" />
+        <icon name="de.mixality.SIDEKICK" />
     </mime-type>
 </mime-info>

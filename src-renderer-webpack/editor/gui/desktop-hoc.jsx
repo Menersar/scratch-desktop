@@ -117,6 +117,7 @@ const DesktopHOC = function (WrappedComponent) {
 
         this.props.onHasInitialProject(true, this.props.loadingState);
         const { name, type, data } = await EditorPreload.getFile(id);
+        // const module = await EditorPreload.getModule("gpiolib.node");
 
         await this.props.vm.loadProject(data);
         this.props.onLoadingCompleted();

@@ -1,7 +1,7 @@
 {
     "name": "sidekick-desktop",
     "productName": "Scratch",
-    "description": "Scratch 3.0 as a self-contained desktop application; version customized for Sidekick.",
+    "description": "Scratch 3.0 as a self-contained desktop application; version customized for SIDEKICK.",
     "author": {
         "email": "contact@sidekick.de",
         "name": "Mixality"
@@ -63,7 +63,7 @@
         "extends": "file:node_modules/@sidekick/electron-webpack/out/electron-builder.js",
         "appId": "de.mixality.sidekick-desktop",
         "//": "!!! Oder besser 'de.mixality.sidekick.sidekick-desktop'? ???",
-        "productName": "Sidekick",
+        "productName": "SIDEKICK",
         "win": {
             "artifactName": "${productName} Portable ${version} ${arch}.${ext}",
             "icon": "build/icon.ico",
@@ -80,9 +80,9 @@
         },
         "appx": {
             "artifactName": "${productName} MS Store ${version} ${arch}.${ext}",
-            "applicationId": "Sidekick",
-            "displayName": "Sidekick",
-            "identityName": "Mixality.SidekickDesktop",
+            "applicationId": "SIDEKICK",
+            "displayName": "SIDEKICK",
+            "identityName": "Mixality.SIDEKICKDesktop",
             "publisher": "CN=5b744553-b6ec-446a-aa4e-d77024aa8c74",
             "publisherDisplayName": "Mixality",
             "backgroundColor": "#62ad44",
@@ -128,7 +128,7 @@
             "artifactName": "${productName}-${os}-${arch}-${version}.${ext}",
             "icon": "./build/",
             "synopsis": "Assistance system for the manual assembly utilizing the Scratch programming interface to create workflows.",
-            "description": "Sidekick is based on Scratch and features of the Scratch mod TurboWarp. Sidekick serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.",
+            "description": "SIDEKICK is based on Scratch and features of the Scratch mod TurboWarp. SIDEKICK serves as an assistance system tool to support people with disabilities in procedural workflows by displaying instructions for individual work steps. Workflows can be created via the Scratch programming interface.",
             "category": "Development",
             "extraFiles": [
                 "linux-files"

@@ -3,7 +3,7 @@
 
 const { app, dialog } = require("electron");
 
-const APP_NAME = "Sidekick Desktop";
+const APP_NAME = "SIDEKICK Desktop";
 const stringifyError = (error) => (error && error.stack ? error.stack : error);
 
 // process.on("unhandledRejection", (error) => {

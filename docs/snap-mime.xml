@@ -5,9 +5,9 @@
   <!-- !!! CHANGE !!! -->
   <!-- This file is from https://mixality.github.io/Sidekick/desktop/snap-mime.xml -->
   <!-- This file is from https://menersar.github.io/Sidekick/desktop/snap-mime.xml -->
-  <!-- The Snap version of Sidekick can't add file type information for Scratch projects files (sb, sb2, sb3) to your system. -->
+  <!-- The Snap version of SIDEKICK can't add file type information for Scratch projects files (sb, sb2, sb3) to your system. -->
   <!-- This file can be used to manually add that information. -->
-  <!-- This lets you set Sidekick (or any other app) as the opener for Scratch projects without affecting other file types such as normal zip archives. -->
+  <!-- This lets you set SIDEKICK (or any other app) as the opener for Scratch projects without affecting other file types such as normal zip archives. -->
   <mime-type type="application/x.scratch.sb3">
     <glob pattern="*.sb3" />
     <icon name="x-office-document" />
