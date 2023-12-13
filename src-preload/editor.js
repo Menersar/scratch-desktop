@@ -24,9 +24,9 @@ contextBridge.exposeInMainWorld("EditorPreload", {
   setExportForPackager: (callback) => {
     exportForPackager = callback;
   },
-  gpioSet: (gpio, drive) => ipcRenderer.sendSync("gpio-set", gpio, drive),
+  gpioSet: (pin, drive) => ipcRenderer.sendSync("gpio-set", pin, drive),
   gpioGet: (pin) => ipcRenderer.sendSync("gpio-get", pin),
-  gpioPull: (pin, val) => ipcRenderer.sendSync("gpio-pull", pin, op),
+  gpioPull: (pin, op) => ipcRenderer.sendSync("gpio-pull", pin, op),
 });
 
 let exportForPackager = () =>
