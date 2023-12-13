@@ -19,7 +19,14 @@ const privilegedFetch = require("../fetch");
 // const rebuildMenuBar = require("../menu-bar");
 
 // const readFile = promisify(fs.readFile);
-const gpio = require("ModuleGpiolib");
+// const gpio = require("ModuleGpiolib");
+
+if (process.platform === "linux") {
+  console.log("platform is linux");
+  //   const gpiolib = require("gpiolib.node");
+const gpio = require("../static/gpiolib.node");
+
+}
 
 const TYPE_FILE = "file";
 const TYPE_URL = "url";
