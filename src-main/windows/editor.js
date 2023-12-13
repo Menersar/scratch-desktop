@@ -404,7 +404,14 @@ class EditorWindow extends ProjectRunningWindow {
     ipc.on("gpio-set", (event, gpioPin, drive) => {
       if (process.platform === "linux") {
         const gpio = require(process.resourcesPath + "/static/gpiolib.node");
-        gpio.set(gpioPin, drive);
+
+        //
+        event.returnValue = gpio.set(gpioPin, drive);
+        // gpio.set(gpioPin, drive);
+        // event.returnValue = 1;
+        //
+      } else {
+        event.returnValue = -1;
       }
     });
 
@@ -412,13 +419,22 @@ class EditorWindow extends ProjectRunningWindow {
       if (process.platform === "linux") {
         const gpio = require(process.resourcesPath + "/static/gpiolib.node");
         event.returnValue = gpio.get(gpioPin, -1, -1);
+      } else {
+        event.returnValue = -1;
       }
     });
 
     ipc.on("gpio-pull", (event, gpioPin, pullOp) => {
       if (process.platform === "linux") {
         const gpio = require(process.resourcesPath + "/static/gpiolib.node");
-        gpio.pull(gpioPin, pullOp);
+
+        //
+        event.returnValue = gpio.pull(gpioPin, pullOp);
+        // gpio.pull(gpioPin, pullOp);
+        // event.returnValue = 1;
+        //
+      } else {
+        event.returnValue = -1;
       }
     });
 
