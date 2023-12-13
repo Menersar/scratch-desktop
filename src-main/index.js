@@ -20,8 +20,12 @@ require("./context-menu");
 require("./menu-bar");
 require("./crash-messages");
 // if (process.platform === "linux") {
-// require("../../static/gpiolib.node");
+//   const gpio = require("../../static/gpiolib.node");
+//   require("./static/gpiolib.node");
 // }
+if (process.platform === "linux") {
+    require(process.resourcesPath + "/static/gpiolib.node");
+}
 
 app.enableSandbox();
 

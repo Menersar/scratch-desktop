@@ -21,12 +21,15 @@ const privilegedFetch = require("../fetch");
 // const readFile = promisify(fs.readFile);
 // const gpio = require("ModuleGpiolib");
 
-if (process.platform === "linux") {
-  console.log("platform is linux");
-  //   const gpiolib = require("gpiolib.node");
-const gpio = require("../static/gpiolib.node");
+// if (process.platform === "linux") {
+//   console.log("platform is linux");
+//   //   const gpiolib = require("gpiolib.node");
+//   const gpio = require("../../../static/gpiolib.node");
+//   require("../static/gpiolib.node");
+// }
 
-}
+// const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+
 
 const TYPE_FILE = "file";
 const TYPE_URL = "url";
@@ -399,12 +402,19 @@ class EditorWindow extends ProjectRunningWindow {
       event.returnValue = prompts.alert(this.window, message);
     });
 
-    ipc.on("set-gpio", (event, gpioPin, drive) => {
+    ipc.on("gpio-set", (event, gpioPin, drive) => {
+        const gpio = require(process.resourcesPath + "/static/gpiolib.node");
       gpio.set(gpioPin, drive);
     });
 
-    ipc.on("get-gpio", (event, gpioPin) => {
+    ipc.on("gpio-get", (event, gpioPin) => {
+        const gpio = require(process.resourcesPath + "/static/gpiolib.node");
       event.returnValue = gpio.get(gpioPin, -1, -1);
+    });
+
+    ipc.on("gpio-pull", (event, gpioPin, pullOp) => {
+        const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+      gpio.pull(gpioPin, pullOp);
     });
 
     ipc.on("confirm", (event, message) => {
