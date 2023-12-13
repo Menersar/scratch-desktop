@@ -102,7 +102,6 @@
     "build": {
         "appId": "de.mixality.sidekick-desktop",
         "productName": "SIDEKICK",
-        "assets": ["node_modules/ModuleGpiolib"],
         "files": [
             "node_modules/**/*",
             "src-main/**/*",
@@ -111,7 +110,8 @@
             "src-renderer/**/*",
             "dist-renderer-webpack/**/*",
             "dist-library-files/**/*",
-            "dist-extensions/**/*"
+            "dist-extensions/**/*",
+            "node_modules/ModuleGpiolib"
         ],
         "extraResources": [
             {
