@@ -30,7 +30,6 @@ const privilegedFetch = require("../fetch");
 
 // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
 
-
 const TYPE_FILE = "file";
 const TYPE_URL = "url";
 const TYPE_SCRATCH = "scratch";
@@ -403,18 +402,24 @@ class EditorWindow extends ProjectRunningWindow {
     });
 
     ipc.on("gpio-set", (event, gpioPin, drive) => {
+      if (process.platform === "linux") {
         const gpio = require(process.resourcesPath + "/static/gpiolib.node");
-      gpio.set(gpioPin, drive);
+        gpio.set(gpioPin, drive);
+      }
     });
 
     ipc.on("gpio-get", (event, gpioPin) => {
+      if (process.platform === "linux") {
         const gpio = require(process.resourcesPath + "/static/gpiolib.node");
-      event.returnValue = gpio.get(gpioPin, -1, -1);
+        event.returnValue = gpio.get(gpioPin, -1, -1);
+      }
     });
 
     ipc.on("gpio-pull", (event, gpioPin, pullOp) => {
+      if (process.platform === "linux") {
         const gpio = require(process.resourcesPath + "/static/gpiolib.node");
-      gpio.pull(gpioPin, pullOp);
+        gpio.pull(gpioPin, pullOp);
+      }
     });
 
     ipc.on("confirm", (event, message) => {
