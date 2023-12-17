@@ -25,8 +25,8 @@ class PackagerPreviewWindow extends ProjectRunningWindow {
       backgroundColor: '#000000',
       webPreferences: {
         preload: null
-        // ,
-        // webSecurity: false
+        ,
+        webSecurity: false
       },
       // constructor will show it
       show: false
