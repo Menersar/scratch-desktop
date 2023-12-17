@@ -156,8 +156,8 @@ class BaseWindow {
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: true
-      // ,
-      // webSecurity: false
+      ,
+      webSecurity: false
     };
 
     const preloadName = this.getPreload();
