@@ -348,3 +348,16 @@ Scratch Desktop (Scratch 3.0 Offline Editor) on GNU/Linux:
 <https://gist.github.com/lyshie/0c49393076b8b375ca1bd98c28f95fb0?permalink_comment_id=4492637#gistcomment-4492637>
 
 - "But this version of Scratch won't have access to the GPIO and SenseHat extensions for the Raspberry Pi, sadly, since those extensions are exclusive to the special version of Scratch Desktop that comes with the official Raspberry Pi OS."
+
+
+## Build for RPi
+
+``` console
+npm run build l arm64 tar.gz
+```
+
+or
+
+``` console
+ npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes
+```
