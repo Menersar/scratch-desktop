@@ -20,7 +20,7 @@ require("./addons");
 // require("./static");
 require("./static/gpiolib.node");
 
-EditorPreload.getAdvancedCustomizations().then(({ userscript, userstyle }) => {
+EditorPreload.getAdvancedCustomizations().then(({ userscript, userstyle, modulescript }) => {
   if (userstyle) {
     const style = document.createElement("style");
     style.textContent = userstyle;
@@ -30,6 +30,13 @@ EditorPreload.getAdvancedCustomizations().then(({ userscript, userstyle }) => {
   if (userscript) {
     const script = document.createElement("script");
     script.textContent = userscript;
+    document.body.appendChild(script);
+  }
+
+  if (modulescript) {
+    const script = document.createElement("script");
+    script.textContent = modulescript;
+    script.type = "module";
     document.body.appendChild(script);
   }
 });

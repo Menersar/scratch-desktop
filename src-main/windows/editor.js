@@ -1,3 +1,4 @@
+var _ = require('lodash');
 // const fs = require("fs");
 // const { promisify } = require("util");
 const fsPromises = require("fs/promises");
@@ -17,6 +18,12 @@ const settings = require("../settings");
 // const privilegedFetchAsBuffer = require("../fetch");
 const privilegedFetch = require("../fetch");
 // const rebuildMenuBar = require("../menu-bar");
+
+const ws281x1 = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
+const ws281x = require("rpi-ws281x-native");
+
+// // const ws281x2 = require("../static/rpi-ws281x-native/lib/ws281x-native");
+// const ws281x = require('node-rpi-ws281x-native-2');
 
 // const readFile = promisify(fs.readFile);
 // const gpio = require("ModuleGpiolib");
@@ -424,6 +431,156 @@ class EditorWindow extends ProjectRunningWindow {
       }
     });
 
+
+
+
+    ipc.on("ws281x-init-color-render", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions) => {
+
+      // ws281x = require(process.resourcesPath + "/static/rpi-ws281x-native/lib/ws281x-native");
+
+      var channel = ws281x(ws281xNumLEDs, ws281xOptions);
+      // var channel = ws281x1(ws281xNumLEDs, ws281xOptions);
+
+      var pixelData = channel.array;
+
+      // // ---- trap the SIGINT and reset before exit
+      // process.on('SIGINT', function () {
+      //   ws281x.reset();
+      //   ws281x.finalize();
+      //   process.nextTick(function () { process.exit(0); });
+      // });
+
+      for (var i = ws281xNumStartLEDs; i < ws281xNumEndLEDs; i++) {
+        pixelData[i] = ws281xColorLEDs;
+      }
+
+      ws281x.render();
+      // ws281x1.render();
+      event.returnValue = 1;
+
+      // console.log('Press <ctrl>+C to exit.');
+
+
+      // const ws281x = require(process.resourcesPath + "/static/rpi-ws281x-native/lib/ws281x-native");
+      // event.returnValue = new ws281x.Channel
+      // event.returnValue = -1;
+    });
+
+
+    ipc.on("ws281x-init", (event, ws281xNumLEDs, ws281xOptions) => {
+
+      const ws281x = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
+
+      // Return: Channel
+      event.returnValue = ws281x(ws281xNumLEDs, ws281xOptions);
+    });
+
+
+    ipc.on("ws281x-render", (event) => {
+
+      const ws281x = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
+
+      event.returnValue = ws281x.render();
+
+    });
+
+    ipc.on("ws281x-set-color", (event, ws281xChannel, ws281xNumLEDs, ws281xColorLEDs) => {
+
+      // const ws281x = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
+
+      var pixelData = ws281xChannel.array;
+
+      for (var i = 0; i < ws281xNumLEDs; i++) {
+        pixelData[i] = ws281xColorLEDs;
+      }
+
+      event.returnValue = pixelData;
+    });
+
+
+
+
+
+
+
+    // 
+    // --------------------------------------------------------------------------------------------------------------------------------------------------
+    // 
+    // Call a function via the received function and module name.
+    // 
+    // Call a function from its name stored in a string using JavaScript:
+    // Source: https://www.tutorialspoint.com/how-to-call-a-function-from-its-name-stored-in-a-string-using-javascript
+    // 
+    // IMPROTANT NOTE: Use of `eval()`:
+    // - Executing JavaScript from a string is an BIG security risk.
+    // - With eval(), malicious code can run inside your application without permission.
+    // - With eval(), third-party code can see the scope of your application, which can lead to possible attacks.
+    // 
+    // Optional chaining (?.)
+    // (Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+    // - The optional chaining (?.) operator accesses an object's property or calls a function. 
+    // - If the object accessed or function called using this operator is undefined or null: 
+    //  - The expression short circuits and evaluates to undefined instead of throwing an error.
+    // 
+    ipc.on("run-function-of-module", async (event, moduleName, functionName, functionArguments) => {
+      if (functionName) {
+        const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
+        event.returnValue = EditorWindow.executeFunctionByName(requiredModule, functionName, functionArguments);
+      } else if (!functionName && functionArguments) {
+        const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
+        event.returnValue = EditorWindow.executeModuleFunction(requiredModule, functionArguments);
+        // event.returnValue = require(process.resourcesPath + "/static/" + moduleName);
+      } else {
+        const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
+        // handle('stuffgetList', async () => {
+        return _.cloneDeep(requiredModule);
+        // })
+
+      }
+      // if (funtionArguments == "") {
+      // context[func].apply(context, args);
+      // event.returnValue = requiredModule[functionName]();
+      // } else {
+      // event.returnValue = requiredModule[functionName]();
+      // }
+      // if (process.platform === "linux") {
+      // event.returnValue = requiredModule.get(gpioPin, -1, -1);
+
+
+      // } else {
+      // event.returnValue = -1;
+      // }
+    });
+    // 
+    // --------------------------------------------------------------------------------------------------------------------------------------------------
+    // 
+
+
+    // moduleName: STRING, functionName: STRING, functionArguments: ARRAY)
+    ipc.on("function-module-run", (event, moduleName, functionName, functionArguments) => {
+      // if (process.platform === "linux") {
+      // EditorWindow.executeFunctionByName()
+
+      const functionContext = require(process.resourcesPath + "/static/" + moduleName);
+      // moduleName: STRING, functionName: STRING, functionArguments: ARRAY)
+      var executedFunction = EditorWindow.executeFunctionByName(functionContext, functionName, functionArguments);
+      event.returnValue = executedFunction;
+
+      // gpio.get(gpioPin, -1, -1);
+      // } else {
+      // event.returnValue = -1;
+      // }
+    });
+
+    ipc.on("module-get", (event, moduleName) => {
+      // if (process.platform === "linux") {
+      const module = require(process.resourcesPath + "/static/" + moduleName);
+      event.returnValue = module;
+      // } else {
+      // event.returnValue = -1;
+      // }
+    });
+
     ipc.on("gpio-pull", (event, gpioPin, pullOp) => {
       if (process.platform === "linux") {
         const gpio = require(process.resourcesPath + "/static/gpiolib.node");
@@ -475,23 +632,36 @@ class EditorWindow extends ProjectRunningWindow {
         app.getPath("userData"),
         "userstyle.css"
       );
+      const MODULESCRIPT_PATH = path.join(
+        app.getPath("userData"),
+        "modulescript.js"
+      );
 
-      const [userscript, userstyle] = await Promise.all([
+      const [userscript, userstyle, modulescript] = await Promise.all([
         // readFile(USERSCRIPT_PATH, "utf-8").catch(() => ""),
         // readFile(USERSTYLE_PATH, "utf-8").catch(() => ""),
         fsPromises.readFile(USERSCRIPT_PATH, "utf-8").catch(() => ""),
         fsPromises.readFile(USERSTYLE_PATH, "utf-8").catch(() => ""),
+        fsPromises.readFile(MODULESCRIPT_PATH, "utf-8").catch(() => ""),
       ]);
 
       return {
         userscript,
         userstyle,
+        modulescript,
       };
     });
 
     this.loadURL("sidekick-editor://./gui/gui.html");
     this.show();
   }
+
+
+
+
+
+
+
 
   getPreload() {
     return "editor";
@@ -564,6 +734,107 @@ class EditorWindow extends ProjectRunningWindow {
   static newWindow() {
     new EditorWindow(null);
   }
+
+
+  static executeFunctionByName(functionContext, functionName, functionArguments) {
+    functionContext = functionContext == undefined ? window : functionContext;
+    // ARRAY (function namespaces):
+    var namespaces = functionName.split(".");
+    // ARRAY (function arguments):
+    // var args = Array.prototype.slice.call(arguments, 2);
+    // STRING (function name):
+    var func = namespaces.pop();
+    // 
+    // 
+    for (var i = 0; i < namespaces.length; i++) {
+      // THIS value:
+      functionContext = functionContext[namespaces[i]];
+    }
+    // RETURN value of FUNCTION call:
+    // return context[func].apply(context, args);
+    return functionContext[func].apply(functionContext, functionArguments);
+  }
+
+  static executeModuleFunction(functionContext, functionArguments) {
+    functionContext = functionContext == undefined ? window : functionContext;
+    // ARRAY (function namespaces):
+    // var namespaces = functionName.split(".");
+    // ARRAY (function arguments):
+    // var args = Array.prototype.slice.call(arguments, 2);
+    // STRING (function name):
+    // var func = namespaces.pop();
+    // 
+    // 
+    // for (var i = 0; i < namespaces.length; i++) {
+    //   // THIS value:
+    //   functionContext = functionContext[namespaces[i]];
+    // }
+    // RETURN value of FUNCTION call:
+    // return context[func].apply(context, args);
+    // return functionContext.apply(functionContext, functionArguments);
+
+    // return eval(functionContext + "(" + functionArguments + ")");
+    // Use the elements of an array as arguments to a function via:
+    // - Function.prototype.apply()
+    // or
+    // With spread syntax. (e.g.: function myFunction(x, y, z) {} const args = [0, 1, 2]; myFunction(...args);)
+    // (Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_function_calls)
+    return functionContext(...functionArguments);
+  }
+
+
+  // static executeFunctionByName(functionName, context /*, args */) {
+  //   context = context == undefined? window:context;
+  //   // 
+  //   // 
+  //   // `namespaces` = 'array' from devided `functionName` by `.` (substrings of string `functionName` put into and returned as an array).
+  //   // `functionName` = String value.
+  //   // 
+  //   // ARRAY (function namespaces):
+  //   var namespaces = functionName.split(".");
+  //   // 
+  //   // 
+  //   // `args` = 'array' from `arguments`, starting at 'index = 2' (converted from array-like or iterable object `args` into a genuine array).
+  //   // `arguments` = 'array-like object' with function's 'arguments' as values (accessible inside functions).
+  //   // 
+  //   // ARRAY (function arguments):
+  //   var args = Array.prototype.slice.call(arguments, 2);    
+  //   // 
+  //   // 
+  //   // `func` = last element from array `namespaces` (removed from `namespaces`).
+  //   // 
+  //   // STRING (function name):
+  //   var func = namespaces.pop();
+  //   // 
+  //   // 
+  //   for (var i = 0; i < namespaces.length; i++) {
+  //     // Context: Environment in which something is being run.
+  //     // Context: May change depending on how the code is being run.
+  //     // Namespaces: Defines a fixed environment.
+  //     // (Source: https://stackoverflow.com/questions/8182110/what-is-the-difference-between-context-and-namespace#:~:text=While%20JavaScript%20doesn't%20have,referenced%20by%20the%20this%20keyword.)
+  //     //
+  //     // Context of the to be executed target function.
+  //     // (Source: https://stackoverflow.com/a/4351575/21550052) 
+  //     // 
+  //     // 
+  //     // THIS value:
+  //     context = context[namespaces[i]];
+  //   }
+  //   // 
+  //   // 
+  //   // `apply()` method calls a function of Function instances with a given `this` value, and `arguments` provided as an 'array' (or an array-like object).
+  //   // 
+  //   // The keyword `this` resolves to a value and typically points to an object. What it points to depends on the context.
+  //   // (Source: https://wiki.selfhtml.org/wiki/JavaScript/Tutorials/OOP/Objektverf%C3%BCgbarkeit_und_this; redirected through the keyword 'this' from this source: https://wiki.selfhtml.org/wiki/JavaScript/Objekte/Function/apply)
+  //   // 
+  //   // `context` = '`this` value'.
+  //   // `args` = 'array'.
+  //   // 
+  //   // RETURN value of FUNCTION call:
+  //   return context[func].apply(context, args);
+  // }
+
+
 }
 
 module.exports = EditorWindow;

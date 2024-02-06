@@ -27,6 +27,17 @@ contextBridge.exposeInMainWorld("EditorPreload", {
   gpioSet: (pin, drive) => ipcRenderer.sendSync("gpio-set", pin, drive),
   gpioGet: (pin) => ipcRenderer.sendSync("gpio-get", pin),
   gpioPull: (pin, op) => ipcRenderer.sendSync("gpio-pull", pin, op),
+  // moduleGet: (module) => ipcRenderer.sendSync("module-get", module),
+  // runModuleFunction: (mdl, fct, ...argmts) => ipcRenderer.sendSync("function-module-run", mdl, fct, ...argmts),
+  // 
+  // 
+  // mdl (moduleName): STRING, fct (functionName): STRING, argmt (functionArguments): ARRAY)
+  runFunctionOfModule: (mdl, fct, argmt) => ipcRenderer.sendSync("run-function-of-module", mdl, fct, argmt),
+  // 
+  //
+  ws281xInitColorRender: (leds, start, end, color, optns) => ipcRenderer.sendSync("ws281x-init-color-render", leds, start, end, color, optns),
+  ws281xInit: (leds, optns) => ipcRenderer.sendSync("ws281x-init", leds, optns),
+
 });
 
 let exportForPackager = () =>

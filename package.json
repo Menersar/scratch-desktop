@@ -15,7 +15,11 @@
     },
     "scripts": {
         "build": "cd build-automation && node build.js",
-        "postinstall": "npm run install-native-module && npm run fetch && npm run webpack:prod",
+        "fix:ws281x-install": "fix:ws281x-rebuild && git clone https://github.com/jgarff/rpi_ws281x.git && rm -rf node_modules/rpi-ws281x-native/src/rpi_ws281x && cp -r rpi_ws281x node_modules/rpi-ws281x-native/src && rm -rf rpi_ws281x && cd node_modules/rpi-ws281x-native && sudo node-gyp rebuild",
+        "fix:ws281x-rebuild": "npm install -g node-gyp",
+        "build:test": "electron-builder --dir",
+        "postinstall": "npm run fetch && npm run webpack:prod && fix:ws281x-install",
+        "postinstall2": "npm run install-native-module && npm run fetch && npm run webpack:prod",
         "install-native-module": "cp-cli src-main/static/gpiolib.node ./node_modules/ModuleGpiolib/",
         "release:win": "npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
         "release:linux": "npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
@@ -61,9 +65,12 @@
         "scratch:test": "npm run test:lint",
         "scratch:test:lint": "eslint --cache --color --ext .jsx,.js .",
         "scratch:mklink:blocks": "python build-blocks.py",
-        "roni": "node roni.js"
+        "roni": "node roni.js",
+        "ws281x-rpi": "git+https://github.com/Simontaga/node-rpi-ws281x-native.git#update-sub-module"
     },
     "dependencies": {
+        "lodash": "^4.17.21",
+        "rpi-ws281x-native": "^1.0.4",
         "semver": "^7.5.3",
         "tslib": "^2.6.2"
     },
@@ -106,6 +113,8 @@
             "node_modules/**/*",
             "src-main/**/*",
             "src-main/static/gpiolib.node",
+            "src-main/static/rpi-ws281x-native/**/*",
+            "!**/src-main/static",
             "src-preload/**/*",
             "src-renderer/**/*",
             "dist-renderer-webpack/**/*",
@@ -121,6 +130,13 @@
             {
                 "from": "src-main/static/gpiolib.node",
                 "to": "static/gpiolib.node"
+            },
+            {
+                "from": "src-main/static/rpi-ws281x-native",
+                "to": "static/rpi-ws281x-native",
+                "filter": [
+                    "!.git"
+                ]
             }
         ],
         "win": {

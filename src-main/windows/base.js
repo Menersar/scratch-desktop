@@ -153,7 +153,7 @@ class BaseWindow {
 
     // These should all be redundant already, but defense-in-depth.
     options.webPreferences = {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       sandbox: true
       ,

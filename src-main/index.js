@@ -25,6 +25,7 @@ require("./crash-messages");
 // }
 if (process.platform === "linux") {
     require(process.resourcesPath + "/static/gpiolib.node");
+    // require(process.resourcesPath + "/static/rpi-ws281x-native");
 }
 
 app.enableSandbox();

@@ -350,14 +350,94 @@ Scratch Desktop (Scratch 3.0 Offline Editor) on GNU/Linux:
 - "But this version of Scratch won't have access to the GPIO and SenseHat extensions for the Raspberry Pi, sadly, since those extensions are exclusive to the special version of Scratch Desktop that comes with the official Raspberry Pi OS."
 
 
-## Build for RPi
-
+## Build desktop application for RPi
+### tar.gz
+Archive and compress as `tar.gz` archive.
 ``` console
 npm run build l arm64 tar.gz
 ```
-
 or
-
 ``` console
  npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes
 ```
+### deb
+Package as Software distribution / Debian package (`.deb`)
+``` console
+sudo npm run build l arm64 deb
+```
+or
+``` console
+ npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes
+```
+
+### AppImage
+Distribute as portable software format (`AppImage`).
+``` console
+npm run build l arm64 AppImage
+```
+or
+``` console
+npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes
+```
+
+
+
+
+## Include files in resources of the built app
+Add the **file** / **folder** to the `extraResources` parameter in the `build` parameter in `package.json`.
+- e.g.: 
+  ``` json
+  "extraResources": [
+              // Include a file:
+              {
+                  "from": "src-main/static/gpiolib.node",
+                  "to": "static/gpiolib.node"
+              },
+              // Include a folder:
+              {
+                  "from": "src-main/static/rpi-ws281x-native",
+                  "to": "static/rpi-ws281x-native",
+                  "filter": [
+                      "!.git"
+                  ]
+             }
+          ],
+  ```
+
+
+## Expose in main world
+To expose functions or properties, add information to the files `src-preload/editor.js` and `src-main/windows/editor.js`.
+(E.g. expose a native module to the renderer process)
+
+### src-preload/editor.js
+Expose via `contextBridge.exposeInMainWorld`.
+- E.g. add `gpioGet: (pin) => ipcRenderer.sendSync("gpio-get", pin)` to `contextBridge.exposeInMainWorld("EditorPreload", {})`:
+  ```js
+  contextBridge.exposeInMainWorld("EditorPreload", {
+    gpioGet: (pin) => ipcRenderer.sendSync("gpio-get", pin),
+  });
+  ```
+
+### src-main/windows/editor.js
+In this file, a `ipcMain` module is created via `const ipc = this.window.webContents.ipc`.
+
+`ipcMain` module:
+- It is an Event Emitter. 
+- When used in the main process, it handles asynchronous and synchronous messages sent from a renderer process (web page).
+- Messages sent from a renderer will be emitted to this module.
+(Source: https://www.electronjs.org/docs/latest/api/ipc-main)
+
+`ipcMain.on(channel, listener)`:
+Listens to channel, when a new message arrives listener would be called with listener(event, args...).
+
+- E.g. add the functionality via `ipc.on("gpio-get", (event, gpioPin)` if the message `gpio-get` arrives:
+  ```js
+  ipc.on("gpio-get", (event, gpioPin) => {
+        if (process.platform === "linux") {
+          const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+          event.returnValue = gpio.get(gpioPin, -1, -1);
+        } else {
+          event.returnValue = -1;
+        }
+      });
+  ```

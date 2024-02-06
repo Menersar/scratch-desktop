@@ -56,6 +56,14 @@ const base = {
           },
         ],
       },
+      // https://yorkyu.cn/scratch-example-build-cra-blocks-vm-14f14897be6a.html
+      // https://cloud.tencent.com/developer/article/1961091
+      // {
+      //   test: /\.(vert|frag)$/i,
+      //   use: {
+      //     loader: './loader/vert-frag-loader.js', // 关键loader配置，后续文章解释
+      //   },
+      // },
       // ,
       {
         test: /\.node$/,
