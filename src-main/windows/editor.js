@@ -19,8 +19,9 @@ const settings = require("../settings");
 const privilegedFetch = require("../fetch");
 // const rebuildMenuBar = require("../menu-bar");
 
-const ws281x1 = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
-const ws281x = require("rpi-ws281x-native");
+// const ws281x1 = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
+// const ws281x = require("rpi-ws281x-native");
+const ws281x = require("@simontaga/rpi-ws281x-native");
 
 // // const ws281x2 = require("../static/rpi-ws281x-native/lib/ws281x-native");
 // const ws281x = require('node-rpi-ws281x-native-2');
