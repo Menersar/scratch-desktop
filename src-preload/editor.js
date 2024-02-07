@@ -35,8 +35,8 @@ contextBridge.exposeInMainWorld("EditorPreload", {
   runFunctionOfModule: (mdl, fct, argmt) => ipcRenderer.sendSync("run-function-of-module", mdl, fct, argmt),
   // 
   //
-//   ws281xInitColorRender: (leds, start, end, color, optns) => ipcRenderer.sendSync("ws281x-init-color-render", leds, start, end, color, optns),
-//   ws281xInit: (leds, optns) => ipcRenderer.sendSync("ws281x-init", leds, optns),
+  ws281xInitColorRender: (leds, start, end, color, optns) => ipcRenderer.sendSync("ws281x-init-color-render", leds, start, end, color, optns),
+  ws281xInit: (leds, optns) => ipcRenderer.sendSync("ws281x-init", leds, optns),
 
 });
 
