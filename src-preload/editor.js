@@ -32,12 +32,13 @@ contextBridge.exposeInMainWorld("EditorPreload", {
   // 
   // 
   // mdl (moduleName): STRING, fct (functionName): STRING, argmt (functionArguments): ARRAY)
-  runFunctionOfModule: (mdl, fct, argmt) => ipcRenderer.sendSync("run-function-of-module", mdl, fct, argmt),
+  // runFunctionOfModule: (mdl, fct, argmt) => ipcRenderer.sendSync("run-function-of-module", mdl, fct, argmt),
   // 
   //
-  ws281xInitColorRender: (leds, start, end, color, optns) => ipcRenderer.sendSync("ws281x-init-color-render", leds, start, end, color, optns),
-  ws281xInit: (leds, optns) => ipcRenderer.sendSync("ws281x-init", leds, optns),
-
+  // ws281xInitColorRender: (leds, start, end, color, optns) => ipcRenderer.sendSync("ws281x-init-color-render", leds, start, end, color, optns),
+  ws281xInitColorRender: (leds, start, end, color, dma, freq, gpio, inv, brghtnss, strptype) => ipcRenderer.sendSync("ws281x-init-color-render", leds, start, end, color, dma, freq, gpio, inv, brghtnss, strptype),
+  // ws281xInit: (leds, optns) => ipcRenderer.sendSync("ws281x-init", leds, optns),
+  // DMA, FREQUENCY, GPIO, INVERT, BRIGHTNESS, STRIP_TYPE
 });
 
 let exportForPackager = () =>

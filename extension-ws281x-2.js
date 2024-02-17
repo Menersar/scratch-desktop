@@ -305,8 +305,8 @@
             const ledStart = Cast.toNumber(args.START);
             const ledEnd = Cast.toNumber(args.END);
             const hexColor = Cast.toString(args.COLOR);
-            const hexColorShort = hexColor.slice(1);
-            const decimalColor = this.hex2Decimal(hexColorShort);
+            // const hexColorShort = hexColor.slice(1);
+            // const decimalColor = this.hex2Decimal(hexColorShort);
 
             const NUM_LEDS = 7;
             const GPIO = 18;
@@ -337,7 +337,8 @@
             // console.info("args.COLOR")
             // console.info(args.COLOR)
 
-            EditorPreload.ws281xInitColorRender(NUM_LEDS, ledStartIndex, ledEndIndex, decimalColor, options);
+            // EditorPreload.ws281xInitColorRender(NUM_LEDS, ledStartIndex, ledEndIndex, hexColor, options);
+            EditorPreload.ws281xInitColorRender(NUM_LEDS, ledStartIndex, ledEndIndex, hexColor, DMA, FREQUENCY, GPIO, INVERT, BRIGHTNESS, STRIP_TYPE);
 
             // const pin = Cast.toNumber(args.GPIO);
             // const val = Cast.toString(args.PULL);
@@ -469,7 +470,7 @@
             }];
 
             // const wsModule = EditorPreload.runFunctionOfModule("rpi-ws281x-native/lib/ws281x-native", "init", stripSettings);
-            const channels = EditorPreload.runFunctionOfModule("rpi-ws281x-native/lib/ws281x-native", "init", stripSettings);
+            // const channels = EditorPreload.runFunctionOfModule("rpi-ws281x-native/lib/ws281x-native", "init", stripSettings);
             // console.log(channels);
             // const channels = executeFunctionByName("init", ws281x, { dma, freq, channels: [channelOptions] });
 

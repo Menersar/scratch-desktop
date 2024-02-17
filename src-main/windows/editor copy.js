@@ -21,68 +21,9 @@ const privilegedFetch = require("../fetch");
 
 // const ws281x1 = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
 // const ws281x = require("rpi-ws281x-native");
-const sudoJS = require('sudo-js');
-// const ControlWS281X = require('./ws281x-control');
 
-// const bleno = require("bleno");
-// var ws281x = require('rpi-ws281x-native/lib/ws281x-native');
-
-// const ws281x1 = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
-// const ws281x = require("rpi-ws281x-native");
-// const ws281x = require("@simontaga/rpi-ws281x-native/lib/ws281x-native");
-
-
-
-// class LEDBrightnessCharacteristic extends bleno.Characteristic {
-//   constructor(uuid, name) {
-//     super({
-//       uuid: uuid,
-//       properties: ["read", "write"],
-//       value: null,
-//       descriptors: [
-//         new bleno.Descriptor({
-//           uuid: "2901",
-//           value: name
-//         })
-//       ]
-//     });
-//     this.argument = 0;
-//     this.name = name;
-//   }
-//   onWriteRequest(data, offset, withoutResponse, callback) {
-//     try {
-//       if (data.length == 0) {
-//         callback(this.RESULT_INVALID_ATTRIBUTE_LENGTH);
-//         return;
-//       }
-//       console.log(`raw data ${data}`);
-//       this.argument = data;
-//       ws281x.setBrightness(parseInt(data));
-//       console.log(`LED Brightness ${this.name} is now ${this.argument}`);
-
-//       callback(this.RESULT_SUCCESS);
-//     } catch (err) {
-//       console.error(err);
-//       callback(this.RESULT_UNLIKELY_ERROR);
-//     }
-//   }
-//   onReadRequest(offset, callback) {
-//     try {
-//       const result = 255;
-//       console.log(`LEDBrightnessCharacteristic result: ${result}`);
-//       let data = new Buffer(1);
-//       data.writeUInt8(result, 0);
-//       callback(this.RESULT_SUCCESS, data);
-//     } catch (err) {
-//       console.error(err);
-//       callback(this.RESULT_UNLIKELY_ERROR);
-//     }
-//   }
-// }
-
-
-
-
+const bleno = require("bleno");
+var ws281x = require('rpi-ws281x-native/lib/ws281x-native');
 
 
 // // const ws281x2 = require("../static/rpi-ws281x-native/lib/ws281x-native");
@@ -497,92 +438,33 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
-    // ipc.on("ws281x-init-color-render", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions) => {
-    ipc.on("ws281x-init-color-render", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType) => {
+    ipc.on("ws281x-init-color-render", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions) => {
 
-      // console.info("event")
-      // console.info(event)
-      // console.info("ws281xNumLEDs")
-      // console.info(ws281xNumLEDs)
-      // console.info("ws281xNumStartLEDs")
-      // console.info(ws281xNumStartLEDs)
-      // console.info("ws281xNumEndLEDs")
-      // console.info(ws281xNumEndLEDs)
-      // console.info("ws281xColorLEDs")
-      // console.info(ws281xColorLEDs)
-      // console.info("ws281xOptions")
-      // console.info(ws281xOptions)
+      // ws281x = require(process.resourcesPath + "/static/rpi-ws281x-native/lib/ws281x-native");
 
-      // ws281xOptions.
+      var channel = ws281x(ws281xNumLEDs, ws281xOptions);
+      // var channel = ws281x1(ws281xNumLEDs, ws281xOptions);
 
-      ws281xNumLEDs = ws281xNumLEDs.toString();
-      ws281xNumStartLEDs = ws281xNumStartLEDs.toString();
-      ws281xNumEndLEDs = ws281xNumEndLEDs.toString();
-      ws281xColorLEDs = ws281xColorLEDs.toString();
-      ws281xDMA = ws281xDMA.toString();
-      ws281xFrequency = ws281xFrequency.toString();
-      ws281xGPIO = ws281xGPIO.toString();
-      ws281xInvert = ws281xInvert.toString();
-      ws281xBrightness = ws281xBrightness.toString();
-      ws281xStripType = ws281xStripType.toString();
+      var pixelData = channel.array;
 
 
-      console.log('ws281xNumLEDs: ' + ws281xNumLEDs + ', ws281xNumStartLEDs: ' + ws281xNumStartLEDs + ', ws281xNumEndLEDs: ' + ws281xNumEndLEDs + ', ws281xColorLEDs: ' + ws281xColorLEDs + ', ws281xDMA: ' + ws281xDMA + ', ws281xFrequency: ' + ws281xFrequency + ', ws281xGPIO: ' + ws281xGPIO + ', ws281xInvert: ' + ws281xInvert + ', ws281xBrightness: ' + ws281xBrightness + ', ws281xStripType: ' + ws281xStripType);
-
-        sudoJS.setPassword('sidekick');
-
-      // var command = ['chmod', '0777', './ws281x-control.js'];
-      // var command = ['node', './ws281x-control.js', ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions];
-      // var command = ['node', './ws281x-control.js', ws281xNumLEDs.toString(), ws281xNumStartLEDs.toString(), ws281xNumEndLEDs.toString(), ws281xColorLEDs.toString(), ws281xDMA.toString(), ws281xFrequency.toString(), ws281xGPIO.toString(), ws281xInvert.toString(), ws281xBrightness.toString(), ws281xStripType.toString()];
-      var command = ['node', './ws281x-control.js', ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType];
-          
-      console.log('command: ' + command);
+      var NUM_LEDS = 10, pixelData = new Uint32Array(NUM_LEDS);
 
 
-      event.returnValue = sudoJS.exec(command, function (err, pid, result) {
+      // // ---- trap the SIGINT and reset before exit
+      // process.on('SIGINT', function () {
+      //   ws281x.reset();
+      //   ws281x.finalize();
+      //   process.nextTick(function () { process.exit(0); });
+      // });
 
-        console.log(result);
-        // event.returnValue = result;
-      });
+      for (var i = ws281xNumStartLEDs; i < ws281xNumEndLEDs; i++) {
+        pixelData[i] = ws281xColorLEDs;
+      }
 
-      // ControlWS281X.ws281xInitColorRender(ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions);
-      // ControlWS281X.ws281xInitColorRender(ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType);
-
-      // const ws281x = require("@simontaga/rpi-ws281x-native/lib/ws281x-native");
-
-      // // ws281x = require(process.resourcesPath + "/static/rpi-ws281x-native/lib/ws281x-native");
-
-      // var channel = ws281x(ws281xNumLEDs, ws281xOptions);
-      // // var channel = ws281x1(ws281xNumLEDs, ws281xOptions);
-
-      // var pixelData = channel.array;
-
-      // // // ---- trap the SIGINT and reset before exit
-      // // process.on('SIGINT', function () {
-      // //   ws281x.reset();
-      // //   ws281x.finalize();
-      // //   process.nextTick(function () { process.exit(0); });
-      // // });
-
-      // var iterator = ws281xNumLEDs;
-      // while (iterator--) {
-      //   pixelData[iterator] = 0;
-      // }
-      // // for (var i = 0; i < ws281xNumLEDs; i++) {
-      // //   pixelData[i] = 0;
-      // // }
-
-      // // 1 
-      // // 2 - 4
-      // // 5 - 7
-      // for (var i = ws281xNumStartLEDs; i <= ws281xNumEndLEDs; i++) {
-      //   pixelData[i] = ws281xColorLEDs;
-      // }
-
-      // // ws281x.render();
-      // // ws281x1.render();
-      // ws281x.render();
-      // event.returnValue = 1;
+      ws281x.render();
+      // ws281x1.render();
+      event.returnValue = 1;
 
       // console.log('Press <ctrl>+C to exit.');
 
@@ -593,70 +475,13 @@ class EditorWindow extends ProjectRunningWindow {
     });
 
 
-    // ipc.on("ws281x-bleno", (event) => {
+    ipc.on("ws281x-init", (event, ws281xNumLEDs, ws281xOptions) => {
 
-    //   var NUM_LEDS = 10, pixelData = new Uint32Array(NUM_LEDS);
-    //   process.on('SIGINT', function () { 
-    //     ws281x.reset();
-    //     process.nextTick(function () { 
-    //       process.exit(0); 
-    //     }); 
-    //   });
+      const ws281x = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
 
-    //   const LED_SERVICE_UUID = "00010000-89BD-43C8-9231-40F6E305F96D"; 
-    //   const LED_PATTERN_UUID = "00010001-89BD-43C8-9231-40F6E305F96D"; 
-    //   const LED_BRIGHTNESS_UUID = "00010002-89BD-43C8-9231-40F6E305F96D";
-
-
-    //   bleno.on("stateChange", state => {
-    //     if (state === "poweredOn") {
-
-    //       bleno.startAdvertising("PartyLapel", [PARTYLAPEL_SERVICE_UUID], err => {
-    //         if (err) console.log(err);
-    //       });
-    //     } else {
-    //       console.log("Stopping...");
-    //       bleno.stopAdvertising();
-    //     }
-    //   });
-
-
-    //   bleno.on("advertisingStart", err => {
-    //     console.log("Configuring services...");
-
-    //     if (err) {
-    //       console.error(err);
-    //       return;
-    //     }
-    //     let LEDpattern = new LEDPatternCharacteristic(LED_PATTERN_UUID, "LED Pattern");
-    //     let LEDBrightness = new LEDBrightnessCharacteristic(LED_BRIGHTNESS_UUID, "LED Brightness");
-    //     let partylapel = new bleno.PrimaryService({
-    //       uuid: PARTYLAPEL_SERVICE_UUID,
-    //       characteristics: [
-    //         LEDpattern,
-    //         LEDBrightness
-    //       ]
-    //     });
-    //     bleno.setServices([partylapel], err => {
-    //       if (err)
-    //         console.log(err);
-    //       else
-    //         console.log("Services configured");
-    //     });
-    //   });
-
-    //   event.returnValue = 1;
-
-    // });
-
-
-    // ipc.on("ws281x-init", (event, ws281xNumLEDs, ws281xOptions) => {
-
-    //   const ws281x = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
-
-    //   // Return: Channel
-    //   event.returnValue = ws281x(ws281xNumLEDs, ws281xOptions);
-    // });
+      // Return: Channel
+      event.returnValue = ws281x(ws281xNumLEDs, ws281xOptions);
+    });
 
 
     ipc.on("ws281x-render", (event) => {
@@ -705,41 +530,35 @@ class EditorWindow extends ProjectRunningWindow {
     // - If the object accessed or function called using this operator is undefined or null: 
     //  - The expression short circuits and evaluates to undefined instead of throwing an error.
     // 
+    ipc.on("run-function-of-module", async (event, moduleName, functionName, functionArguments) => {
+      if (functionName) {
+        const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
+        event.returnValue = EditorWindow.executeFunctionByName(requiredModule, functionName, functionArguments);
+      } else if (!functionName && functionArguments) {
+        const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
+        event.returnValue = EditorWindow.executeModuleFunction(requiredModule, functionArguments);
+        // event.returnValue = require(process.resourcesPath + "/static/" + moduleName);
+      } else {
+        const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
+        // handle('stuffgetList', async () => {
+        return _.cloneDeep(requiredModule);
+        // })
+
+      }
+      // if (funtionArguments == "") {
+      // context[func].apply(context, args);
+      // event.returnValue = requiredModule[functionName]();
+      // } else {
+      // event.returnValue = requiredModule[functionName]();
+      // }
+      // if (process.platform === "linux") {
+      // event.returnValue = requiredModule.get(gpioPin, -1, -1);
 
 
-
-    // ipc.on("run-function-of-module", async (event, moduleName, functionName, functionArguments) => {
-    //   if (functionName) {
-    //     const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
-    //     event.returnValue = EditorWindow.executeFunctionByName(requiredModule, functionName, functionArguments);
-    //   } else if (!functionName && functionArguments) {
-    //     const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
-    //     event.returnValue = EditorWindow.executeModuleFunction(requiredModule, functionArguments);
-    //     // event.returnValue = require(process.resourcesPath + "/static/" + moduleName);
-    //   } else {
-    //     const requiredModule = await require(process.resourcesPath + "/static/" + moduleName);
-    //     // handle('stuffgetList', async () => {
-    //     return _.cloneDeep(requiredModule);
-    //     // })
-
-    //   }
-    //   // if (funtionArguments == "") {
-    //   // context[func].apply(context, args);
-    //   // event.returnValue = requiredModule[functionName]();
-    //   // } else {
-    //   // event.returnValue = requiredModule[functionName]();
-    //   // }
-    //   // if (process.platform === "linux") {
-    //   // event.returnValue = requiredModule.get(gpioPin, -1, -1);
-
-
-    //   // } else {
-    //   // event.returnValue = -1;
-    //   // }
-    // });
-
-
-
+      // } else {
+      // event.returnValue = -1;
+      // }
+    });
     // 
     // --------------------------------------------------------------------------------------------------------------------------------------------------
     // 

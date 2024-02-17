@@ -9,6 +9,7 @@ const base = {
   target: "web",
   node: {
     __dirname: false,
+    fs: 'empty',
   },
   module: {
     rules: [
