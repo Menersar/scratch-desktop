@@ -497,6 +497,82 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
+    ipc.handle("function-call", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType) => {
+
+      // const sudoJS2 = require('sudo-js');
+      var sudo = require('sudo-prompt');
+      var options = {
+        name: 'SIDEKICK',
+        // icns: 'sidekick-desktop
+      };
+      // const functionRoot = path.resolve(
+      //   __dirname,
+      //   "./ws281x-control.js"
+      // );
+      const functionRoot = path.resolve(
+        process.resourcesPath,
+        "/static/ws281x-control.js"
+      );
+
+
+      sudo.exec('node ' + functionRoot + ' 7 0 4 #855CD6 10 800000 18 false 125 ws2812', options,
+        // sudo.exec('node ./ws281x-control.js 7 0 4 #855CD6 10 800000 18 false 125 ws2812', options,
+        function (error, stdout, stderr) {
+          if (error) throw error;
+          console.log('stdout: ' + stdout);
+        }
+      );
+
+      var args = {
+        START: 1,
+        END: 5,
+        COLOR: '#855CD6',
+      }
+
+      const ledStart = args.START;
+      const ledEnd = args.END;
+      const hexColor = args.COLOR.toString();
+
+      const NUM_LEDS = 7;
+      const GPIO = 18;
+      // const COLOR = rgb2Int(255, 0, 0);
+      const DMA = 10;
+      const FREQUENCY = 800000;
+      const INVERT = false;
+      const BRIGHTNESS = 125;
+      const STRIP_TYPE = 'ws2812';
+
+      // var options = {
+      //   dma: DMA,
+      //   freq: FREQUENCY,
+      //   gpio: GPIO,
+      //   invert: INVERT,
+      //   brightness: BRIGHTNESS,
+      //   stripType: STRIP_TYPE
+      // };
+
+      const ledStartIndex = ledStart - 1;
+      const ledEndIndex = ledEnd - 1;
+
+      // EditorPreload.ws281xInitColorRender(NUM_LEDS, ledStartIndex, ledEndIndex, hexColor, DMA, FREQUENCY, GPIO, INVERT, BRIGHTNESS, STRIP_TYPE);
+
+      // sudoJS2.setPassword('sidekick');
+
+      // var command = ['node', './ws281x-control.js', NUM_LEDS.toString(), ledStartIndex.toString(), ledEndIndex.toString(), hexColor.toString(), DMA.toString(), FREQUENCY.toString(), GPIO.toString(), INVERT.toString(), BRIGHTNESS.toString(), STRIP_TYPE.toString()];
+
+      // console.log('command: ' + command);
+
+      // sudoJS2.exec(command, function (err, pid, result) {
+
+      //   event.returnValue = 
+
+      // console.log(result);
+      // });
+    });
+
+
+
+
     // ipc.on("ws281x-init-color-render", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions) => {
     ipc.on("ws281x-init-color-render", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType) => {
 
@@ -515,35 +591,57 @@ class EditorWindow extends ProjectRunningWindow {
 
       // ws281xOptions.
 
-      ws281xNumLEDs = ws281xNumLEDs.toString();
-      ws281xNumStartLEDs = ws281xNumStartLEDs.toString();
-      ws281xNumEndLEDs = ws281xNumEndLEDs.toString();
-      ws281xColorLEDs = ws281xColorLEDs.toString();
-      ws281xDMA = ws281xDMA.toString();
-      ws281xFrequency = ws281xFrequency.toString();
-      ws281xGPIO = ws281xGPIO.toString();
-      ws281xInvert = ws281xInvert.toString();
-      ws281xBrightness = ws281xBrightness.toString();
-      ws281xStripType = ws281xStripType.toString();
+      ws281xNumLEDs = (ws281xNumLEDs ?? '').toString() || '0';
+      ws281xNumStartLEDs = (ws281xNumStartLEDs ?? '').toString() || '0';
+      ws281xNumEndLEDs = (ws281xNumEndLEDs ?? '').toString() || '0';
+      ws281xColorLEDs = (ws281xColorLEDs ?? '').toString() || '#000000';
+      ws281xDMA = (ws281xDMA ?? '').toString() || '10';
+      ws281xFrequency = (ws281xFrequency ?? '').toString() || '800000';
+      ws281xGPIO = (ws281xGPIO ?? '').toString() || '18';
+      ws281xInvert = (ws281xInvert ?? '').toString() || 'false';
+      ws281xBrightness = (ws281xBrightness ?? '').toString() || '125';
+      ws281xStripType = (ws281xStripType ?? '').toString() || 'ws2812';
 
 
-      console.log('ws281xNumLEDs: ' + ws281xNumLEDs + ', ws281xNumStartLEDs: ' + ws281xNumStartLEDs + ', ws281xNumEndLEDs: ' + ws281xNumEndLEDs + ', ws281xColorLEDs: ' + ws281xColorLEDs + ', ws281xDMA: ' + ws281xDMA + ', ws281xFrequency: ' + ws281xFrequency + ', ws281xGPIO: ' + ws281xGPIO + ', ws281xInvert: ' + ws281xInvert + ', ws281xBrightness: ' + ws281xBrightness + ', ws281xStripType: ' + ws281xStripType);
+      // console.log('ws281xNumLEDs: ' + ws281xNumLEDs + ', ws281xNumStartLEDs: ' + ws281xNumStartLEDs + ', ws281xNumEndLEDs: ' + ws281xNumEndLEDs + ', ws281xColorLEDs: ' + ws281xColorLEDs + ', ws281xDMA: ' + ws281xDMA + ', ws281xFrequency: ' + ws281xFrequency + ', ws281xGPIO: ' + ws281xGPIO + ', ws281xInvert: ' + ws281xInvert + ', ws281xBrightness: ' + ws281xBrightness + ', ws281xStripType: ' + ws281xStripType);
+      // event.returnValue = ('ws281xNumLEDs: ' + ws281xNumLEDs + ', ws281xNumStartLEDs: ' + ws281xNumStartLEDs + ', ws281xNumEndLEDs: ' + ws281xNumEndLEDs + ', ws281xColorLEDs: ' + ws281xColorLEDs + ', ws281xDMA: ' + ws281xDMA + ', ws281xFrequency: ' + ws281xFrequency + ', ws281xGPIO: ' + ws281xGPIO + ', ws281xInvert: ' + ws281xInvert + ', ws281xBrightness: ' + ws281xBrightness + ', ws281xStripType: ' + ws281xStripType);
 
-        sudoJS.setPassword('sidekick');
+      sudoJS.setPassword('sidekick');
 
       // var command = ['chmod', '0777', './ws281x-control.js'];
       // var command = ['node', './ws281x-control.js', ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions];
       // var command = ['node', './ws281x-control.js', ws281xNumLEDs.toString(), ws281xNumStartLEDs.toString(), ws281xNumEndLEDs.toString(), ws281xColorLEDs.toString(), ws281xDMA.toString(), ws281xFrequency.toString(), ws281xGPIO.toString(), ws281xInvert.toString(), ws281xBrightness.toString(), ws281xStripType.toString()];
-      var command = ['node', './ws281x-control.js', ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType];
-          
-      console.log('command: ' + command);
+      // var command = ['node', './ws281x-control.js', NUM_LEDS.toString(), ledStartIndex.toString(), ledEndIndex.toString(), hexColor.toString(), DMA.toString(), FREQUENCY.toString(), GPIO.toString(), INVERT.toString(), BRIGHTNESS.toString(), STRIP_TYPE.toString()];
 
+      // console.log('command: ' + command);
 
+      // const functionRoot = path.resolve(
+      //   __dirname,
+      //   "./ws281x-control.js"
+      // );
+      const functionRoot = path.resolve(
+        process.resourcesPath,
+        "/static/ws281x-control.js"
+      );
+
+      // var command = ['node', './ws281x-control.js', ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType];
+      var command = ['node', functionRoot, '7', '0', '4', '#855CD6', '10', '800000', '18', 'false', '125', 'ws2812'];
+
+      // event.returnValue = 1;
+      // event.returnValue = 'node' + './ws281x-control.js' + ws281xNumLEDs + ws281xNumStartLEDs + ws281xNumEndLEDs + ws281xColorLEDs + ws281xDMA + ws281xFrequency + ws281xGPIO + ws281xInvert + ws281xBrightness + ws281xStripType;
+
+      // event.returnValue = sudoJS.exec(command, function (err, pid, result) {
+      
+      // sudoJS.exec(command, function (err, pid, result) {
+      //   console.log(result);// event.returnValue = result;
+      // });
       event.returnValue = sudoJS.exec(command, function (err, pid, result) {
-
-        console.log(result);
-        // event.returnValue = result;
+        console.log(result);// event.returnValue = result;
       });
+
+      // event.returnValue = 2;
+
+
 
       // ControlWS281X.ws281xInitColorRender(ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xOptions);
       // ControlWS281X.ws281xInitColorRender(ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType);

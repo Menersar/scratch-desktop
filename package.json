@@ -71,9 +71,11 @@
         "@simontaga/rpi-ws281x-native": "^1.0.5",
         "bleno": "^0.5.0",
         "lodash": "^4.17.21",
+        "native-is-elevated": "^0.7.0",
         "rpi-ws281x-native": "^1.0.4",
         "semver": "^7.5.3",
         "sudo-js": "^1.0.2",
+        "sudo-prompt": "^9.2.1",
         "tslib": "^2.6.2"
     },
     "devDependencies": {
@@ -132,6 +134,10 @@
             {
                 "from": "src-main/static/gpiolib.node",
                 "to": "static/gpiolib.node"
+            },
+            {
+                "from": "src-main/windows/ws281x-control.js",
+                "to": "static/ws281x-control.js"
             }
         ],
         "win": {
