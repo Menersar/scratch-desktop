@@ -510,9 +510,13 @@ class EditorWindow extends ProjectRunningWindow {
       //   "./ws281x-control.js"
       // );
       const functionRoot = path.resolve(
-        process.resourcesPath,
-        "/static/ws281x-control.js"
+        __dirname,
+        "../../../static/ws281x-control.js"
       );
+      // const functionRoot = path.resolve(
+      //   process.resourcesPath,
+      //   "/static/ws281x-control.js"
+      // );
 
 
       sudo.exec('node ' + functionRoot + ' 7 0 4 #855CD6 10 800000 18 false 125 ws2812', options,
@@ -615,14 +619,14 @@ class EditorWindow extends ProjectRunningWindow {
 
       // console.log('command: ' + command);
 
-      // const functionRoot = path.resolve(
-      //   __dirname,
-      //   "./ws281x-control.js"
-      // );
       const functionRoot = path.resolve(
-        process.resourcesPath,
-        "/static/ws281x-control.js"
+        __dirname,
+        "../../../static/ws281x-control.js"
       );
+      // const functionRoot = path.resolve(
+      //   process.resourcesPath,
+      //   "/static/ws281x-control.js"
+      // );
 
       // var command = ['node', './ws281x-control.js', ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType];
       var command = ['node', functionRoot, '7', '0', '4', '#855CD6', '10', '800000', '18', 'false', '125', 'ws2812'];
@@ -631,7 +635,7 @@ class EditorWindow extends ProjectRunningWindow {
       // event.returnValue = 'node' + './ws281x-control.js' + ws281xNumLEDs + ws281xNumStartLEDs + ws281xNumEndLEDs + ws281xColorLEDs + ws281xDMA + ws281xFrequency + ws281xGPIO + ws281xInvert + ws281xBrightness + ws281xStripType;
 
       // event.returnValue = sudoJS.exec(command, function (err, pid, result) {
-      
+
       // sudoJS.exec(command, function (err, pid, result) {
       //   console.log(result);// event.returnValue = result;
       // });

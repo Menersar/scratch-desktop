@@ -10,6 +10,7 @@ const base = {
   node: {
     __dirname: false,
     fs: 'empty',
+    child_process: 'empty',
   },
   module: {
     rules: [
