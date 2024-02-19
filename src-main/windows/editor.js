@@ -272,6 +272,34 @@ class EditorWindow extends ProjectRunningWindow {
     });
     this.window.setTitle(APP_NAME);
 
+    /*
+      * @type {import("electron").IpcMain}
+
+    ### src-main/windows/editor.js
+    In this file, a `ipcMain` module is created via `const ipc = this.window.webContents.ipc`.
+
+    `ipcMain` module:
+    - It is an Event Emitter. 
+    - When used in the main process, it handles asynchronous and synchronous messages sent from a renderer process (web page).
+    - Messages sent from a renderer will be emitted to this module.
+    (Source: https://www.electronjs.org/docs/latest/api/ipc-main)
+
+    `ipcMain.on(channel, listener)`:
+    Listens to channel, when a new message arrives listener would be called with listener(event, args...).
+
+    - E.g. add the functionality via `ipc.on("gpio-get", (event, gpioPin)` if the message `gpio-get` arrives:
+    ```js
+    ipc.on("gpio-get", (event, gpioPin) => {
+      if (process.platform === "linux") {
+        const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        event.returnValue = gpio.get(gpioPin, -1, -1);
+      } else {
+        event.returnValue = -1;
+      }
+    });
+    ```
+    (Source: README.md of sidekick-desktop repository)
+    */
     const ipc = this.window.webContents.ipc;
 
     ipc.handle("get-initial-file", () => {
