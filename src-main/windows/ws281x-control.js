@@ -1,3 +1,4 @@
+/*
 if (process.platform === "linux") {
 
     const ws281x = require('@simontaga/rpi-ws281x-native/lib/ws281x-native');
@@ -137,3 +138,7 @@ if (process.platform === "linux") {
 
 
 }
+
+
+
+*/

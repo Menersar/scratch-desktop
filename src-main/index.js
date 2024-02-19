@@ -1,6 +1,6 @@
 const { app, dialog } = require("electron");
 const { contextBridge, ipcRenderer } = require("electron");
-const electronIpcMain = require('electron').ipcMain;
+// const electronIpcMain = require('electron').ipcMain;
 
 // requestSingleInstanceLock() crashes the app in signed MAS builds
 // https://github.com/electron/electron/issues/15958
@@ -29,7 +29,7 @@ if (process.platform === "linux") {
   // require(process.resourcesPath + "/static/rpi-ws281x-native");
 }
 
-const nodeChildProcess = require('child_process');
+// const nodeChildProcess = require('child_process');
 
 
 app.enableSandbox();
@@ -136,7 +136,7 @@ app.on("web-contents-created", (event, webContents) => {
     }
   });
 
-  // Overwritten by BaseWindow. We just set this here as a safety mereadyasure.
+  // Overwritten by BaseWindow. We just set this here as a safety measure.
   webContents.setWindowOpenHandler((details) => ({
     action: "deny",
   }));
@@ -171,51 +171,6 @@ app.on("open-file", (event, path) => {
     filesQueuedToOpen.push(path);
   }
 });
-
-
-electronIpcMain.on('runScript', (event, data) => {
-  // Windows
-  // let script = nodeChildProcess.spawn('cmd.exe', ['/c', 'test.bat', 'arg1', 'arg2']);
-  if (process.platform === "win32") {
-    let script = nodeChildProcess.spawn('cmd.exe', ['/c', 'test.bat', 'arg1', 'arg2'], { cwd: process.resourcesPath + '/scripts' });
-
-    console.log('PID: ' + script.pid);
-
-    script.stdout.on('data', (data) => {
-      console.log('stdout: ' + data);
-    });
-
-    script.stderr.on('data', (err) => {
-      console.log('stderr: ' + err);
-    });
-
-    script.on('exit', (code) => {
-      console.log('Exit Code: ' + code);
-    });
-  }
-  // MacOS & Linux
-  // (Source: https://stackoverflow.com/questions/8683895/how-do-i-determine-the-current-operating-system-with-node-js)
-  else if (process.platform === "linux" || process.platform === "darwin") {
-    let script = nodeChildProcess.spawn('bash', ['test.sh', 'arg1', 'arg2']);
-
-    console.log('PID: ' + script.pid);
-
-    script.stdout.on('data', (data) => {
-      console.log('stdout: ' + data);
-    });
-
-    script.stderr.on('data', (err) => {
-      console.log('stderr: ' + err);
-    });
-
-    script.on('exit', (code) => {
-      console.log('Exit Code: ' + code);
-    });
-  }
-
-})
-
-
 
 const parseFilesFromArgv = (argv) => {
   // argv could be any of:

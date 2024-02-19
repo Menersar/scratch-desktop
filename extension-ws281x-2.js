@@ -338,7 +338,7 @@
             // console.info(args.COLOR)
 
             // EditorPreload.ws281xInitColorRender(NUM_LEDS, ledStartIndex, ledEndIndex, hexColor, options);
-            EditorPreload.ws281xInitColorRender(NUM_LEDS, ledStartIndex, ledEndIndex, hexColor, DMA, FREQUENCY, GPIO, INVERT, BRIGHTNESS, STRIP_TYPE);
+            // EditorPreload.ws281xInitColorRender(NUM_LEDS, ledStartIndex, ledEndIndex, hexColor, DMA, FREQUENCY, GPIO, INVERT, BRIGHTNESS, STRIP_TYPE);
 
             // const pin = Cast.toNumber(args.GPIO);
             // const val = Cast.toString(args.PULL);
@@ -347,6 +347,13 @@
             // if (val === 'none') op = 0;
             // // gpio.pull(pin, op);
             // EditorPreload.gpioPull(pin, op);
+
+
+            let command = "sudo";
+            let args = ["python3, ScratchConnect.py"];
+
+            // ipcRenderSend.invoke("runScriptWithResponseAsync", command, args)
+            EditorPreload.invokeScriptWithResponseAsync(command, args)
         }
         // Convert Hex to Decimal in JavaScript:
         // The `parseInt()` function takes a 'string' as an argument and returns an 'integer'.

@@ -30,6 +30,7 @@ const sudoJS = require('sudo-js');
 // const ws281x1 = require(process.resourcesPath + '/static/rpi-ws281x-native/lib/ws281x-native');
 // const ws281x = require("rpi-ws281x-native");
 // const ws281x = require("@simontaga/rpi-ws281x-native/lib/ws281x-native");
+const nodeChildProcess = require('child_process');
 
 
 
@@ -970,6 +971,179 @@ class EditorWindow extends ProjectRunningWindow {
         modulescript,
       };
     });
+
+
+
+
+
+
+    //
+    // ipcMain: .handle(channel, listener)
+    //
+    // (Source: https://www.electronjs.org/de/docs/latest/api/ipc-main)
+    //
+    // ipcMain.handle(channel, listener)
+    //  - channel string
+    //  - listener Function < Promise < any > | any >
+    //    - event IpcMainInvokeEvent
+    //    - ...args any[]
+    // Fügt einen Handler für einen invokefähigen IPC hinzu.Dieser Handler wird immer dann aufgerufen, wenn ein Renderer ipcRenderer.invoke(channel, ...args) aufruft.
+    // If listener returns a Promise, the eventual result of the promise will be returned as a reply to the remote caller.Otherwise, the return value of the listener will be used as the value of the reply.
+    //
+    //
+    // Rest parameters
+    // (Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)
+    // - A function definition can only have one rest parameter, and the rest parameter must be the last parameter in the function definition.
+    //
+    // 
+    // Merge Arrays in JavaScript
+    // (Source: https://dmitripavlutin.com/javascript-merge-arrays/#1-merge-using-the-spread-operator)
+    // 
+    // array.push(item1, item2, ..., itemN) also accepts multiple items to push at once, thus you can push an entire array using the spread operator applied to arguments (in other words, performing a merge into):
+    //  // merge array2 into array1
+    //  array1.push(...array2);
+    // For example, let's merge villains into heroes arrays:
+    //  const heroes = ['Batman', 'Superman'];
+    //  const villains = ['Joker', 'Bane'];
+    //  heroes.push(...villains);
+    //  console.log(heroes); // ['Batman', 'Superman', 'Joker', 'Bane']
+    // 
+    // electronIpcMain.handle('runScriptWithResponseAsync', async (event, ...args) => {
+    ipc.handle("runScriptWithResponseAsync", async (event, command, ...args) => {
+      // if (process.platform === "win32") {
+
+      // let terminalArgs = ['/c'];
+      // terminalArgs.push(fileName, ...args);
+      // terminalArgs.push(fileName, ...args);
+      let scriptArgs = [...args];
+
+      // 
+      // app.getAppPath()
+      // Returns string - The current application directory.
+      // (Source: https://stackoverflow.com/questions/41199981/run-python-script-in-electron-app, https://www.electronjs.org/docs/latest/api/app#appgetapppath)
+      // 
+      // Where is Electron's app.getAppPath() pointing to?
+      // https://stackoverflow.com/questions/40511744/where-is-electrons-app-getapppath-pointing-to
+      // So the consolution is : If you want to change the startup script, change it in the main field, not just change it in scritps field...
+      // 
+      // let script = nodeChildProcess.spawn(command, scriptArgs, { cwd: process.resourcesPath + "/scripts" });
+      // 
+      // https://github.com/electron-userland/electron-builder/issues/3281
+      // 
+      // let script = nodeChildProcess.spawn(command, scriptArgs, { cwd: path.join(app.getAppPath(), '..', "scripts") });
+      let script = nodeChildProcess.spawn(command, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts") });
+
+      console.log("PID: " + script.pid);
+
+      script.stdout.on("data", (data) => {
+        console.log("stdout: " + data);
+      });
+
+      script.stderr.on("data", (err) => {
+        console.log("stderr: " + err);
+      });
+
+      script.on("exit", (code) => {
+        console.log("Exit Code: " + code);
+      });
+      // } else if (process.platform === "linux" || process.platform === "darwin") {
+      //   // let script = nodeChildProcess.spawn('bash', ['test.sh', 'arg1', 'arg2']);
+      //   let scriptArgs = [...args];
+      //   let script = nodeChildProcess.spawn(command, scriptArgs, { cwd: process.resourcesPath + '/scripts' });
+
+      //   console.log('PID: ' + script.pid);
+
+      //   script.stdout.on('data', (data) => {
+      //     console.log('stdout: ' + data);
+      //   });
+
+      //   script.stderr.on('data', (err) => {
+      //     console.log('stderr: ' + err);
+      //   });
+
+      //   script.on('exit', (code) => {
+      //     console.log('Exit Code: ' + code);
+      //   });
+      // }
+    });
+
+
+    ipc.on("runScriptSendSync", (event, command, ...args) => {
+      let scriptArgs = [...args];
+
+      let script = nodeChildProcess.spawn(command, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts") });
+
+      // event.returnValue = gpio.pull(gpioPin, pullOp);
+
+
+      // let script = nodeChildProcess.spawn(command, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts") });
+
+      console.log("PID: " + script.pid);
+
+      script.stdout.on("data", (data) => {
+        console.log("stdout: " + data);
+        event.returnValue = ("stdout: " + data);
+      });
+
+      script.stderr.on("data", (err) => {
+        console.log("stderr: " + err);
+        event.returnValue = ("stderr: " + err);
+
+      });
+
+      script.on("exit", (code) => {
+        console.log("Exit Code: " + code);
+        event.returnValue = ("Exit Code: " + code);
+      });
+    });
+
+    // // 
+    // // Executing a bash script from Electron app
+    // // (Source: https://stackoverflow.com/questions/71973245/executing-a-bash-script-from-electron-app)
+    // // 
+    // electronIpcMain.on('runScript', (event, data) => {
+    //   // Windows
+    //   // let script = nodeChildProcess.spawn('cmd.exe', ['/c', 'test.bat', 'arg1', 'arg2']);
+    //   if (process.platform === "win32") {
+    //     let script = nodeChildProcess.spawn('cmd.exe', ['/c', 'test.bat', 'arg1', 'arg2'], { cwd: process.resourcesPath + '/scripts' });
+
+    //     console.log('PID: ' + script.pid);
+
+    //     script.stdout.on('data', (data) => {
+    //       console.log('stdout: ' + data);
+    //     });
+
+    //     script.stderr.on('data', (err) => {
+    //       console.log('stderr: ' + err);
+    //     });
+
+    //     script.on('exit', (code) => {
+    //       console.log('Exit Code: ' + code);
+    //     });
+    //   }
+    //   // MacOS & Linux
+    //   // (Source: https://stackoverflow.com/questions/8683895/how-do-i-determine-the-current-operating-system-with-node-js)
+    //   else if (process.platform === "linux" || process.platform === "darwin") {
+    //     let script = nodeChildProcess.spawn('bash', ['test.sh', 'arg1', 'arg2']);
+
+    //     console.log('PID: ' + script.pid);
+
+    //     script.stdout.on('data', (data) => {
+    //       console.log('stdout: ' + data);
+    //     });
+
+    //     script.stderr.on('data', (err) => {
+    //       console.log('stderr: ' + err);
+    //     });
+
+    //     script.on('exit', (code) => {
+    //       console.log('Exit Code: ' + code);
+    //     });
+    //   }
+    // });
+
+
+
 
     this.loadURL("sidekick-editor://./gui/gui.html");
     this.show();

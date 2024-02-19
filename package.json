@@ -139,10 +139,9 @@
                 "to": "static/ws281x-control.js"
             },
             {
-                "from": "src-main/python-scripts/*",
-                "to": "python-scripts"
-            },
-            "./extraResources/**"
+                "from": "extraResources",
+                "to": "."
+            }
         ],
         "win": {
             "artifactName": "${productName} Portable ${version} ${arch}.${ext}",

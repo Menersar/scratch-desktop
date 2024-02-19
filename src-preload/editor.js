@@ -43,51 +43,69 @@ contextBridge.exposeInMainWorld("EditorPreload", {
   functionCall: (leds, start, end, color, dma, freq, gpio, inv, brghtnss, strptype) => ipcRenderer.invoke("function-call", leds, start, end, color, dma, freq, gpio, inv, brghtnss, strptype),
   // functionCall: (leds, start, end, color, dma, freq, gpio, inv, brghtnss, strptype) => ipcRenderer. invoke("ws281x-init-color-render", leds, start, end, color, dma, freq, gpio, inv, brghtnss, strptype),
 
+  // invokeScriptWithResponseAsync: (command, args) => ipcRenderer.invoke("runScriptWithResponseAsync", command, args),
+  invokeScriptWithResponseAsync: (command, args) => { return ipcRenderer.invoke("runScriptWithResponseAsync", command, args) },
+  runScriptSendSync: (command, args) => ipcRenderer.sendSync("runScriptSendSync", command, args),
+
+
 });
 
 
-// White-listed channels.
-const ipc = {
-  'render': {
-    // From render to main.
-    'send': [
-      'runScript' // Channel name
-    ],
-    // From main to render.
-    'receive': [],
-    // From render to main and back again.
-    'sendReceive': []
-  }
-};
+// // White-listed channels.
+// const ipc = {
+//   'render': {
+//     // From render to main.
+//     'send': [
+//       'runScript' // Channel name
+//     ],
+//     'sendSync': [
+//       'runScriptSync' // Channel name
+//     ],
+//     // From main to render.
+//     'receive': [
+//       'getResponse'
+//     ],
+//     // From render to main and back again.
+//     'sendReceive': [
+//       'runScriptWithResponseAsync' // Channel name
+//     ]
+//   }
+// };
 
-// Exposed protected methods in the render process.
-contextBridge.exposeInMainWorld(
-  // Allowed 'ipcRenderer' methods.
-  'ipcRender', {
-  // From render to main.
-  send: (channel, args) => {
-    let validChannels = ipc.render.send;
-    if (validChannels.includes(channel)) {
-      ipcRenderer.send(channel, args);
-    }
-  },
-  // From main to render.
-  receive: (channel, listener) => {
-    let validChannels = ipc.render.receive;
-    if (validChannels.includes(channel)) {
-      // Deliberately strip event as it includes `sender`.
-      ipcRenderer.on(channel, (event, ...args) => listener(...args));
-    }
-  },
-  // From render to main and back again.
-  invoke: (channel, args) => {
-    let validChannels = ipc.render.sendReceive;
-    if (validChannels.includes(channel)) {
-      return ipcRenderer.invoke(channel, args);
-    }
-  }
-}
-);
+// // Exposed protected methods in the render process.
+// contextBridge.exposeInMainWorld(
+//   // Allowed 'ipcRenderer' methods.
+//   'ipcRenderSend', {
+//   // From render to main.
+//   send: (channel, args) => {
+//     let validChannels = ipc.render.send;
+//     if (validChannels.includes(channel)) {
+//       ipcRenderer.send(channel, args);
+//     }
+//   },
+//   sendSync: (channel, args) => {
+//     let validChannels = ipc.render.sendSync;
+//     if (validChannels.includes(channel)) {
+//       ipcRenderer.sendSync(channel, args);
+//     }
+//   },
+//   // From main to render.
+//   receive: (channel, listener) => {
+//     let validChannels = ipc.render.receive;
+//     if (validChannels.includes(channel)) {
+//       // Deliberately strip event as it includes `sender`.
+//       ipcRenderer.on(channel, (event, ...args) => listener(...args));
+//     }
+//   },
+//   // From render to main and back again.
+//   invoke: (channel, command, args) => {
+//     let validChannels = ipc.render.sendReceive;
+//     if (validChannels.includes(channel)) {
+//       return ipcRenderer.invoke(channel, command, args);
+//     }
+//   }
+// }
+// );
 
 
 
