@@ -11,3 +11,11 @@ import sys
 
 print('Hello from Python!')
 print(f'Received arguments: {sys.argv}')
+
+#
+# > python python_script.py var1 var2
+# https://stackoverflow.com/questions/14155669/call-python-script-from-bash-with-argument
+#
+# https://www.digitaldesignjournal.com/can-i-use-python-with-electron/
+#
+

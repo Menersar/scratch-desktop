@@ -48,11 +48,14 @@ contextBridge.exposeInMainWorld("EditorPreload", {
     runScriptSendSync: (command, args) => ipcRenderer.sendSync("runScriptSendSync", command, args),
     // sudoScript: (command, args) => ipcRenderer.send('sudo-script', command, args),
     // sudoScript: (command, args) => ipcRenderer.sendSync('sudo-script', command, args),
-    sudoScript: (command, args) => ipcRenderer.sendSync('sudo-script', command, args),
+    // sudoScript: (command, args) => ipcRenderer.sendSync('sudo-script', command, args),
+    // sudoScript: (command, args) => ipcRenderer.sendSync('sudo-script', command, args),
+    // sudoScript: (command, args) => { return ipcRenderer.invoke('sudo-script', command, args) },
     runShellScript: (fileName, args) => ipcRenderer.send('run-shell-script', fileName, args),
 
 
-    // sudoScript: (sudoCall, command, scriptName, args) => ipcRenderer.send('sudo-script', sudoCall, command, scriptName, args),
+    sudoScript: (synchronous, sudoCall, command, scriptName, args) => ipcRenderer.sendSync('sudo-script', synchronous, sudoCall, command, scriptName, args),
+    // ipc.on("sudo-script", (event, synchronous, sudoCall, scriptCommand, scriptName, ...args) => {
 
 
 

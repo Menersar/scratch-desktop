@@ -31,7 +31,7 @@ const sudoJS = require('sudo-js');
 // const ws281x = require("rpi-ws281x-native");
 // const ws281x = require("@simontaga/rpi-ws281x-native/lib/ws281x-native");
 const nodeChildProcess = require('child_process');
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 
 
 
@@ -526,27 +526,55 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
+        // Node.js spawn child process and get terminal output live
+        // https://stackoverflow.com/questions/14332721/node-js-spawn-child-process-and-get-terminal-output-live
 
         // Handle an IPC message from the renderer process
-        ipc.on('sudo-script', (event, scriptCommand, ...args) => {
-            let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
+        // ipc.on('sudo-script', (event, scriptCommand, ...args) => {
+        //     let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
 
-            const pythonProcess = spawn('python', [patheroni]);
 
-            pythonProcess.stdout.on('data', (data) => {
-                // Handle the output from the Python script
-                event.returnValue = data.toString();
-                console.log(data.toString());
+        //     // Synchronous
+        //     const pythonProcess = nodeChildProcess.spawnSync('python', [patheroni]);
 
-            });
+        //     if (pythonProcess.error) {
+        //         console.log("ERROR: ", pythonProcess.error);
+        //         event.returnValue = "ERROR: " + pythonProcess.error;
+        //     }
+        //     console.log("stdout: ", pythonProcess.stdout);
+        //     console.log("stderr: ", pythonProcess.stderr);
 
-            pythonProcess.on('close', (code) => {
 
-                // Handle the Python process closing
-                event.returnValue = `Python script exited with code ${code}`;
-                console.log(`Python script exited with code ${code}`);
-            });
-        });
+        //     // event.returnValue = data.toString();
+        //     console.log("exist code: ", pythonProcess.status);
+        //     // event.returnValue = data.toString();
+        //     event.returnValue = "stdout: " + pythonProcess.stdout + "stderr: " + pythonProcess.stderr + "exist code: " + pythonProcess.status;
+
+
+
+        //     // Asynchronous
+        //     // const pythonProcess = nodeChildProcess.spawn('python', [patheroni]);
+
+        //     // pythonProcess.stdout.on('data', (data) => {
+        //     //     // Handle the output from the Python script
+        //     //     event.returnValue = data.toString();
+        //     //     console.log(data.toString());
+        //     //     // return data.toString();
+
+        //     // });
+
+        //     // pythonProcess.on('close', (code) => {
+
+        //     //     // Handle the Python process closing
+        //     //     event.returnValue = `Python script exited with code ${code}`;
+        //     //     console.log(`Python script exited with code ${code}`);
+        //     //     // return `Python script exited with code ${code}`;
+        //     // });
+
+        // });
+
+
+
 
         // ipc.handle("sudo-script", (event, scriptCommand, ...args) => {
         //     // if (process.platform === "linux") {
@@ -623,84 +651,167 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
-        // ipc.on("sudo-script", (event, sudoCall, scriptCommand, scriptName, ...args) => {
-        //     //
-        //     // Command, path to file + file name + ending, arguments
-        //     // E.g.: python3 scriptName.py arg1 arg2
-        //     //
-        //     // scriptCommand
-        //     // "sudo"
-        //     //
-        //     let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
-        //     let scriptArgs = [scriptPath, ...args];
-        //     // event.returnValue = 1;
-
-        //     // let script = nodeChildProcess.spawn(scriptCommand, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts"), shell: process.platform == 'win32' });
-        //     if (sudoCall === "1") {
-        //         scriptArgs = [scriptCommand, scriptPath, ...args];
-        //         scriptCommand = "sudo";
-        //     }
-        //     let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
-        //     // let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
-        //     // const pythonProcess = spawn('python', [patheroni]);
+        ipc.on("sudo-script", (event, synchronous, sudoCall, scriptCommand, scriptName, ...args) => {
 
 
-        //     // pythonProcess.stdout.on('data', (data) => {
-        //     //     // Handle the output from the Python script
-        //     //     console.log(data.toString());
-        //     //     // event.returnValue = data.toString();
-        //     //     let dateroni = data.toString();
-        //     //     return '1 ' + dateroni;
-        //     // });
+            let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
 
-        //     // pythonProcess.on('close', (code) => {
-        //     //     // Handle the Python process closing
-        //     //     console.log(`Python script exited with code ${code}`);
-        //     //     // event.returnValue = `Python script exited with code ${code}`;
-        //     //     return `0 Python script exited with code ${code}`;
-        //     // });
+            let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
+            let scriptArgs = [scriptPath, ...args];
+            // event.returnValue = 1;
 
-        //     // return `-1 err`;
+            // let script = nodeChildProcess.spawn(scriptCommand, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts"), shell: process.platform == 'win32' });
+            if (sudoCall === "1") {
+                scriptArgs = [scriptCommand, scriptPath, ...args];
+                scriptCommand = "sudo";
+            }
 
-        //     // event.returnValue = 1;
+            if (synchronous === "1") {
 
-        //     script.stdout.on("data", (data) => {
-        //         console.log("stdout: " + data);
-        //         event.returnValue = "1 stdout: " + data;
-        //         // return "1 stdout: " + data.toString();
-        //     });
+                let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
 
-        //     script.stderr.on("data", (err) => {
-        //         console.log("stderr: " + err);
-        //         event.returnValue = "-1 stderr: " + err;
-        //         // return "-1 stderr: " + err;
-        //     });
 
-        //     script.on("exit", (code) => {
-        //         console.log("Exit Code: " + code);
-        //         event.returnValue = "0 Exit Code: " + code;
-        //         // return "0 Exit Code: " + code;
-        //     });
 
-        //     script.on("close", (code) => {
-        //         console.log("Exit Code: " + code);
-        //         event.returnValue = "0 Exit Code: " + code;
-        //         // return "0 Exit Code: " + code;
-        //     });
+                // Synchronous
+                // const pythonProcess = nodeChildProcess.spawnSync('python', [patheroni]);
 
-        //     // return `-1 err`;
+                // if (pythonProcess.error) {
+                //     console.log("ERROR: ", pythonProcess.error);
+                //     event.returnValue = "ERROR: " + pythonProcess.error;
+                // }
+                // console.log("stdout: ", pythonProcess.stdout);
+                // console.log("stderr: ", pythonProcess.stderr);
 
-        //     // // https://www.digitaldesignjournal.com/can-i-use-python-with-electron/
-        //     // pythonProcess.stdout.on('data', (data) => {
-        //     //     // Handle the output from the Python script
-        //     //     console.log(data.toString());
-        //     // });
 
-        //     // pythonProcess.on('close', (code) => {
-        //     //     // Handle the Python process closing
-        //     //     console.log(`Python script exited with code ${code}`);
-        //     // });
-        // });
+
+
+                // // event.returnValue = data.toString();
+                // console.log("exist code: ", pythonProcess.status);
+                // // event.returnValue = data.toString();
+                // event.returnValue = "stdout: " + pythonProcess.stdout + "stderr: " + pythonProcess.stderr + "exist code: " + pythonProcess.status;
+
+
+
+
+
+
+                if (script.error) {
+                    // console.log("ERROR: ", script.error);
+                    event.returnValue = "ERROR: " + script.error;
+                }
+                // console.log("stdout: ", script.stdout);
+                // console.log("stderr: ", script.stderr);
+                // console.log("exist code: ", script.status);
+
+                event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
+
+
+
+
+
+            } else {
+
+
+
+                let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+                // Asynchronous
+                // const pythonProcess = nodeChildProcess.spawn('python', [patheroni]);
+
+                // pythonProcess.stdout.on('data', (data) => {
+                //     // Handle the output from the Python script
+                //     event.returnValue = data.toString();
+                //     console.log(data.toString());
+                //     // return data.toString();
+
+                // });
+
+                // pythonProcess.on('close', (code) => {
+
+                //     // Handle the Python process closing
+                //     event.returnValue = `Python script exited with code ${code}`;
+                //     console.log(`Python script exited with code ${code}`);
+                //     // return `Python script exited with code ${code}`;
+                // });
+
+
+
+
+
+
+                script.stdout.on("data", (data) => {
+                    // console.log("stdout: " + data);
+                    event.returnValue = "1 stdout: " + data.toString();
+                    // return "1 stdout: " + data.toString();
+                });
+
+                script.stderr.on("data", (err) => {
+                    // console.log("stderr: " + err);
+                    event.returnValue = "-1 stderr: " + err;
+                    // return "-1 stderr: " + err;
+                });
+
+                script.on("exit", (code) => {
+                    // console.log("Exit Code: " + code);
+                    event.returnValue = "0 Exit Code: " + code;
+                    // return "0 Exit Code: " + code;
+                });
+
+                script.on("close", (code) => {
+                    // console.log("Exit Code: " + code);
+                    event.returnValue = `Python script exited with code ${code}`;
+                    // return "0 Exit Code: " + code;
+                });
+            }
+
+
+            //
+            // Command, path to file + file name + ending, arguments
+            // E.g.: python3 scriptName.py arg1 arg2
+            //
+            // scriptCommand
+            // "sudo"
+            //
+
+
+
+            // let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
+            // const pythonProcess = spawn('python', [patheroni]);
+
+
+            // pythonProcess.stdout.on('data', (data) => {
+            //     // Handle the output from the Python script
+            //     console.log(data.toString());
+            //     // event.returnValue = data.toString();
+            //     let dateroni = data.toString();
+            //     return '1 ' + dateroni;
+            // });
+
+            // pythonProcess.on('close', (code) => {
+            //     // Handle the Python process closing
+            //     console.log(`Python script exited with code ${code}`);
+            //     // event.returnValue = `Python script exited with code ${code}`;
+            //     return `0 Python script exited with code ${code}`;
+            // });
+
+            // return `-1 err`;
+
+            // event.returnValue = 1;
+
+
+            // return `-1 err`;
+
+            // // https://www.digitaldesignjournal.com/can-i-use-python-with-electron/
+            // pythonProcess.stdout.on('data', (data) => {
+            //     // Handle the output from the Python script
+            //     console.log(data.toString());
+            // });
+
+            // pythonProcess.on('close', (code) => {
+            //     // Handle the Python process closing
+            //     console.log(`Python script exited with code ${code}`);
+            // });
+        });
 
 
 

@@ -333,11 +333,15 @@
             // let sudoCommand = "python3";
             // let sudoScriptArguments = ["python3", "test.py", "argument1", "argument2"];
             // let sudoScriptCommand = ["sudo"];
-            let sudoScriptArguments = ["test.py", "argument1", "argument2"];
+            let sudoScriptSynchronous = "1";
+            let sudoScriptCall = "0";
             let sudoScriptCommand = "python";
+            let sudoScriptName = "test.py";
+            let sudoScriptArguments = ["test.py", "argument1", "argument2"];
             // EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments);
 
-            const state = EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments);
+            // const state = EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments);
+            const state = EditorPreload.sudoScript(sudoScriptSynchronous, sudoScriptCall, sudoScriptCommand, sudoScriptName, sudoScriptArguments);
             // ipcRenderer.send('run-python-script');
 
             // // const state = EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments); // Get state of pin, leave pin as input/output, leave pull state
@@ -345,6 +349,9 @@
             //     // ...
             //     console.log(result);
             // }); // Get state of pin, leave pin as input/output, leave pull state
+
+
+            // sudoScript: (synchronous, sudoCall, command, scriptName, args) => ipcRenderer.send('sudo-script', synchronous, sudoCall, command, scriptName, args),
 
 
 
