@@ -524,80 +524,104 @@ class EditorWindow extends ProjectRunningWindow {
             }
         });
 
-        // 
-        // Executing a bash script from Electron app
-        // + usage of preload.js script ...
-        // https://stackoverflow.com/questions/71973245/executing-a-bash-script-from-electron-app
-        //
-        // Call Python script from bash with argument
-        // https://stackoverflow.com/questions/14155669/call-python-script-from-bash-with-argument
-        // 
-        ipc.handle("sudo-script", async (event, scriptCommand, ...args) => {
-            // 
-            // Command, path to file + file name + ending, arguments
-            // E.g.: python3 scriptName.py arg1 arg2
-            //
-            // scriptCommand
-            // "sudo"
-            // 
-            let scriptArgs = [...args];
-            // event.returnValue = 1;
 
-            // let script = nodeChildProcess.spawn(scriptCommand, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts"), shell: process.platform == 'win32' });
 
+
+        // Handle an IPC message from the renderer process
+        ipc.on('sudo-script', (event, scriptCommand, ...args) => {
             let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
-            const pythonProcess = spawn('python', [patheroni]);
 
+            const pythonProcess = spawn('python', [patheroni]);
 
             pythonProcess.stdout.on('data', (data) => {
                 // Handle the output from the Python script
+                event.returnValue = data.toString();
                 console.log(data.toString());
-                // event.returnValue = data.toString();
-                let dateroni = data.toString();
-                return '1 ' + dateroni;
+
             });
 
             pythonProcess.on('close', (code) => {
+
                 // Handle the Python process closing
+                event.returnValue = `Python script exited with code ${code}`;
                 console.log(`Python script exited with code ${code}`);
-                // event.returnValue = `Python script exited with code ${code}`;
-                return `0 Python script exited with code ${code}`;
             });
-
-            // return `-1 err`;
-
-            // event.returnValue = 1;
-
-            // script.stdout.on("data", (data) => {
-            //     console.log("stdout: " + data);
-            //     event.returnValue = "1 stdout: " + data;
-            // });
-
-            // script.stderr.on("data", (err) => {
-            //     console.log("stderr: " + err);
-            //     event.returnValue = "-1 stderr: " + err;
-            // });
-
-            // script.on("exit", (code) => {
-            //     console.log("Exit Code: " + code);
-            //     event.returnValue = "0 Exit Code: " + code;
-            // });
-
-
-
-
-
-            // // https://www.digitaldesignjournal.com/can-i-use-python-with-electron/
-            // pythonProcess.stdout.on('data', (data) => {
-            //     // Handle the output from the Python script
-            //     console.log(data.toString());
-            // });
-
-            // pythonProcess.on('close', (code) => {
-            //     // Handle the Python process closing
-            //     console.log(`Python script exited with code ${code}`);
-            // });
         });
+
+        // ipc.handle("sudo-script", (event, scriptCommand, ...args) => {
+        //     // if (process.platform === "linux") {
+        //     // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //     // event.returnValue = gpio.get(gpioPin, -1, -1);
+        //     // } else {
+        //     // }
+
+        //     // Command, path to file + file name + ending, arguments
+        //     // E.g.: python3 scriptName.py arg1 arg2
+        //     let scriptArgs = [...args];
+        //     // event.returnValue = 1;
+
+        //     // scriptCommand
+        //     // "sudo"
+
+        //     // let script = nodeChildProcess.spawn(scriptCommand, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts"), shell: process.platform == 'win32' });
+
+        //     let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
+        //     const pythonProcess = spawn('python', [patheroni]);
+
+        //     pythonProcess.stdout.on('data', (data) => {
+        //         // Handle the output from the Python script
+        //         console.log(data.toString());
+        //         // event.returnValue = data.toString();
+        //         return data.toString();
+        //     });
+
+        //     pythonProcess.on('close', (code) => {
+        //         // Handle the Python process closing
+        //         console.log(`Python script exited with code ${code}`);
+        //         // event.returnValue = `Python script exited with code ${code}`;
+        //         return `Python script exited with code ${code}`;
+        //     });
+
+        //     // event.returnValue = 1;
+
+        //     // script.stdout.on("data", (data) => {
+        //     //     console.log("stdout: " + data);
+        //     //     event.returnValue = "1 stdout: " + data;
+        //     // });
+
+        //     // script.stderr.on("data", (err) => {
+        //     //     console.log("stderr: " + err);
+        //     //     event.returnValue = "-1 stderr: " + err;
+        //     // });
+
+        //     // script.on("exit", (code) => {
+        //     //     console.log("Exit Code: " + code);
+        //     //     event.returnValue = "0 Exit Code: " + code;
+        //     // });
+
+
+
+
+
+        //     // // https://www.digitaldesignjournal.com/can-i-use-python-with-electron/
+        //     // pythonProcess.stdout.on('data', (data) => {
+        //     //     // Handle the output from the Python script
+        //     //     console.log(data.toString());
+        //     // });
+
+        //     // pythonProcess.on('close', (code) => {
+        //     //     // Handle the Python process closing
+        //     //     console.log(`Python script exited with code ${code}`);
+        //     // });
+        // });
+
+
+
+
+
+
+
+
 
         // ipc.on("sudo-script", (event, sudoCall, scriptCommand, scriptName, ...args) => {
         //     //
@@ -677,6 +701,8 @@ class EditorWindow extends ProjectRunningWindow {
         //     //     console.log(`Python script exited with code ${code}`);
         //     // });
         // });
+
+
 
 
 

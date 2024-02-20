@@ -337,13 +337,14 @@
             let sudoScriptCommand = "python";
             // EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments);
 
+            const state = EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments);
+            // ipcRenderer.send('run-python-script');
 
-
-            const state = EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments); // Get state of pin, leave pin as input/output, leave pull state
-            EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments).then((result) => {
-                // ...
-                console.log(result);
-            }); // Get state of pin, leave pin as input/output, leave pull state
+            // // const state = EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments); // Get state of pin, leave pin as input/output, leave pull state
+            // EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments).then((result) => {
+            //     // ...
+            //     console.log(result);
+            // }); // Get state of pin, leave pin as input/output, leave pull state
 
 
 
