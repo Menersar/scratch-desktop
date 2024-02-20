@@ -329,6 +329,66 @@
             const ledStartIndex = ledStart - 1;
             const ledEndIndex = ledEnd - 1;
 
+
+            // let sudoCommand = "python3";
+            // let sudoScriptArguments = ["python3", "test.py", "argument1", "argument2"];
+            // let sudoScriptCommand = ["sudo"];
+            let sudoScriptArguments = ["test.py", "argument1", "argument2"];
+            let sudoScriptCommand = "python";
+            // EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments);
+
+
+
+            const state = EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments); // Get state of pin, leave pin as input/output, leave pull state
+            EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments).then((result) => {
+                // ...
+                console.log(result);
+            }); // Get state of pin, leave pin as input/output, leave pull state
+
+
+
+            console.log(state);
+
+
+            // // let sudoCommand = "python3";
+            // // let sudoScriptArguments = ["python3", "test.py", "argument1", "argument2"];
+            // // let sudoScriptCommand = ["sudo"];
+            // let sudoSetting = "0";
+            // let sudoScriptCommand = "python";
+            // let scriptName = "test.py";
+            // let sudoScriptArguments = ["argument1", "argument2"];
+            // // EditorPreload.sudoScript(sudoScriptCommand, sudoScriptArguments);
+            // // sudoCall, command, scriptName, args
+
+            // const state = EditorPreload.sudoScript(sudoSetting, sudoScriptCommand, scriptName, sudoScriptArguments); // Get state of pin, leave pin as input/output, leave pull state
+            // // EditorPreload.sudoScript(sudoSetting, sudoScriptCommand, scriptName, sudoScriptArguments).then((result) => {
+            // //     // ...
+            // //     console.log(result);
+            // // }); // Get state of pin, leave pin as input/output, leave pull state
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // EditorPreload.runShellScript(test);
+
+            // 
+            // EditorPreload.sendToMain();
+            // 
+            // EditorPreload.receiveFromMain((data) => {
+            //     console.log(`Received ${data} from main process`);
+            // });
+            // 
+
             // console.info("COLOR: ")
             // console.info("hexColor")
             // console.info(hexColor)
@@ -348,12 +408,15 @@
             // // gpio.pull(pin, op);
             // EditorPreload.gpioPull(pin, op);
 
+            // let customscriptDocumentElement = document.getElementById("customscriptDocumentElement");
+            // console.log(document.getElementById("customscriptDocumentElement"));
+            // customscriptDocumentElement.printOut("Hello World!");
 
-            let command = "sudo";
-            let args = ["python3, ScratchConnect.py"];
+            // let command = "sudo";
+            // let args = ["python3, ScratchConnect.py"];
 
-            // ipcRenderSend.invoke("runScriptWithResponseAsync", command, args)
-            EditorPreload.invokeScriptWithResponseAsync(command, args)
+            // // ipcRenderSend.invoke("runScriptWithResponseAsync", command, args)
+            // EditorPreload.invokeScriptWithResponseAsync(command, args)
         }
         // Convert Hex to Decimal in JavaScript:
         // The `parseInt()` function takes a 'string' as an argument and returns an 'integer'.

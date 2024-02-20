@@ -18,6 +18,7 @@
         "fix:ws281x-install": "fix:ws281x-rebuild && git clone https://github.com/jgarff/rpi_ws281x.git && rm -rf node_modules/rpi-ws281x-native/src/rpi_ws281x && cp -r rpi_ws281x node_modules/rpi-ws281x-native/src && rm -rf rpi_ws281x && cd node_modules/rpi-ws281x-native && sudo node-gyp rebuild",
         "fix:ws281x-rebuild": "npm install -g node-gyp",
         "build:test": "electron-builder --dir",
+        "build:test2": "npm run webpack:prod && electron-builder --dir",
         "postinstall": "npm run fetch && npm run webpack:prod",
         "postinstall2": "npm run install-native-module && npm run fetch && npm run webpack:prod",
         "install-native-module": "cp-cli src-main/static/gpiolib.node ./node_modules/ModuleGpiolib/",
@@ -70,8 +71,6 @@
     "dependencies": {
         "bleno": "^0.5.0",
         "lodash": "^4.17.21",
-        "native-is-elevated": "^0.7.0",
-        "rpi-ws281x-native": "^1.0.4",
         "semver": "^7.5.3",
         "sudo-js": "^1.0.2",
         "sudo-prompt": "^9.2.1",
