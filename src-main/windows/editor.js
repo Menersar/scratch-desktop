@@ -651,18 +651,23 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
-        ipc.on("sudo-script", (event, synchronous, sudoCall, scriptCommand, scriptName, ...args) => {
+        ipc.on("sudo-script", (event, synchronous, sudoCall, scriptCommand, scriptName, args) => {
 
 
-            let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
+            // let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
 
             let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
-            let scriptArgs = [scriptPath, ...args];
+            // const combinedA = [].concat(cars, trucks);
+            // let scriptArgs = [scriptPath, ...args];
+            let scriptArgs = [scriptPath].concat(args);
             // event.returnValue = 1;
 
             // let script = nodeChildProcess.spawn(scriptCommand, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts"), shell: process.platform == 'win32' });
             if (sudoCall === "1") {
-                scriptArgs = [scriptCommand, scriptPath, ...args];
+              
+              const combinedA = [].concat(cars, trucks);
+                // scriptArgs = [scriptCommand, scriptPath, ...args];
+                scriptArgs = [scriptCommand, scriptPath].concat(args);
                 scriptCommand = "sudo";
             }
 
