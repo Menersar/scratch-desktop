@@ -655,7 +655,7 @@ class EditorWindow extends ProjectRunningWindow {
         ipc.on("sudo-script", (event, synchronous, sudoCall, scriptCommand, scriptName, args) => {
 
 
-            let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
+            // let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
 
             let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
             // let scriptArgs = [scriptPath, ...args];
