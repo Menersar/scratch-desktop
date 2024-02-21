@@ -665,7 +665,7 @@ class EditorWindow extends ProjectRunningWindow {
         // let script = nodeChildProcess.spawn(scriptCommand, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts"), shell: process.platform == 'win32' });
         if (sudoCall === "1") {
 
-          const combinedA = [].concat(cars, trucks);
+          // const combinedA = [].concat(cars, trucks);
           // scriptArgs = [scriptCommand, scriptPath, ...args];
           scriptArgs = [scriptCommand, scriptPath].concat(args);
           scriptCommand = "sudo";
