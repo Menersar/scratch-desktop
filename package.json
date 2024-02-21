@@ -71,6 +71,7 @@
     "dependencies": {
         "bleno": "^0.5.0",
         "lodash": "^4.17.21",
+        "onoff": "^6.0.3",
         "semver": "^7.5.3",
         "sudo-js": "^1.0.2",
         "sudo-prompt": "^9.2.1",
