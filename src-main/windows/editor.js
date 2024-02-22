@@ -709,7 +709,12 @@ class EditorWindow extends ProjectRunningWindow {
         // console.log("exist code: ", script.status);
 
         // event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
-        event.returnValue = script.stdout.toString();
+        if (script.stdout) {
+          event.returnValue = script.stdout.toString();
+        }
+        event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
+
+        
         // https://snyk.io/advisor/npm-package/child_process/functions/child_process.spawnSync
         // function ZonesString() {
         // var zoneadm = spawnSync('zoneadm', ['list', '-cp']);
