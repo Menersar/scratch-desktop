@@ -673,7 +673,8 @@ class EditorWindow extends ProjectRunningWindow {
 
       if (synchronous === "1") {
 
-        let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32', stdio: 'inherit' });
+        // let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32', stdio: 'inherit' });
+        let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
 
 
 
