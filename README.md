@@ -478,3 +478,37 @@ Listens to channel, when a new message arrives listener would be called with lis
     ```
 
   - The **files** inside this folder are then accessible by using `__dirname + '/../extraResources/'` from your **main app**.
+
+## Add internal extension to Scratch / SIDEKICK
+
+### scratch-vm
+
+- edit file b/node_modules/scratch-vm/src/extension-support/extension-manager.js
+  - pigpio: () => require('../extensions/scratch3_pigpio'),
+
+- add file b/node_modules/scratch-vm/src/extensions/scratch3_pigpio/index.js
+
+### scratch-gui
+
+- edit file b/node_modules/scratch-gui/src/lib/libraries/extensions/index.jsx
+  - import pigpioIconURL from './pigpio/pigpio.png';
+  - import pigpioInsetIconURL from './pigpio/pigpio-small.svg';
+  - {
+        name: 'Raspberry Pi GPIO',
+        extensionId: 'pigpio',
+        collaborator: 'Raspberry Pi',
+        iconURL: pigpioIconURL,
+        insetIconURL: pigpioInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Control Raspberry Pi GPIO lines"
+                description="Description for the 'Pi GPIO' extension"
+                id="gui.extension.pigpio.description"
+            />
+        ),
+        featured: true
+    },  
+
+- add file b/node_modules/scratch-gui/src/lib/libraries/extensions/pigpio/pigpio-small.svg
+
+- add file b/node_modules/scratch-gui/src/lib/libraries/extensions/pigpio/pigpio.png
