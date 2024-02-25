@@ -1,0 +1,1 @@
+cmd_Release/obj.target/gpiolib.node := g++ -o Release/obj.target/gpiolib.node -shared -pthread -rdynamic -m64  -Wl,-soname=gpiolib.node -Wl,--start-group Release/obj.target/gpiolib/gpiolib.o Release/obj.target/gpiolib/raspi-gpio.o -Wl,--end-group 

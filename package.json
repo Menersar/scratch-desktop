@@ -98,17 +98,17 @@
         "electron-builder": "^24.6.4",
         "electron-installer-debian": "^3.2.0",
         "file-loader": "2.0.0",
+        "node-gyp": "^10.0.1",
         "postcss": "^8.4.13",
         "postcss-import": "^14.0.0",
         "postcss-loader": "^4.2.0",
         "postcss-simple-vars": "^6.0.3",
+        "scratch-blocks": "0.2.0-prerelease.20230718081157",
         "scratch-gui": "git+https://github.com/Menersar/scratch-gui.git#sidekick",
         "style-loader": "^0.23.0",
         "url-loader": "^4.1.1",
         "webpack": "^4.47.0",
-        "webpack-cli": "^4.10.0",
-        "node-gyp": "^10.0.1",
-        "scratch-blocks": "0.2.0-prerelease.20230718081157"
+        "webpack-cli": "^4.10.0"
     },
     "bugs": {
         "url": "https://github.com/Menersar/sidekick-desktop/issues",
