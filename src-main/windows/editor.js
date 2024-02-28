@@ -31,7 +31,7 @@ const sudoJS = require('sudo-js');
 // const ws281x = require("rpi-ws281x-native");
 // const ws281x = require("@simontaga/rpi-ws281x-native/lib/ws281x-native");
 const nodeChildProcess = require('child_process');
-const { spawn, spawnSync } = require('child_process');
+const { spawn, spawnSync, exec, execFile } = require('child_process');
 
 
 
@@ -715,7 +715,7 @@ class EditorWindow extends ProjectRunningWindow {
         }
         event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
 
-        
+
         // https://snyk.io/advisor/npm-package/child_process/functions/child_process.spawnSync
         // function ZonesString() {
         // var zoneadm = spawnSync('zoneadm', ['list', '-cp']);
@@ -761,6 +761,7 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
+        // let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
         let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
 
         // Asynchronous
@@ -883,6 +884,175 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
+
+
+    // async function runScriptSudo(execFileArgument, sudoCall, scriptCommand, scriptName, args) {
+    async function runScriptSudo(execFileArgument, scriptCommand, scriptName, args) {
+
+      let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
+      // let scriptArgs = [scriptPath].concat(args);
+
+      // if (sudoCall === "1") {
+      //   scriptArgs = [scriptCommand, scriptPath].concat(args);
+      //   scriptCommand = "sudo";
+      // }
+
+      // if (synchronous === "1") {
+
+      // let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+      if (execFileArgument === "1") {
+
+        // let script = execFile(scriptCommand, scriptArgs);
+        // //   event.returnValue = "ERROR: " + script.error;
+        // // }
+        // // if (script.stdout) {
+        // //   event.returnValue = script.stdout.toString();
+        // // }
+        // // event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
+
+        // const child = execFile('node', ['--version'], (error, stdout, stderr) => {
+        //   if (error) {
+        //     throw error;
+        //     return error;
+        //   }
+        //   console.log(stdout);
+        //   return stdout;
+        // });
+
+
+
+        execFile(scriptPath, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`error: ${error.message}`);
+            return error;
+          }
+
+          if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return stderr;
+          }
+
+          console.log(`stdout:\n${stdout}`);
+          return stdout;
+        });
+
+      } else {
+
+        // // sudo node uv-control.js 18
+        // // let script = exec(scriptCommand + " " + scriptPath + " " + args);
+
+        // // exec('cat *.js missing_file | wc -l', (error, stdout, stderr) => {
+        // exec(scriptCommand + " " + scriptPath + " " + args, (error, stdout, stderr) => {
+        //   if (error) {
+        //     console.error(`exec error: ${error}`);
+        //     // return;
+        //     return error;
+        //   }
+        //   console.log(`stdout: ${stdout}`);
+        //   console.error(`stderr: ${stderr}`);
+        //   return stdout;
+        // });
+
+        // sudo node uv-control.js 18
+        exec(scriptCommand + " " + scriptPath + " " + args, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`error: ${error.message}`);
+            return error;
+          }
+
+          if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return stderr;
+          }
+
+          console.log(`stdout:\n${stdout}`);
+          return stdout;
+        });
+
+
+        // script.stdout.on('data', (data) => {
+        //   console.log(data.toString());
+        //   // event.returnValue = data.toString();
+        //   return data.toString();
+        // });
+
+        // script.stderr.on('data', (data) => {
+        //   console.error(`child process stderr: ${data}`);
+        //   // event.returnValue = `child process stderr: ${data}`;
+        //   return `child process stderr: ${data}`;
+        // });
+
+        // script.on('close', (code) => {
+        //   console.log(`child process close all stdio with code ${code}`);
+        //   // event.returnValue = `child process close all stdio with code ${code}`;
+        //   return `child process close all stdio with code ${code}`;
+        // });
+
+        // script.on('exit', (code) => {
+        //   console.log(`child process exited with code ${code}`);
+        //   // event.returnValue = `child process exited with code ${code}`;
+        //   return `child process exited with code ${code}`;
+        // });
+
+      }
+    }
+
+
+
+
+    ipc.handle("sudo-script-async", async (event, execFileArgument, scriptCommand, scriptName, args) => {
+
+      return await runScriptSudo(execFileArgument, scriptCommand, scriptName, args);
+
+      // let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
+      // let scriptArgs = [scriptPath].concat(args);
+
+      // if (sudoCall === "1") {
+      //   scriptArgs = [scriptCommand, scriptPath].concat(args);
+      //   scriptCommand = "sudo";
+      // }
+
+      // // if (synchronous === "1") {
+
+      // // let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+      // // if (script.error) {
+      // //   event.returnValue = "ERROR: " + script.error;
+      // // }
+      // // if (script.stdout) {
+      // //   event.returnValue = script.stdout.toString();
+      // // }
+      // // event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
+
+      // // } else {
+
+      // let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+
+
+      // script.stdout.on('data', (data) => {
+      //   console.log(data.toString());
+      //   event.returnValue = data.toString();
+      // });
+
+      // script.stderr.on('data', (data) => {
+      //   console.error(`child process stderr: ${data}`);
+      //   event.returnValue = `child process stderr: ${data}`;
+      // });
+
+      // script.on('close', (code) => {
+      //   console.log(`child process close all stdio with code ${code}`);
+      //   event.returnValue = `child process close all stdio with code ${code}`;
+      // });
+
+      // script.on('exit', (code) => {
+      //   console.log(`child process exited with code ${code}`);
+      //   event.returnValue = `child process exited with code ${code}`;
+      // });
+
+      // // }
+    });
 
 
 

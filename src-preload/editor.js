@@ -55,19 +55,21 @@ contextBridge.exposeInMainWorld("EditorPreload", {
 
 
     sudoScript: (synchronous, sudoCall, command, scriptName, args) => ipcRenderer.sendSync('sudo-script', synchronous, sudoCall, command, scriptName, args),
+    sudoScriptAsync: (execFileArgument, scriptCommand, scriptName, args) => { return ipcRenderer.invoke('sudo-script-async', execFileArgument, scriptCommand, scriptName, args)},
     // ipc.on("sudo-script", (event, synchronous, sudoCall, scriptCommand, scriptName, ...args) => {
 
+    // return ipcRenderer.invoke('some-channel', data);
 
 
-    sendToMain: function () {
-        ipcRenderer.send("sendToMain");
-    },
-    // receiveFromMain: function (func) {
-    //     ipcRenderer.on("receiveFromMain", (event, ...args) => func(event, ...args));
-    // },
+        sendToMain: function () {
+            ipcRenderer.send("sendToMain");
+        },
+        // receiveFromMain: function (func) {
+        //     ipcRenderer.on("receiveFromMain", (event, ...args) => func(event, ...args));
+        // },
 
 
-});
+    });
 
 
 // // White-listed channels.
