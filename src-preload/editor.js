@@ -25,8 +25,10 @@ contextBridge.exposeInMainWorld("EditorPreload", {
         exportForPackager = callback;
     },
     gpioSet: (pin, drive) => ipcRenderer.sendSync("gpio-set", pin, drive),
-    gpioGet: (pin) => ipcRenderer.sendSync("gpio-get", pin),
+    gpioToggle: (pin) => ipcRenderer.sendSync("gpio-toggle", pin),
+    gpioGet: (pin, io, pull) => ipcRenderer.sendSync("gpio-get", pin, io, pull),
     gpioPull: (pin, op) => ipcRenderer.sendSync("gpio-pull", pin, op),
+    // fsSyncOpenReadCloseReturnData: (fsLocation, fsArgument) => ipcRenderer.sendSync("fs-sync-open-read-close-returnData", fsLocation, fsArgument),
     // moduleGet: (module) => ipcRenderer.sendSync("module-get", module),
     // runModuleFunction: (mdl, fct, ...argmts) => ipcRenderer.sendSync("function-module-run", mdl, fct, ...argmts),
     // 
@@ -53,6 +55,20 @@ contextBridge.exposeInMainWorld("EditorPreload", {
     // sudoScript: (command, args) => { return ipcRenderer.invoke('sudo-script', command, args) },
     runShellScript: (fileName, args) => ipcRenderer.send('run-shell-script', fileName, args),
 
+    // // Inter-Process Communication
+    // // Pattern 2: Renderer to main (two-way)
+    // // (Source: https://www.electronjs.org/de/docs/latest/tutorial/ipc#pattern-2-renderer-to-main-two-way)
+    // // pigpioGetDistance: (triggerPin, echoPin) => ipcRenderer.invoke('pigpio-get-distance', triggerPin, echoPin),
+    // pigpioGetDistance: (echoPin) => ipcRenderer.invoke('pigpio-get-distance', echoPin),
+    // pigpioGetDistance2: (echoPin) => ipcRenderer.invoke('pigpio-get-distance-2', echoPin),
+    // pigpioGetDistance3: (echoPin) => ipcRenderer.invoke('pigpio-get-distance-3', echoPin),
+
+    // pigpioGetDistance4: (echoPin) => ipcRenderer.sendSync('pigpio-get-distance-4', echoPin),
+    // pigpioGetDistance5: (echoPin) => ipcRenderer.sendSync('pigpio-get-distance-5', echoPin),
+    // pigpioGetDistance6: (echoPin) => ipcRenderer.sendSync('pigpio-get-distance-6', echoPin),
+
+
+    waitForMillis: (millis) => ipcRenderer.invoke('wait-for-millis', millis),
 
     sudoScript: (synchronous, sudoCall, command, scriptName, args) => ipcRenderer.sendSync('sudo-script', synchronous, sudoCall, command, scriptName, args),
     sudoScriptAsync: (execFileArgument, scriptCommand, scriptName, args) => { return ipcRenderer.invoke('sudo-script-async', execFileArgument, scriptCommand, scriptName, args)},

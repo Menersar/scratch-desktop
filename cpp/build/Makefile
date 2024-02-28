@@ -40,9 +40,9 @@ all_deps :=
 
 
 
-CC.target ?= $(CC)
+CC.target ?= gcc
 CFLAGS.target ?= $(CPPFLAGS) $(CFLAGS)
-CXX.target ?= $(CXX)
+CXX.target ?= g++
 CXXFLAGS.target ?= $(CPPFLAGS) $(CXXFLAGS)
 LINK.target ?= $(LINK)
 LDFLAGS.target ?= $(LDFLAGS)
@@ -339,7 +339,7 @@ endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
 cmd_regen_makefile = cd $(srcdir); /mnt/c/Users/mener/Desktop/sidekick-application/sidekick-desktop/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/home/menersar/.cache/node-gyp/16.0.0" "-Dnode_gyp_dir=/mnt/c/Users/mener/Desktop/sidekick-application/sidekick-desktop/node_modules/node-gyp" "-Dnode_lib_file=/home/menersar/.cache/node-gyp/16.0.0/<(target_arch)/node.lib" "-Dmodule_root_dir=/mnt/c/Users/mener/Desktop/sidekick-application/sidekick-desktop/cpp" "-Dnode_engine=v8" "--depth=." "-Goutput_dir=." "--generator-output=build" -I/mnt/c/Users/mener/Desktop/sidekick-application/sidekick-desktop/cpp/build/config.gypi -I/mnt/c/Users/mener/Desktop/sidekick-application/sidekick-desktop/node_modules/node-gyp/addon.gypi -I/home/menersar/.cache/node-gyp/16.0.0/include/node/common.gypi "--toplevel-dir=." binding.gyp
-Makefile: $(srcdir)/binding.gyp $(srcdir)/../node_modules/node-gyp/addon.gypi $(srcdir)/../../../../../../../../home/menersar/.cache/node-gyp/16.0.0/include/node/common.gypi $(srcdir)/build/config.gypi
+Makefile: $(srcdir)/../../../../../../../../home/menersar/.cache/node-gyp/16.0.0/include/node/common.gypi $(srcdir)/binding.gyp $(srcdir)/build/config.gypi $(srcdir)/../node_modules/node-gyp/addon.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included

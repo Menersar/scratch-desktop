@@ -14,10 +14,30 @@
         "url": "https://github.com/Menersar/sidekick-desktop.git"
     },
     "scripts": {
+        "//s3-scripts-start": "eslint --cache --color --ext .jsx,.js .",
+        "s3-clean": "rimraf ./dist ./static/assets",
+        "s3-start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
+        "s3-compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
+        "s3-compile:cpp32": "CXX=arm-linux-gnueabihf-g++ CC=arm-linux-gnueabihf-gcc node ./node_modules/node-gyp/bin/node-gyp.js configure build -C ./cpp && cp ./cpp/build/Release/gpiolib.node ./static/",
+        "s3-compile:cpp64": "CXX=g++ CC=gcc node ./node_modules/node-gyp/bin/node-gyp.js configure build -C ./cpp && cp ./cpp/build/Release/gpiolib.node ./static/",
+        "s3-fetch": "rimraf ./static/assets/ && mkdirp ./static/assets/ && node ./scripts/fetchMediaLibraryAssets.js",
+        "s3-build": "npm run build:dev",
+        "s3-build:dev": "npm run compile && npm run doBuild -- --mode=dev",
+        "s3-build:dir": "npm run compile && npm run doBuild -- --mode=dir",
+        "s3-build:dist": "npm run compile && npm run doBuild -- --mode=dist",
+        "s3-doBuild": "node ./scripts/electron-builder-wrapper.js",
+        "s3-dist:rpi32": "npm run clean && npm run compile && npm run compile:cpp32 && npm run fetch && npm run doBuild -- --mode=dist --platform=linux32",
+        "s3-dist:rpi64": "npm run clean && npm run compile && npm run compile:cpp64 && npm run fetch && npm run doBuild -- --mode=dist --platform=linux64",
+        "s3-distDev": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dev",
+        "s3-test": "npm run test:lint",
+        "s3-test:lint": "eslint --cache --color --ext .jsx,.js .",
+        "s3-postinstall": "git apply patches/*.patch",
         "test:lint": "eslint --cache --color --ext .jsx,.js .",
+        "//s3-scripts-end": "eslint --cache --color --ext .jsx,.js .",
         "//postinstall": "git apply patches/*.patch",
         "compile:cpp": "node ./node_modules/node-gyp/bin/node-gyp.js configure build -C ./cpp && cp ./cpp/build/Release/gpiolib.node ./static/ ",
-        "build": "cd build-automation && node build.js",
+        "compile-rpi": "CXX=g++ CC=gcc node ./node_modules/node-gyp/bin/node-gyp.js configure build -C ./cpp && cp ./cpp/build/Release/gpiolib.node ./static/",
+        "build": "npm run compile-rpi && cd build-automation && node build.js",
         "fix:ws281x-install": "fix:ws281x-rebuild && git clone https://github.com/jgarff/rpi_ws281x.git && rm -rf node_modules/rpi-ws281x-native/src/rpi_ws281x && cp -r rpi_ws281x node_modules/rpi-ws281x-native/src && rm -rf rpi_ws281x && cd node_modules/rpi-ws281x-native && sudo node-gyp rebuild",
         "fix:ws281x-rebuild": "npm install -g node-gyp",
         "build:test": "electron-builder --dir",
@@ -99,6 +119,7 @@
         "electron-installer-debian": "^3.2.0",
         "file-loader": "2.0.0",
         "node-gyp": "^10.0.1",
+        "pigpio": "^3.3.1",
         "postcss": "^8.4.13",
         "postcss-import": "^14.0.0",
         "postcss-loader": "^4.2.0",
@@ -140,6 +161,10 @@
             {
                 "from": "src-main/static/gpiolib.node",
                 "to": "static/gpiolib.node"
+            },
+            {
+                "from": "node_modules/pigpio/build/Release/pigpio.node",
+                "to": "static/pigpio.node"
             },
             {
                 "from": "src-main/windows/ws281x-control.js",

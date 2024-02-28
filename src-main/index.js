@@ -1,5 +1,5 @@
 const { app, dialog } = require("electron");
-const { contextBridge, ipcRenderer } = require("electron");
+// const { contextBridge, ipcRenderer } = require("electron");
 // const electronIpcMain = require('electron').ipcMain;
 
 // requestSingleInstanceLock() crashes the app in signed MAS builds
