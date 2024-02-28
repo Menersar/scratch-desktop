@@ -3,6 +3,7 @@ var _ = require('lodash');
 // const { promisify } = require("util");
 const fsPromises = require("fs/promises");
 const path = require("path");
+const gpioLibNode = require(path.join(process.resourcesPath + '/static', 'gpiolib.node'));
 const { app, dialog } = require("electron");
 const ProjectRunningWindow = require("./project-running-window");
 const AddonsWindow = require("./addons");
@@ -31,8 +32,17 @@ const sudoJS = require('sudo-js');
 // const ws281x = require("rpi-ws281x-native");
 // const ws281x = require("@simontaga/rpi-ws281x-native/lib/ws281x-native");
 const nodeChildProcess = require('child_process');
+<<<<<<< Updated upstream
 const { spawn, spawnSync, exec, execFile } = require('child_process');
+=======
+const { spawn, spawnSync } = require('child_process');
+// const Gpio = require('pigpio').Gpio;
+// const Gpio = require(path.join(process.resourcesPath + '/static', 'pigpio.node')).Gpio;
+// const MICROSECDONDS_PER_CM = 1e6 / 34321;
+// const trigger = new Gpio(25, { mode: Gpio.OUTPUT });
+>>>>>>> Stashed changes
 
+// var distance = 0;
 
 
 // class LEDBrightnessCharacteristic extends bleno.Characteristic {
@@ -330,6 +340,375 @@ class EditorWindow extends ProjectRunningWindow {
         //   };
         // });
 
+
+        // ipc.on("start-write-stream", async (startEvent, index) => {
+        // ipc.on("gpio-get", (event, triggerPin, echoPin, gpioIo, gpioPull) => {
+        // ipc.handle("pigpio-get-distance", async (event, triggerPin, echoPin) => {
+        // ipc.handle("pigpio-get-distance", async (triggerPin, echoPin) => {
+        // ipc.handle("pigpio-get-distance", async (echoPin) => {
+        //     if (process.platform === "linux") {
+        //         const echo = new Gpio(echoPin, { mode: Gpio.INPUT, alert: true });
+
+        //         distance = 0;
+        //         trigger.digitalWrite(0); // Make sure trigger is low
+
+
+
+        //         let startTick;
+
+
+        //         // function alertHandler(level, tick) {
+        //         //     var endTick,
+        //         //         diff;
+
+        //         //     if (level == 1) {
+        //         //         startTick = tick;
+        //         //     } else {
+        //         //         endTick = tick;
+        //         //         diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //         //         callback(diff / 2 / MICROSECDONDS_PER_CM);
+        //         //         echo.removeListener('alert', alertHandler);
+        //         //     }
+        //         // }
+        //         echo.on('alert', (level, tick) => {
+        //             if (level == 1) {
+        //                 startTick = tick;
+        //             } else {
+        //                 const endTick = tick;
+        //                 const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //                 console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        //                 distance = diff / 2 / MICROSECDONDS_PER_CM;
+        //             }
+        //             return distance;
+
+        //         });
+
+        //         // echo.on('alert', alertHandler);
+
+        //         trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // path.join(process.resourcesPath + '/static', 'gpiolib.node')
+        //         // event.returnValue = gpio.get(gpioPin, -1, -1);
+        //         // event.returnValue = gpio.get(gpioPin, gpioIo, gpioPull);
+        //         // event.returnValue = gpioLibNode.get(gpioPin, gpioIo, gpioPull);
+        //     } else {
+        //         // event.returnValue = -1;
+        //         return -1;
+        //     }
+        // });
+
+
+
+        // // instructions for Using Native Node Modules
+        // // https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules
+
+        // ipc.handle("pigpio-get-distance", async (echoPin) => {
+        //     if (process.platform === "linux") {
+        //         const echo = new Gpio(echoPin, { mode: Gpio.INPUT, alert: true });
+
+        //         distance = 0;
+        //         trigger.digitalWrite(0); // Make sure trigger is low
+
+
+
+        //         let startTick;
+
+
+        //         // function alertHandler(level, tick) {
+        //         //     var endTick,
+        //         //         diff;
+
+        //         //     if (level == 1) {
+        //         //         startTick = tick;
+        //         //     } else {
+        //         //         endTick = tick;
+        //         //         diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //         //         callback(diff / 2 / MICROSECDONDS_PER_CM);
+        //         //         echo.removeListener('alert', alertHandler);
+        //         //     }
+        //         // }
+        //         echo.on('alert', (level, tick) => {
+        //             if (level == 1) {
+        //                 startTick = tick;
+        //             } else {
+        //                 const endTick = tick;
+        //                 const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //                 console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        //                 distance = diff / 2 / MICROSECDONDS_PER_CM;
+        //             }
+        //             return distance;
+
+        //         });
+
+        //         // echo.on('alert', alertHandler);
+
+        //         trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // path.join(process.resourcesPath + '/static', 'gpiolib.node')
+        //         // event.returnValue = gpio.get(gpioPin, -1, -1);
+        //         // event.returnValue = gpio.get(gpioPin, gpioIo, gpioPull);
+        //         // event.returnValue = gpioLibNode.get(gpioPin, gpioIo, gpioPull);
+        //     } else {
+        //         // event.returnValue = -1;
+        //         return -1;
+        //     }
+        // });
+
+        // ipc.handle("pigpio-get-distance-2", (echoPin) => {
+        //     if (process.platform === "linux") {
+        //         const echo = new Gpio(echoPin, { mode: Gpio.INPUT, alert: true });
+
+        //         var distance = 0;
+        //         trigger.digitalWrite(0); // Make sure trigger is low
+
+        //         let startTick;
+
+        //         echo.on('alert', (level, tick) => {
+        //             if (level == 1) {
+        //                 startTick = tick;
+        //             } else {
+        //                 const endTick = tick;
+        //                 const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //                 console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        //                 distance = diff / 2 / MICROSECDONDS_PER_CM;
+        //             }
+        //             return distance;
+
+        //         });
+
+        //         trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+        //     } else {
+        //         return -1;
+        //     }
+        // });
+
+        // ipc.handle("pigpio-get-distance-3", async (echoPin) => {
+        //     if (process.platform === "linux") {
+        //         const echo = new Gpio(echoPin, { mode: Gpio.INPUT, alert: true });
+
+        //         distance = 0;
+        //         trigger.digitalWrite(0); // Make sure trigger is low
+
+
+        //         trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+
+        //         let awaitedDistance = await watchHCSR04();
+        //         return awaitedDistance;
+        //     } else {
+        //         return -1;
+        //     }
+        // });
+
+
+        // const watchHCSR04 = () => {
+        //     let startTick;
+
+        //     echo.on('alert', (level, tick) => {
+        //         if (level == 1) {
+        //             startTick = tick;
+        //             return distance;
+        //         } else {
+        //             const endTick = tick;
+        //             const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //             console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        //             distance = diff / 2 / MICROSECDONDS_PER_CM;
+        //             return distance;
+        //         }
+        //         throw new Error("Unknown message from renderer");
+        //     });
+        // };
+
+
+
+
+
+
+
+
+
+
+
+
+        // ipc.handle("pigpio-get-distance-4", async (echoPin) => {
+        //     if (process.platform === "linux") {
+        //         const echo = new Gpio(echoPin, { mode: Gpio.INPUT, alert: true });
+
+        //         distance = 0;
+        //         trigger.digitalWrite(0); // Make sure trigger is low
+
+
+
+        //         let startTick;
+
+
+        //         // function alertHandler(level, tick) {
+        //         //     var endTick,
+        //         //         diff;
+
+        //         //     if (level == 1) {
+        //         //         startTick = tick;
+        //         //     } else {
+        //         //         endTick = tick;
+        //         //         diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //         //         callback(diff / 2 / MICROSECDONDS_PER_CM);
+        //         //         echo.removeListener('alert', alertHandler);
+        //         //     }
+        //         // }
+        //         echo.on('alert', (level, tick) => {
+        //             if (level == 1) {
+        //                 startTick = tick;
+        //             } else {
+        //                 const endTick = tick;
+        //                 const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //                 console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        //                 distance = diff / 2 / MICROSECDONDS_PER_CM;
+        //             }
+        //             return distance;
+
+        //         });
+
+        //         // echo.on('alert', alertHandler);
+
+        //         trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // path.join(process.resourcesPath + '/static', 'gpiolib.node')
+        //         // event.returnValue = gpio.get(gpioPin, -1, -1);
+        //         // event.returnValue = gpio.get(gpioPin, gpioIo, gpioPull);
+        //         // event.returnValue = gpioLibNode.get(gpioPin, gpioIo, gpioPull);
+        //     } else {
+        //         // event.returnValue = -1;
+        //         return -1;
+        //     }
+        // });
+
+        // ipc.handle("pigpio-get-distance-5", (echoPin) => {
+        //     if (process.platform === "linux") {
+        //         const echo = new Gpio(echoPin, { mode: Gpio.INPUT, alert: true });
+
+        //         var distance = 0;
+        //         trigger.digitalWrite(0); // Make sure trigger is low
+
+        //         let startTick;
+
+        //         echo.on('alert', (level, tick) => {
+        //             if (level == 1) {
+        //                 startTick = tick;
+        //             } else {
+        //                 const endTick = tick;
+        //                 const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //                 console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        //                 distance = diff / 2 / MICROSECDONDS_PER_CM;
+        //             }
+        //             return distance;
+
+        //         });
+
+        //         trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+        //     } else {
+        //         return -1;
+        //     }
+        // });
+
+        // ipc.handle("pigpio-get-distance-6", async (echoPin) => {
+        //     if (process.platform === "linux") {
+        //         const echo = new Gpio(echoPin, { mode: Gpio.INPUT, alert: true });
+
+        //         distance = 0;
+        //         trigger.digitalWrite(0); // Make sure trigger is low
+
+
+        //         trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+
+        //         let awaitedDistance = await watchHCSR046();
+        //         return awaitedDistance;
+        //     } else {
+        //         return -1;
+        //     }
+        // });
+
+
+        // const watchHCSR046 = () => {
+        //     let startTick;
+
+        //     echo.on('alert', (level, tick) => {
+        //         if (level == 1) {
+        //             startTick = tick;
+        //             return distance;
+        //         } else {
+        //             const endTick = tick;
+        //             const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //             console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        //             distance = diff / 2 / MICROSECDONDS_PER_CM;
+        //             return distance;
+        //         }
+        //         throw new Error("Unknown message from renderer");
+        //     });
+        // };
+
+
+
+
+
+
+        ipc.handle("wait-for-millis", (event, millis) => {
+            return new Promise((resolve) => setTimeout(resolve, millis));
+        });
+
+      
+        // var Gpio = require('../').Gpio,
+        //     trigger = new Gpio(23, { mode: Gpio.OUTPUT }),
+        //     echo = new Gpio(24, { mode: Gpio.INPUT, alert: true });
+
+        // // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
+        // var MICROSECDONDS_PER_CM = 1e6 / 34321;
+
+        // trigger.digitalWrite(0); // Make sure trigger is low
+
+        // function measureDistance(callback) {
+        //     var startTick;
+
+        //     function alertHandler(level, tick) {
+        //         var endTick,
+        //             diff;
+
+<<<<<<< Updated upstream
+
+        // https://snyk.io/advisor/npm-package/child_process/functions/child_process.spawnSync
+        // function ZonesString() {
+        // var zoneadm = spawnSync('zoneadm', ['list', '-cp']);
+        // var zones = zoneadm.stdout.toString().split('\n');
+        // zones.pop();
+        // return zones;
+=======
+        //         if (level == 1) {
+        //             startTick = tick;
+        //         } else {
+        //             endTick = tick;
+        //             diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+        //             callback(diff / 2 / MICROSECDONDS_PER_CM);
+        //             echo.removeListener('alert', alertHandler);
+        //         }
+        //     }
+
+        //     echo.on('alert', alertHandler);
+
+        //     trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+>>>>>>> Stashed changes
+        // }
+
+        // // Trigger a distance measurement once per second
+        // setInterval(function () {
+        //     measureDistance(function (distance) {
+        //         console.log(distance + 'cm');
+        //     });
+        // }, 1000);
+
         ipc.on("set-locale", async (event, locale) => {
             if (settings.locale !== locale) {
                 settings.locale = locale;
@@ -503,10 +882,11 @@ class EditorWindow extends ProjectRunningWindow {
 
         ipc.on("gpio-set", (event, gpioPin, drive) => {
             if (process.platform === "linux") {
-                const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+                // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
 
                 //
-                event.returnValue = gpio.set(gpioPin, drive);
+                // event.returnValue = gpio.set(gpioPin, drive);
+                event.returnValue = gpioLibNode.set(gpioPin, drive);
                 // gpio.set(gpioPin, drive);
                 // event.returnValue = 1;
                 //
@@ -515,15 +895,60 @@ class EditorWindow extends ProjectRunningWindow {
             }
         });
 
-        ipc.on("gpio-get", (event, gpioPin) => {
+        ipc.on("gpio-toggle", (event, gpioPin) => {
             if (process.platform === "linux") {
-                const gpio = require(process.resourcesPath + "/static/gpiolib.node");
-                event.returnValue = gpio.get(gpioPin, -1, -1);
+                // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+
+                //
+                // event.returnValue = gpio.set(gpioPin, drive);
+                event.returnValue = gpioLibNode.toggle(gpioPin);
+                // gpio.set(gpioPin, drive);
+                // event.returnValue = 1;
+                //
             } else {
                 event.returnValue = -1;
             }
         });
 
+        ipc.on("gpio-get", (event, gpioPin, gpioIo, gpioPull) => {
+            if (process.platform === "linux") {
+                // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+                // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+                // path.join(process.resourcesPath + '/static', 'gpiolib.node')
+                // event.returnValue = gpio.get(gpioPin, -1, -1);
+                // event.returnValue = gpio.get(gpioPin, gpioIo, gpioPull);
+                event.returnValue = gpioLibNode.get(gpioPin, gpioIo, gpioPull);
+            } else {
+                event.returnValue = -1;
+            }
+        });
+
+
+        // ipc.on("fs-sync-open-read-close-returnData", (event, fsLocation, fsArgument) => {
+        //     if (process.platform === "linux") {
+        //         let data = new Uint8Array(20);
+        //         // const fd = fs.openSync('/dev/shm/rpi-sense-emu-pressure', 'r');
+        //         const fd = fs.openSync(fsLocation, fsArgument);
+        //         fs.readSync(fd, data, 0, 20, 0);
+        //         fs.closeSync(fd);
+        //         // const view = new DataView(data.buffer, 0, 20);
+        //         // const returnValue = Number(view.getInt16(16, true) / 480 + 37).toFixed(2);
+
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+        //         // path.join(process.resourcesPath + '/static', 'gpiolib.node')
+        //         // event.returnValue = gpio.get(gpioPin, -1, -1);
+        //         // event.returnValue = gpio.get(gpioPin, gpioIo, gpioPull);
+        //         event.returnValue = data;
+        //     } else {
+        //         event.returnValue = -1;
+        //     }
+        // });
+        // 
+        // const fd = fs.openSync('/dev/shm/rpi-sense-emu-pressure', 'r');
+        // fs.readSync(fd, data, 0, 20, 0);
+        // fs.closeSync(fd);
+        // 
 
 
         // Node.js spawn child process and get terminal output live
@@ -761,7 +1186,6 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
-                // let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
                 let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
 
                 // Asynchronous
@@ -884,175 +1308,6 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
-
-
-        // async function runScriptSudo(execFileArgument, sudoCall, scriptCommand, scriptName, args) {
-        async function runScriptSudo(execFileArgument, scriptCommand, scriptName, args) {
-
-            let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
-            // let scriptArgs = [scriptPath].concat(args);
-
-            // if (sudoCall === "1") {
-            //   scriptArgs = [scriptCommand, scriptPath].concat(args);
-            //   scriptCommand = "sudo";
-            // }
-
-            // if (synchronous === "1") {
-
-            // let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
-
-            if (execFileArgument === "1") {
-
-                // let script = execFile(scriptCommand, scriptArgs);
-                // //   event.returnValue = "ERROR: " + script.error;
-                // // }
-                // // if (script.stdout) {
-                // //   event.returnValue = script.stdout.toString();
-                // // }
-                // // event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
-
-                // const child = execFile('node', ['--version'], (error, stdout, stderr) => {
-                //   if (error) {
-                //     throw error;
-                //     return error;
-                //   }
-                //   console.log(stdout);
-                //   return stdout;
-                // });
-
-
-
-                execFile(scriptPath, (error, stdout, stderr) => {
-                    if (error) {
-                        console.error(`error: ${error.message}`);
-                        return error;
-                    }
-
-                    if (stderr) {
-                        console.error(`stderr: ${stderr}`);
-                        return stderr;
-                    }
-
-                    console.log(`stdout:\n${stdout}`);
-                    return stdout;
-                });
-
-            } else {
-
-                // // sudo node uv-control.js 18
-                // // let script = exec(scriptCommand + " " + scriptPath + " " + args);
-
-                // // exec('cat *.js missing_file | wc -l', (error, stdout, stderr) => {
-                // exec(scriptCommand + " " + scriptPath + " " + args, (error, stdout, stderr) => {
-                //   if (error) {
-                //     console.error(`exec error: ${error}`);
-                //     // return;
-                //     return error;
-                //   }
-                //   console.log(`stdout: ${stdout}`);
-                //   console.error(`stderr: ${stderr}`);
-                //   return stdout;
-                // });
-
-                // sudo node uv-control.js 18
-                exec(scriptCommand + " " + scriptPath + " " + args, (error, stdout, stderr) => {
-                    if (error) {
-                        console.error(`error: ${error.message}`);
-                        return error;
-                    }
-
-                    if (stderr) {
-                        console.error(`stderr: ${stderr}`);
-                        return stderr;
-                    }
-
-                    console.log(`stdout:\n${stdout}`);
-                    return stdout;
-                });
-
-
-                // script.stdout.on('data', (data) => {
-                //   console.log(data.toString());
-                //   // event.returnValue = data.toString();
-                //   return data.toString();
-                // });
-
-                // script.stderr.on('data', (data) => {
-                //   console.error(`child process stderr: ${data}`);
-                //   // event.returnValue = `child process stderr: ${data}`;
-                //   return `child process stderr: ${data}`;
-                // });
-
-                // script.on('close', (code) => {
-                //   console.log(`child process close all stdio with code ${code}`);
-                //   // event.returnValue = `child process close all stdio with code ${code}`;
-                //   return `child process close all stdio with code ${code}`;
-                // });
-
-                // script.on('exit', (code) => {
-                //   console.log(`child process exited with code ${code}`);
-                //   // event.returnValue = `child process exited with code ${code}`;
-                //   return `child process exited with code ${code}`;
-                // });
-
-            }
-        }
-
-
-
-
-        ipc.handle("sudo-script-async", async (event, execFileArgument, scriptCommand, scriptName, args) => {
-
-            return await runScriptSudo(execFileArgument, scriptCommand, scriptName, args);
-
-            // let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
-            // let scriptArgs = [scriptPath].concat(args);
-
-            // if (sudoCall === "1") {
-            //   scriptArgs = [scriptCommand, scriptPath].concat(args);
-            //   scriptCommand = "sudo";
-            // }
-
-            // // if (synchronous === "1") {
-
-            // // let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
-
-            // // if (script.error) {
-            // //   event.returnValue = "ERROR: " + script.error;
-            // // }
-            // // if (script.stdout) {
-            // //   event.returnValue = script.stdout.toString();
-            // // }
-            // // event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
-
-            // // } else {
-
-            // let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
-
-
-
-            // script.stdout.on('data', (data) => {
-            //   console.log(data.toString());
-            //   event.returnValue = data.toString();
-            // });
-
-            // script.stderr.on('data', (data) => {
-            //   console.error(`child process stderr: ${data}`);
-            //   event.returnValue = `child process stderr: ${data}`;
-            // });
-
-            // script.on('close', (code) => {
-            //   console.log(`child process close all stdio with code ${code}`);
-            //   event.returnValue = `child process close all stdio with code ${code}`;
-            // });
-
-            // script.on('exit', (code) => {
-            //   console.log(`child process exited with code ${code}`);
-            //   event.returnValue = `child process exited with code ${code}`;
-            // });
-
-            // // }
-        });
 
 
 
@@ -1566,10 +1821,11 @@ class EditorWindow extends ProjectRunningWindow {
 
         ipc.on("gpio-pull", (event, gpioPin, pullOp) => {
             if (process.platform === "linux") {
-                const gpio = require(process.resourcesPath + "/static/gpiolib.node");
+                // const gpio = require(process.resourcesPath + "/static/gpiolib.node");
 
                 //
-                event.returnValue = gpio.pull(gpioPin, pullOp);
+                // event.returnValue = gpio.pull(gpioPin, pullOp);
+                event.returnValue = gpioLibNode.pull(gpioPin, pullOp);
                 // gpio.pull(gpioPin, pullOp);
                 // event.returnValue = 1;
                 //
@@ -1838,6 +2094,30 @@ class EditorWindow extends ProjectRunningWindow {
 
 
 
+<<<<<<< Updated upstream
+        // let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+        let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+        // Asynchronous
+        // const pythonProcess = nodeChildProcess.spawn('python', [patheroni]);
+
+        // pythonProcess.stdout.on('data', (data) => {
+        //     // Handle the output from the Python script
+        //     event.returnValue = data.toString();
+        //     console.log(data.toString());
+        //     // return data.toString();
+
+        // });
+
+        // pythonProcess.on('close', (code) => {
+
+        //     // Handle the Python process closing
+        //     event.returnValue = `Python script exited with code ${code}`;
+        //     console.log(`Python script exited with code ${code}`);
+        //     // return `Python script exited with code ${code}`;
+        // });
+=======
+>>>>>>> Stashed changes
 
 
 
@@ -1879,6 +2159,436 @@ class EditorWindow extends ProjectRunningWindow {
             );
             this.window.webContents.send("enumerate-media-devices");
         });
+<<<<<<< Updated upstream
+
+        script.stderr.on('data', (data) => {
+          console.error(`child process stderr: ${data}`);
+          event.returnValue = `child process stderr: ${data}`;
+        });
+
+        script.on('close', (code) => {
+          console.log(`child process close all stdio with code ${code}`);
+          event.returnValue = `child process close all stdio with code ${code}`;
+        });
+
+        script.on('exit', (code) => {
+          console.log(`child process exited with code ${code}`);
+          event.returnValue = `child process exited with code ${code}`;
+        });
+
+
+
+
+        // script.stdout.on("data", (data) => {
+        //   // console.log("stdout: " + data);
+        //   event.returnValue = "1 stdout: " + data.toString();
+        //   // return "1 stdout: " + data.toString();
+        // });
+
+        // script.stderr.on("data", (err) => {
+        //   // console.log("stderr: " + err);
+        //   event.returnValue = "-1 stderr: " + err;
+        //   // return "-1 stderr: " + err;
+        // });
+
+        // script.on("exit", (code) => {
+        //   // console.log("Exit Code: " + code);
+        //   event.returnValue = "0 Exit Code: " + code;
+        //   // return "0 Exit Code: " + code;
+        // });
+
+        // script.on("close", (code) => {
+        //   // console.log("Exit Code: " + code);
+        //   event.returnValue = `Python script exited with code ${code}`;
+        //   // return "0 Exit Code: " + code;
+        // });
+      }
+
+
+      //
+      // Command, path to file + file name + ending, arguments
+      // E.g.: python3 scriptName.py arg1 arg2
+      //
+      // scriptCommand
+      // "sudo"
+      //
+
+
+
+      // let patheroni = path.join(process.resourcesPath, "scripts", "test.py");
+      // const pythonProcess = spawn('python', [patheroni]);
+
+
+      // pythonProcess.stdout.on('data', (data) => {
+      //     // Handle the output from the Python script
+      //     console.log(data.toString());
+      //     // event.returnValue = data.toString();
+      //     let dateroni = data.toString();
+      //     return '1 ' + dateroni;
+      // });
+
+      // pythonProcess.on('close', (code) => {
+      //     // Handle the Python process closing
+      //     console.log(`Python script exited with code ${code}`);
+      //     // event.returnValue = `Python script exited with code ${code}`;
+      //     return `0 Python script exited with code ${code}`;
+      // });
+
+      // return `-1 err`;
+
+      // event.returnValue = 1;
+
+
+      // return `-1 err`;
+
+      // // https://www.digitaldesignjournal.com/can-i-use-python-with-electron/
+      // pythonProcess.stdout.on('data', (data) => {
+      //     // Handle the output from the Python script
+      //     console.log(data.toString());
+      // });
+
+      // pythonProcess.on('close', (code) => {
+      //     // Handle the Python process closing
+      //     console.log(`Python script exited with code ${code}`);
+      // });
+    });
+
+
+
+
+
+
+    // async function runScriptSudo(execFileArgument, sudoCall, scriptCommand, scriptName, args) {
+    async function runScriptSudo(execFileArgument, scriptCommand, scriptName, args) {
+
+      let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
+      // let scriptArgs = [scriptPath].concat(args);
+
+      // if (sudoCall === "1") {
+      //   scriptArgs = [scriptCommand, scriptPath].concat(args);
+      //   scriptCommand = "sudo";
+      // }
+
+      // if (synchronous === "1") {
+
+      // let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+      if (execFileArgument === "1") {
+
+        // let script = execFile(scriptCommand, scriptArgs);
+        // //   event.returnValue = "ERROR: " + script.error;
+        // // }
+        // // if (script.stdout) {
+        // //   event.returnValue = script.stdout.toString();
+        // // }
+        // // event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
+
+        // const child = execFile('node', ['--version'], (error, stdout, stderr) => {
+        //   if (error) {
+        //     throw error;
+        //     return error;
+        //   }
+        //   console.log(stdout);
+        //   return stdout;
+        // });
+
+
+
+        execFile(scriptPath, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`error: ${error.message}`);
+            return error;
+          }
+
+          if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return stderr;
+          }
+
+          console.log(`stdout:\n${stdout}`);
+          return stdout;
+        });
+
+      } else {
+
+        // // sudo node uv-control.js 18
+        // // let script = exec(scriptCommand + " " + scriptPath + " " + args);
+
+        // // exec('cat *.js missing_file | wc -l', (error, stdout, stderr) => {
+        // exec(scriptCommand + " " + scriptPath + " " + args, (error, stdout, stderr) => {
+        //   if (error) {
+        //     console.error(`exec error: ${error}`);
+        //     // return;
+        //     return error;
+        //   }
+        //   console.log(`stdout: ${stdout}`);
+        //   console.error(`stderr: ${stderr}`);
+        //   return stdout;
+        // });
+
+        // sudo node uv-control.js 18
+        exec(scriptCommand + " " + scriptPath + " " + args, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`error: ${error.message}`);
+            return error;
+          }
+
+          if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return stderr;
+          }
+
+          console.log(`stdout:\n${stdout}`);
+          return stdout;
+        });
+
+
+        // script.stdout.on('data', (data) => {
+        //   console.log(data.toString());
+        //   // event.returnValue = data.toString();
+        //   return data.toString();
+        // });
+
+        // script.stderr.on('data', (data) => {
+        //   console.error(`child process stderr: ${data}`);
+        //   // event.returnValue = `child process stderr: ${data}`;
+        //   return `child process stderr: ${data}`;
+        // });
+
+        // script.on('close', (code) => {
+        //   console.log(`child process close all stdio with code ${code}`);
+        //   // event.returnValue = `child process close all stdio with code ${code}`;
+        //   return `child process close all stdio with code ${code}`;
+        // });
+
+        // script.on('exit', (code) => {
+        //   console.log(`child process exited with code ${code}`);
+        //   // event.returnValue = `child process exited with code ${code}`;
+        //   return `child process exited with code ${code}`;
+        // });
+
+      }
+    }
+
+
+
+
+    ipc.handle("sudo-script-async", async (event, execFileArgument, scriptCommand, scriptName, args) => {
+
+      return await runScriptSudo(execFileArgument, scriptCommand, scriptName, args);
+
+      // let scriptPath = path.join(process.resourcesPath, "scripts", scriptName);
+      // let scriptArgs = [scriptPath].concat(args);
+
+      // if (sudoCall === "1") {
+      //   scriptArgs = [scriptCommand, scriptPath].concat(args);
+      //   scriptCommand = "sudo";
+      // }
+
+      // // if (synchronous === "1") {
+
+      // // let script = spawnSync(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+      // // if (script.error) {
+      // //   event.returnValue = "ERROR: " + script.error;
+      // // }
+      // // if (script.stdout) {
+      // //   event.returnValue = script.stdout.toString();
+      // // }
+      // // event.returnValue = "stdout: " + script.stdout + "stderr: " + script.stderr + "exist code: " + script.status;
+
+      // // } else {
+
+      // let script = spawn(scriptCommand, scriptArgs, { shell: process.platform == 'win32' });
+
+
+
+      // script.stdout.on('data', (data) => {
+      //   console.log(data.toString());
+      //   event.returnValue = data.toString();
+      // });
+
+      // script.stderr.on('data', (data) => {
+      //   console.error(`child process stderr: ${data}`);
+      //   event.returnValue = `child process stderr: ${data}`;
+      // });
+
+      // script.on('close', (code) => {
+      //   console.log(`child process close all stdio with code ${code}`);
+      //   event.returnValue = `child process close all stdio with code ${code}`;
+      // });
+
+      // script.on('exit', (code) => {
+      //   console.log(`child process exited with code ${code}`);
+      //   event.returnValue = `child process exited with code ${code}`;
+      // });
+
+      // // }
+    });
+
+
+
+
+
+
+
+
+
+
+
+    ipc.on('run-shell-script', (event, fileName, ...args) => {
+      if (process.platform === "win32") {
+
+        let command = 'cmd.exe';
+        // command:
+        // win32: 'cmd.exe'
+        // linux / darwin: 'bash'
+
+        // args:
+        // win32: /c test.bat arg1 arg2
+        // linux / darwin: test.sh arg1 arg2
+
+        let destinationFile = fileName + '.bat';
+        let fileLocation = path.join(process.resourcesPath, "scripts", destinationFile);
+        let scriptArgs = ['/c', fileLocation, ...args];
+
+        // Windows
+        // let script = nodeChildProcess.spawn(command, ['/c', 'test.bat', 'arg1', 'arg2']);
+        let script = nodeChildProcess.spawn(command, scriptArgs);
+
+        console.log('PID: ' + script.pid);
+
+        script.stdout.on('data', (data) => {
+          console.log('stdout: ' + data);
+        });
+
+        script.stderr.on('data', (err) => {
+          console.log('stderr: ' + err);
+        });
+
+        script.on('exit', (code) => {
+          console.log('Exit Code: ' + code);
+        });
+
+      } else if (process.platform === "linux" || process.platform === "darwin") {
+        let command = 'bash';
+
+        let destinationFile = fileName + '.sh';
+        let fileLocation = path.join(process.resourcesPath, "scripts", destinationFile);
+        let scriptArgs = [fileLocation, ...args];
+
+        // MacOS & Linux
+        // let script = nodeChildProcess.spawn(command, ['test.sh', 'arg1', 'arg2']);
+        let script = nodeChildProcess.spawn(command, scriptArgs);
+
+        console.log('PID: ' + script.pid);
+
+        script.stdout.on('data', (data) => {
+          console.log('stdout: ' + data);
+        });
+
+        script.stderr.on('data', (err) => {
+          console.log('stderr: ' + err);
+        });
+
+        script.on('exit', (code) => {
+          console.log('Exit Code: ' + code);
+        });
+      }
+    })
+
+
+
+
+
+
+
+
+    // // Handle an IPC message from the renderer process
+    // ipcMain.on('run-python-script', (event, ...args) => {
+    //     let scriptArgs = [...args];
+    //     const pythonProcess = spawn('python', scriptArgs);
+
+    //     pythonProcess.stdout.on('data', (data) => {
+    //         // Handle the output from the Python script
+    //         console.log(data.toString());
+    //     });
+
+    //     pythonProcess.on('close', (code) => {
+    //         // Handle the Python process closing
+    //         console.log(`Python script exited with code ${code}`);
+    //     });
+    // });
+    // async function handleFileOpen() {
+    //     const { canceled, filePaths } = await dialog.showOpenDialog({})
+    //     if (!canceled) {
+    //         return filePaths[0]
+    //     }
+    // }
+    // ipc.handle("runScriptWithResponseAsync", async (event, command, ...args) => {
+    //     let scriptArgs = [...args];
+
+    //     let script = nodeChildProcess.spawn(command, scriptArgs, { cwd: path.join(process.resourcesPath, "scripts") });
+
+    //     console.log("PID: " + script.pid);
+
+    //     script.stdout.on("data", (data) => {
+    //         console.log("stdout: " + data);
+    //     });
+
+    //     script.stderr.on("data", (err) => {
+    //         console.log("stderr: " + err);
+    //     });
+
+    //     script.on("exit", (code) => {
+    //         console.log("Exit Code: " + code);
+    //     });
+    // });
+
+
+
+
+
+
+
+    // // Create an listener for the event "A"
+    // ipcMain.on("A", (event, args) => {
+
+    //     // Send result back to renderer process
+    //     win.webContents.send("D", { success: true });
+    // });
+
+
+
+
+    ipc.handle("function-call", (event, ws281xNumLEDs, ws281xNumStartLEDs, ws281xNumEndLEDs, ws281xColorLEDs, ws281xDMA, ws281xFrequency, ws281xGPIO, ws281xInvert, ws281xBrightness, ws281xStripType) => {
+
+      // const sudoJS2 = require('sudo-js');
+      var sudo = require('sudo-prompt');
+      var options = {
+        name: 'SIDEKICK',
+        // icns: 'sidekick-desktop
+      };
+      // const functionRoot = path.resolve(
+      //   __dirname,
+      //   "./ws281x-control.js"
+      // );
+      const functionRoot = path.resolve(
+        __dirname,
+        "../../../static/ws281x-control.js"
+      );
+      // const functionRoot = path.resolve(
+      //   process.resourcesPath,
+      //   "/static/ws281x-control.js"
+      // );
+
+
+      sudo.exec('node ' + functionRoot + ' 7 0 4 #855CD6 10 800000 18 false 125 ws2812', options,
+        // sudo.exec('node ./ws281x-control.js 7 0 4 #855CD6 10 800000 18 false 125 ws2812', options,
+        function (error, stdout, stderr) {
+          if (error) throw error;
+          console.log('stdout: ' + stdout);
+=======
     }
 
     handleWindowOpen(details) {
@@ -1893,6 +2603,7 @@ class EditorWindow extends ProjectRunningWindow {
         );
         if (match) {
             EditorWindow.openFiles([match[1]]);
+>>>>>>> Stashed changes
         }
         return super.handleWindowOpen(details);
     }
@@ -2013,8 +2724,4 @@ class EditorWindow extends ProjectRunningWindow {
     //   // RETURN value of FUNCTION call:
     //   return context[func].apply(context, args);
     // }
-
-
-}
-
-module.exports = EditorWindow;
+// }
