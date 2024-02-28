@@ -2724,8 +2724,4 @@ class EditorWindow extends ProjectRunningWindow {
     //   // RETURN value of FUNCTION call:
     //   return context[func].apply(context, args);
     // }
-
-
-}
-
-module.exports = EditorWindow;
+// }
