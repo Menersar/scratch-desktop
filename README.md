@@ -512,3 +512,28 @@ Listens to channel, when a new message arrives listener would be called with lis
 - add file b/node_modules/scratch-gui/src/lib/libraries/extensions/pigpio/pigpio-small.svg
 
 - add file b/node_modules/scratch-gui/src/lib/libraries/extensions/pigpio/pigpio.png
+
+## optionalDependencies
+
+(Source: [optionalDependencies package.json npm docs]<https://docs.npmjs.com/cli/v10/configuring-npm/package-json#optionaldependencies>)
+
+If a dependency can be used, but you would like npm to proceed if it cannot be found or fails to install, then you may put it in the optionalDependencies object. This is a map of package name to version or url, just like the dependencies object. The difference is that build failures do not cause installation to fail. Running npm install --omit=optional will prevent these dependencies from being installed.
+
+It is still your program's responsibility to handle the lack of the dependency. For example, something like this:
+
+try {
+  var foo = require("foo");
+  var fooVersion = require("foo/package.json").version;
+} catch (er) {
+  foo = null;
+}
+if (notGoodFooVersion(fooVersion)) {
+  foo = null;
+}
+
+// .. then later in your program ..
+
+if (foo) {
+  foo.doFooThings();
+}
+Entries in optionalDependencies will override entries of the same name in dependencies, so it's usually best to only put in one place.

@@ -35,16 +35,17 @@
         "test:lint": "eslint --cache --color --ext .jsx,.js .",
         "//s3-scripts-end": "eslint --cache --color --ext .jsx,.js .",
         "//postinstall": "git apply patches/*.patch",
-        "compile:cpp": "node ./node_modules/node-gyp/bin/node-gyp.js configure build -C ./cpp && cp ./cpp/build/Release/gpiolib.node ./static/ ",
+        "//compile:cpp": "node ./node_modules/node-gyp/bin/node-gyp.js configure build -C ./cpp && cp ./cpp/build/Release/gpiolib.node ./static/ ",
         "compile-rpi": "CXX=g++ CC=gcc node ./node_modules/node-gyp/bin/node-gyp.js configure build -C ./cpp && cp ./cpp/build/Release/gpiolib.node ./static/",
-        "build": "npm run compile-rpi && cd build-automation && node build.js",
-        "fix:ws281x-install": "fix:ws281x-rebuild && git clone https://github.com/jgarff/rpi_ws281x.git && rm -rf node_modules/rpi-ws281x-native/src/rpi_ws281x && cp -r rpi_ws281x node_modules/rpi-ws281x-native/src && rm -rf rpi_ws281x && cd node_modules/rpi-ws281x-native && sudo node-gyp rebuild",
-        "fix:ws281x-rebuild": "npm install -g node-gyp",
+        "build": "cd build-automation && node build.js",
+        "build-rpi": "npm run compile-rpi && cd build-automation && node build.js",
+        "//fix:ws281x-install": "fix:ws281x-rebuild && git clone https://github.com/jgarff/rpi_ws281x.git && rm -rf node_modules/rpi-ws281x-native/src/rpi_ws281x && cp -r rpi_ws281x node_modules/rpi-ws281x-native/src && rm -rf rpi_ws281x && cd node_modules/rpi-ws281x-native && sudo node-gyp rebuild",
+        "//fix:ws281x-rebuild": "npm install -g node-gyp",
         "build:test": "electron-builder --dir",
         "build:test2": "npm run webpack:prod && electron-builder --dir",
-        "postinstall": "npm run fetch && npm run webpack:prod",
+        "postinstall-": "npm run fetch && npm run webpack:prod",
         "postinstall2": "npm run install-native-module && npm run fetch && npm run webpack:prod",
-        "install-native-module": "cp-cli src-main/static/gpiolib.node ./node_modules/ModuleGpiolib/",
+        "//install-native-module": "cp-cli src-main/static/gpiolib.node ./node_modules/ModuleGpiolib/",
         "release:win": "npx electron-builder --windows nsis --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --ia32 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-ia32 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows nsis --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-win-nsis-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --windows portable --x64 --publish always --config.extraMetadata.sidekick_dist=prod-win-portable-x64 --config.extraMetadata.sidekick_update=yes",
         "release:linux": "npx electron-builder --linux deb --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux deb --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-deb-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux tar.gz --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-tar-armv7l --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --x64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-x64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --arm64 --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-arm64 --config.extraMetadata.sidekick_update=yes && npx electron-builder --linux AppImage --armv7l --publish always --config.extraMetadata.sidekick_dist=prod-linux-appimage-armv7l --config.extraMetadata.sidekick_update=yes",
         "build:win": "",
@@ -95,6 +96,7 @@
     "dependencies": {
         "bleno": "^0.5.0",
         "lodash": "^4.17.21",
+        "node-gyp": "^10.1.0",
         "onoff": "^6.0.3",
         "semver": "^7.5.3",
         "sudo-js": "^1.0.2",
@@ -116,10 +118,7 @@
         "css-loader": "^1.0.1",
         "electron": "^26.2.4",
         "electron-builder": "^24.6.4",
-        "electron-installer-debian": "^3.2.0",
         "file-loader": "2.0.0",
-        "node-gyp": "^10.0.1",
-        "pigpio": "^3.3.1",
         "postcss": "^8.4.13",
         "postcss-import": "^14.0.0",
         "postcss-loader": "^4.2.0",
@@ -130,6 +129,10 @@
         "url-loader": "^4.1.1",
         "webpack": "^4.47.0",
         "webpack-cli": "^4.10.0"
+    },
+    "optionalDependencies": {
+        "electron-installer-debian": "^3.2.0",
+        "pigpio": "^3.3.1"
     },
     "bugs": {
         "url": "https://github.com/Menersar/sidekick-desktop/issues",
@@ -151,7 +154,7 @@
             "dist-renderer-webpack/**/*",
             "dist-library-files/**/*",
             "dist-extensions/**/*",
-            "node_modules/ModuleGpiolib"
+            "node_modulttes/ModuleGpiolib"
         ],
         "extraResources": [
             {
@@ -259,6 +262,28 @@
                 },
                 {
                     "target": "tar.gz"
+                }
+            ],
+            "extraResources": [
+                {
+                    "from": "art/icon.png",
+                    "to": "icon.png"
+                },
+                {
+                    "from": "src-main/static/gpiolib.node",
+                    "to": "static/gpiolib.node"
+                },
+                {
+                    "from": "node_modules/pigpio/build/Release/pigpio.node",
+                    "to": "static/pigpio.node"
+                },
+                {
+                    "from": "src-main/windows/ws281x-control.js",
+                    "to": "static/ws281x-control.js"
+                },
+                {
+                    "from": "extraResources",
+                    "to": "."
                 }
             ]
         },
