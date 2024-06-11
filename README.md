@@ -19,7 +19,7 @@ Im Folgenden wird beschrieben, wie das SIDEKICK-Autorensystem aufgesetzt – sie
       4. UV-Sensor-Blöcke
       5. Button-Blöcke
       6. Video-Blöcke
-   3. [Laden externer Erweiterungen](https://github.com/Menersar/sidekick-desktop/edit/sidekick/README.md#laden-externer-erweiterungen)
+   3. [Laden externer Erweiterungen](https://github.com/Menersar/sidekick-desktop/blob/sidekick/README.md#laden-externer-erweiterungen)
    4. SIDEKICK-Einstellungsmenü
    5. Bluetooth-Einstellung für die Audioausgabe
 
