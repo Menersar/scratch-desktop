@@ -1,3 +1,242 @@
+
+# SIDEKICK-Assistenzsystem
+
+## Anleitung zur Einrichtung und Bedienung
+
+Im Folgenden wird beschrieben, wie das SIDEKICK-Autorensystem aufgesetzt – siehe Kapitel 1 – und bedient wird – siehe Kapitel 2.
+
+### Inhalt
+
+1. Einrichtung
+   1. Installation auf dem Raspberry Pi (RPi)
+   2. Installation auf einem Windows-PC
+   3. Nutzung auf einem Windows-PC (ohne Installation)
+2. Bedienung
+   1. Kurze Einführung in die Benutzeroberfläche
+   2. SIDEKICK-Blöcke
+      1. GPIO-Pin-Blöcke
+      2. Ablauf-Blöcke
+      3. LED-Blöcke
+      4. UV-Sensor-Blöcke
+      5. Button-Blöcke
+      6. Video-Blöcke
+   3. SIDEKICK-Einstellungsmenü
+   4. Bluetooth-Einstellung für die Audioausgabe
+
+### 1. Einrichtung
+Kompilierte Versionen (Builds) des SIDEKICK-Autorensystems werden als Veröf-fentlichung (Release) auf dem GitHub-Repository der SIDEKICK-Desktop-Version zur Verfügung gestellt und können somit im Bereich Releases des Repositories bezogen werden.
+
+#### 1.1. Installation auf dem Raspberry Pi (RPi)
+Über die folgenden Schritte ist die Installation der SIDEKICK-Anwendung auf dem PRi durchführbar.
+Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit dem Inter-net verbunden ist – zunächst separat heruntergeladen und danach – hier per USB-Stick – auf den RPi übertragen.
+
+1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
+2.	Die .deb-Datei – umrahmt in folgender Abbildung – herunterladen
+(z. B. durch einen Linksklick auf den Dateinamen).
+      - Info: Über .deb-Pakete sind Programme manuell installierbar <br>
+        (unter allen Debian-basierten Linux-Betriebssystemen).
+3.	Diese heruntergeladene Datei auf einen USB-Stick übertragen.
+4.	Diesen USB-Stick in einen freien USB-Anschluss des RPi stecken.
+5.	Die heruntergeladene Datei des USB-Sticks auf den RPi übertragen
+(z. B. vom Ordner des Sticks auf den Desktop per Drag-and-Drop kopieren).
+6.	Die SIDEKICK-Anwendung über diese .deb-Datei auf dem RPi installieren.
+      - Z. B. wie folgt: Rechtsklick auf die Datei  Package Install.
+      - Die Installation erfolgt automatisch über den Installationsprozess.
+7.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
+   - Ausführbar z. B. über das RPi-Anwendungsmenü  Entwicklung.
+ 
+#### 1.2. Installation auf einem Windows-PC
+Über die folgenden Schritte ist die Installation der SIDEKICK-Anwendung auf ei-nem Windows-PC durchführbar.
+1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
+2.	Die Setup-.exe-Datei – umrahmt in folgender Abbildung – herunterladen
+(z. B. durch einen Linksklick auf den Dateinamen).
+ 
+3.	Diese heruntergeladene Datei Ausführen und dadurch Installieren
+(z. B. durch Doppelklick auf die .exe-Datei).
+ 
+4.	Durch das Setup-Programm gehen und Installation über Install starten.
+      - Ggf. den Installationsort manuell, wie in der Abbildung, festlegen. <br>
+        ([Benutzer] hierbei durch den eigenen Benutzernamen ersetzen).
+      - Darauf wird der Installationsprozess automatisch durchgeführt.
+5.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
+      - Ausführbar z. B. über die angelegte Desktopverknüpfung
+        (z. B. durch Doppelklick auf die Verknüpfung)
+      - Oder Suche und Ausführen von „SIDEKICK“ per Windows-Suchleiste.
+
+#### 1.3. Nutzung auf einem Windows-PC (ohne Installation)
+Über die folgenden Schritte ist die Nutzung der SIDEKICK-Anwendung auf einem Windows-PC ohne Installation möglich.
+1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
+2.	Die Portable-.exe-Datei – umrahmt in folgender Abbildung – herunterla-den
+(z. B. durch einen Linksklick auf den Dateinamen).
+ 
+3.	Diese heruntergeladene Datei Ausführen
+(z. B. durch Doppelklick auf die .exe-Datei).
+ 
+4.	Durch das Ausführen dieser Datei ist die Anwendung „SIDEKICK“ startbar.
+
+
+ 
+### 2. Bedienung
+
+Das Starten der SIDEKICK-Anwendung auf dem jeweiligen Betriebsystem / Enge-rät / über die jeweilige Anwendungsdatei startet die folgende Bedienoberfläche.
+ 
+
+- Prinzipiell ist der Programmaufbau der Windows- und RPi-Version der gleiche.
+- Ebenfalls sind alle Blöcke, die spezifisch für das SIDEKICK-Assistenzsystem entwickelt sind, die gleichen.
+   - Lediglich werden die Funktionen der neuen SIDEKICK-Programmier-Blöcke, die auf die Hardware des RPi zugreifen (z. B. die GPIO-Blöcke) in der Windows-Version nicht ausgeführt.
+      - Diese Blöcke sind jedoch mit in der Block-Liste aufgeführt und kön-nen somit in die SIDEKICK-Block-Programmierung eingebaut werden.
+      - Auf der Windows-Version erstellte Projekte können auf den Raspberry Pi – per USB-Stick – übertragen und über die SIDE-KICK-Anwendung geladen werden.
+         - Enthält dieses Projekt GPIO-Blöcke, ist ihre Funktion beim Ausführen auf dem Raspberry Pi gegeben.
+
+#### 2.1. Kurze Einführung in die Benutzeroberfläche
+- Die Oberfläche beim Starten von SIDEKICK ist die Code-Ansicht.
+   
+   - In dieser Ansicht ist die Programmierung über die Blöcke möglich.
+   - Links ist die Block-Palette dieser Ansicht.
+      - Hier liegen alle verfügbaren Blöcke zur Programmierung.
+         - Sie sind aufgeteilt in Block-Kategorien.
+      - Blöcke können im Code-Bereich (Mitte) platziert werden <br>
+      (per Drag-and-Drop).
+      - Blöcke sind, abhängig von der Blockform, verbindbar.
+         - Indem einer an einem kompatiblen losgelassen wird.
+         - Durch Wegziehen des oberen sind diese trennbar.
+      - Ausführen eines Blocks, führt alle darunter verbundenen aus
+         - Sie werden der sichtbaren Reihe nach abgearbeitet <br>
+           (von oben nach unten – <br>
+           ähnlich zur codebasierten Programmierung).
+- In der Block-Palette ist die neue SIDEKICK-Block-Kategorie aufgeführt <br>
+  (im Vergleich zur Scratch-Oberfläche).
+   - Um zu den Blöcken dieser Kategorie zu gelangen:
+      - Durch alle Blöcke nach unten durchscrollen <br>
+        oder
+      - auf die SIDEKICK-Block-Kategorie klicken <br>
+        (so wird automatisch zu den Blöcken der Kategorie gescrollt).
+ 
+#### 2.2. SIDEKICK-Blöcke
+Die SIDEKICK-Blöcke in folgende 6 sinnhafte Abschnitte unterteilt.
+
+##### 2.2.1. GPIO-Pin-Blöcke
+	Ermöglichen die Ansteuerung der GPIO-Pins direkt über die Software.
+ 
+	Info: Diese Blöcke sind über Scratch ebenfalls verfügbar
+(über die interne Scratch-Bibliothek).
+	Jedoch nur auf der RPi-Version von Scratch.
+1.	Hat-Block:
+Wenn GPIO-Pin [GPIO-PIN-NUMMER] den Zustand [SIGNAL] hat
+	Sobald am festgelegten GPIO-Pin das angegebene Signal anliegt, wird ein Block, unterhalb dieses Blocks, ausgeführt.
+2.	Wahrheits-Block:
+Ist am GPIO-Pin [GPIO-PIN-NUMMER] der Zustand [SIGNAL]?
+	Gibt, bei Aktivierung einen Wahrheits-Wert darüber zurück, ob der Zu-stand am angegebenen GPIO-Pin dem festgelegten Zustand ent-spricht.
+3.	Stapel-Block:
+Setzte von GPIO-Pin [GPIO-PIN-NUMMER] den Output zu [SIGNAL]?
+	Setzt bei Aktivierung den festgelegten GPIO-Pin auf das ausgewählte Sig-nal und als Output.
+4.	Stapel-Block:
+Setze von GPIO-Pin [GPIO-PIN-NUMMER] den Input zu [SIGNAL]?
+	Setzt bei Aktivierung den festgelegten GPIO-Pin auf das ausgewählte Sig-nal und als Input.
+ 
+##### 2.2.2. Ablauf-Blöcke
+	Möglichkeiten zum Speichern und Abrufen des aktuellen Assistenz-schritts
+(eine Nummer des aktuell vorliegenden Assistenzschritt zuweisen).
+	Für eine einfachere und besser lesbare Programmierung.
+	Der Warte-Block: Zur besseren Steuerbarkeit der Assistenzschrit-te.
+	Folgende SIDEKICK-Blöcke umfasst der Ablauf-Blöcke-Abschnitt. 
+1.	Stapel-Block:
+Setze Assistenzschritt auf [ASSISTENZSCHRITT-NUMMER]
+	Legt den Wert des aktuellen Assistenzschritts über die angegebene Zahl bei Aktivierung fest.
+2.	Kopf-Block:
+Wenn Assistenzschritt = [ASSISTENZSCHRITT-NUMMER]
+	Wird aktiviert, sobald der Wert des Assistenzschritts dem angegebenen Wert entspricht.
+3.	Stapel-Block:
+Warte [ZEITWERT-IN-SEKUNDEN] Sekunden
+	Bei Aktivierung wird nach den Sekunden des festgelegten Werts der nächstfolgende Block ausgeführt.
+ 
+##### 2.2.3. LED-Blöcke
+	Ermöglichen die Ansteuerung der LED-Streifen auf unterschiedliche Weise.
+	Folgende SIDEKICK-Blöcke umfasst der LED-Blöcke-Abschnitt. 
+1.	Stapel-Block:
+Setze LED-Streifen [LED-STREIFEN-NUMMER] auf Farbe [FARBWERT] (Länge: [LED-PUNKTE-ANZAHL])
+	Bei Aktivierung wird die ausgewählte Anzahl an LED-Punkten des je-weils festgelegten LED-Streifens auf die mitgegebene Farbe gesetzt.
+2.	Stapel-Block:
+Setze alle LED-Streifen (Anzahl: [LED-STREIFEN-ANZAHL]) auf Farbe [Farbe]
+	Bei Aktivierung wird die ausgewählte Anzahl an LED-Streifen auf die mit-gegebene Farbe gesetzt.
+ 
+##### 2.2.4. UV-Sensor-Blöcke
+Die Funktionalität dieses Blocks wurde noch nicht problemlos umgesetzt!
+Dennoch wird im Folgenden, der Vollständigkeit halber, die geplante Funktions-weise dargestellt.
+Da der Block somit nicht getestet werden konnte, sind ebenfalls zwei unter-schiedliche, mögliche Implementierungen aufgeführt.
+
+	Ermöglicht das Auslesen und Feedback auf Sensordaten der UV-Sensoren.
+	Den folgenden SIDEKICK-Block umfasst der UV-Sensor-Blöcke-Abschnitt.
+ 
+1.	Stapel- oder Kopf-Block:
+Wenn die Entfernung zu UV-Sensor [UV-SENSOR-NUMMER] kleiner als [UV-SENSOR-ABSTAND-IN-CENTIMETER] cm ist
+	Bei Aktivierung wird der nächste Block ausgeführt, sobald eine Entfer-nung zum angegebenen UV-Senor kleiner als der mitgegebene Wert ist.
+	Oder: Wird aktiviert, sobald eine Entfernung zum angegebenen UV-Senor kleiner als der mitgegebene Wert ist.
+ 
+##### 2.2.5. Button-Blöcke
+Abbildung 4.20 zeigt den umgesetzten SIDEKICK-Block der Button-Blöcke-Kategorie.
+	Ermöglicht die Abfrage der Taster des SIDEKICK-Assistenzsystems.
+	Den folgenden SIDEKICK-Block umfasst der Button-Blöcke-Abschnitt.
+ 
+1.	Kopf-Block:
+Wenn Button [NUMMER] [BUTTON-ZUSTAND] wurde
+	Wird aktiviert, sobald der ausgewählte Taster den ausgewählten Zu-stand annimmt („gedrückt“ oder „losgelassen“).
+ 
+##### 2.2.6. Video-Blöcke
+	Ermöglichen das Laden und Steuern von Videomaterial.
+	Folgende SIDEKICK-Blöcke umfasst die Video-Blöcke-Abschnitt.
+ 
+1.	Stapel-Block:
+Importiere Video „[VIDEO-NAME].[VIDEO-DATEIENDUNG]“
+	Bei Aktivierung wird ein Video über den angegebenen Namen und der festgelegten Dateiendung in das SIDEKICK-Projekt geladen.
+2.	Stapel-Block
+Starte Video [VIDEO-NAME] auf [SIDEKICK-GUI-OBJEKT]
+	Bei Aktivierung wird ein geladenes Video über den angegebenen Na-men von vorne gestartet und dabei auf dem ausgewählten Objekt dar-gestellt.
+3.	Stapel-Block:
+Pausiere Video [VIDEO-NAME]
+	Bei Aktivierung wird ein geladenes Video über den angegebenen Na-men pausiert.
+4.	Stapel-Block:
+Setze Video [VIDEO-NAME] fort
+	Bei Aktivierung wird ein geladenes und pausiertes Video über den an-ge-gebenen Namen fortgeführt.
+5.	Stapel-Block:
+Schließe Video [VIDEO-NAME]
+	Bei Aktivierung wird ein geladenes Video über den angegebenen Na-men gestoppt und vom Objekt, auf dem das entsprechende Video dar-gestellt wird, entfernt.
+ 
+#### 2.3. SIDEKICK-Einstellungsmenü
+	Das Einstellungsmenü ist z. B. über Bearbeiten  Erweitert aufrufbar.
+ 
+
+	Das Einstellungsmenü bietet verschiedene Einstellungsmöglichkeiten.
+ 
+	Einstellungen sind jeweils über Tooltips erklärt
+(über die Fragezeichen hinter den Optionen).
+	Hierüber ist ebenfalls die Auflösung der Bühne einstellbar
+(und somit das Größenverhältnis der Bühne in der Code-Ansicht).
+	Einstellungen sind zudem für das aktuelle Projekt speicherbar
+(über die Schaltfläche Einstellungen im Projekt speichern).
+	Folgende Abbildung zeigt die Auflösung 500 x 100 für die Bühne.
+ 
+	Z. B. ist so die Breite von Ultrawide-Monitoren ausnutzbar
+	Bei der Assistenzdarstellung nutzbar
+(durch entsprechend festgelegte Auflösung).
+ 
+#### 2.4. Bluetooth-Einstellung für die Audioausgabe
+	Um ein Gerät mit dem Bluetooth des verwendeten Raspberry Pi zu ver-binden, muss das entsprechende Gerät lediglich in den Pairing-Modus versetzt werden.
+	Darauf sollte das Gerät über die Bluetooth-Einstellungen des RPi auffindbar sein – sobald Bluetooth eingeschaltet wurde.
+	Die Einstellungen sind unter anderem in der Systemleiste des RPi aufrufbar – wie in folgender Abbildung zu sehen.
+ 
+ 
+	Sobald erfolgreich eine Verbindung zu dem entsprechenden Bluetooth-Ausgabegerät hergestellt ist, kann beliebiger Sound – etwa über die Video- oder Sound-Blöcke des SIDEKICK-Autorensystems – ausgegeben werden.
+
+
+
+
+
+
+
+
+
+
 # scratch-desktop
 
 npm install
