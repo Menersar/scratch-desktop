@@ -1,4 +1,3 @@
-
 # SIDEKICK-Assistenzsystem
 
 ## Anleitung zur Einrichtung und Bedienung
@@ -20,8 +19,11 @@ Im Folgenden wird beschrieben, wie das SIDEKICK-Autorensystem aufgesetzt – sie
       4. UV-Sensor-Blöcke
       5. Button-Blöcke
       6. Video-Blöcke
-   3. SIDEKICK-Einstellungsmenü
-   4. Bluetooth-Einstellung für die Audioausgabe
+   3. Laden externer Erweiterungen
+   4. SIDEKICK-Einstellungsmenü
+   5. Bluetooth-Einstellung für die Audioausgabe
+
+---
 
 ### 1. Einrichtung
 Kompilierte Versionen (Builds) des SIDEKICK-Autorensystems werden als Veröf-fentlichung (Release) auf dem GitHub-Repository der SIDEKICK-Desktop-Version zur Verfügung gestellt und können somit im Bereich Releases des Repositories bezogen werden.
@@ -44,7 +46,9 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
       - Die Installation erfolgt automatisch über den Installationsprozess.
 7.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
    - Ausführbar z. B. über das RPi-Anwendungsmenü  Entwicklung.
- 
+
+---
+
 #### 1.2. Installation auf einem Windows-PC
 Über die folgenden Schritte ist die Installation der SIDEKICK-Anwendung auf ei-nem Windows-PC durchführbar.
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
@@ -63,6 +67,8 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
         (z. B. durch Doppelklick auf die Verknüpfung)
       - Oder Suche und Ausführen von „SIDEKICK“ per Windows-Suchleiste.
 
+---
+
 #### 1.3. Nutzung auf einem Windows-PC (ohne Installation)
 Über die folgenden Schritte ist die Nutzung der SIDEKICK-Anwendung auf einem Windows-PC ohne Installation möglich.
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
@@ -74,19 +80,20 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
  
 4.	Durch das Ausführen dieser Datei ist die Anwendung „SIDEKICK“ startbar.
 
+---
 
- 
 ### 2. Bedienung
 
 Das Starten der SIDEKICK-Anwendung auf dem jeweiligen Betriebsystem / Enge-rät / über die jeweilige Anwendungsdatei startet die folgende Bedienoberfläche.
  
-
 - Prinzipiell ist der Programmaufbau der Windows- und RPi-Version der gleiche.
 - Ebenfalls sind alle Blöcke, die spezifisch für das SIDEKICK-Assistenzsystem entwickelt sind, die gleichen.
    - Lediglich werden die Funktionen der neuen SIDEKICK-Programmier-Blöcke, die auf die Hardware des RPi zugreifen (z. B. die GPIO-Blöcke) in der Windows-Version nicht ausgeführt.
       - Diese Blöcke sind jedoch mit in der Block-Liste aufgeführt und kön-nen somit in die SIDEKICK-Block-Programmierung eingebaut werden.
       - Auf der Windows-Version erstellte Projekte können auf den Raspberry Pi – per USB-Stick – übertragen und über die SIDE-KICK-Anwendung geladen werden.
          - Enthält dieses Projekt GPIO-Blöcke, ist ihre Funktion beim Ausführen auf dem Raspberry Pi gegeben.
+
+---
 
 #### 2.1. Kurze Einführung in die Benutzeroberfläche
 - Die Oberfläche beim Starten von SIDEKICK ist die Code-Ansicht.
@@ -131,9 +138,9 @@ Laden externer, benutzerdefinierter Erweiterungen über eine JavaScript-Datei:
 4. Die JavaScript-Erweiterung-Datei laden. <br>
    ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/8a71db7a-2885-4770-b210-7deabba60964)
    - Von der Festplatte auswählen
-      - indem auf das gestrichelte Feld geklickt wird
-     oder
-   - per „Drag and Drop“ hineinziehen und zum Laden über dem gestrichelten Feld loslassen.
+      - indem auf das gestrichelte Feld geklickt wird <br>
+        oder
+      - per „Drag and Drop“ hineinziehen und zum Laden über dem gestrichelten Feld loslassen.
 6. Wichtig: Häkchen beim Feld „Erweiterung ohne Sandbox ausführen“ setzen!
 7. Die Erweiterung der ausgewählten JavaScript-Erweiterung-Datei in die Anwendung laden.
    - Über die Schaltfläche „Laden“.
@@ -141,7 +148,7 @@ Laden externer, benutzerdefinierter Erweiterungen über eine JavaScript-Datei:
      (wenn die programmierung der Erweiterung keine Fehler ausgibt / wirft). <br>
      ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/44b147c9-b2e1-4bb9-8305-98f322541fbf)
       - Um zu den Blöcken der geladenen Erweiterung zu gelangen:
-         - Durch alle Blöcke nach unten scrollen
+         - Durch alle Blöcke nach unten scrollen <br>
            oder
          - auf die neu hinzugefügte Block-Kategorie gehen <br>
            (dadurch wird automatisch zu den Blöcken der Kategorie gescrollt).
@@ -264,14 +271,7 @@ Schließe Video [VIDEO-NAME]
  
 	Sobald erfolgreich eine Verbindung zu dem entsprechenden Bluetooth-Ausgabegerät hergestellt ist, kann beliebiger Sound – etwa über die Video- oder Sound-Blöcke des SIDEKICK-Autorensystems – ausgegeben werden.
 
-
-
-
-
-
-
-
-
+---
 
 # scratch-desktop
 
