@@ -19,7 +19,7 @@ Im Folgenden wird beschrieben, wie das SIDEKICK-Autorensystem aufgesetzt – sie
       4. UV-Sensor-Blöcke
       5. Button-Blöcke
       6. Video-Blöcke
-   3. Laden externer Erweiterungen
+   3. [Laden externer Erweiterungen](https://github.com/Menersar/sidekick-desktop/edit/sidekick/README.md#laden-externer-erweiterungen)
    4. SIDEKICK-Einstellungsmenü
    5. Bluetooth-Einstellung für die Audioausgabe
 
@@ -244,7 +244,9 @@ Setze Video [VIDEO-NAME] fort
 5.	Stapel-Block:
 Schließe Video [VIDEO-NAME]
 	Bei Aktivierung wird ein geladenes Video über den angegebenen Na-men gestoppt und vom Objekt, auf dem das entsprechende Video dar-gestellt wird, entfernt.
- 
+
+---
+
 #### 2.3. SIDEKICK-Einstellungsmenü
 	Das Einstellungsmenü ist z. B. über Bearbeiten  Erweitert aufrufbar.
  
@@ -262,7 +264,9 @@ Schließe Video [VIDEO-NAME]
 	Z. B. ist so die Breite von Ultrawide-Monitoren ausnutzbar
 	Bei der Assistenzdarstellung nutzbar
 (durch entsprechend festgelegte Auflösung).
- 
+
+---
+
 #### 2.4. Bluetooth-Einstellung für die Audioausgabe
 	Um ein Gerät mit dem Bluetooth des verwendeten Raspberry Pi zu ver-binden, muss das entsprechende Gerät lediglich in den Pairing-Modus versetzt werden.
 	Darauf sollte das Gerät über die Bluetooth-Einstellungen des RPi auffindbar sein – sobald Bluetooth eingeschaltet wurde.
