@@ -122,7 +122,9 @@ Das Starten der SIDEKICK-Anwendung auf dem jeweiligen Betriebsystem / Enge-rät 
 ---
 
 #### Laden externer Erweiterungen
-Laden externer, benutzerdefinierter Erweiterungen über eine JavaScript-Datei:
+
+##### Laden externer, benutzerdefinierter Erweiterungen über eine JavaScript-Datei:
+
 1. Erweiterungsbibliothek aufrufen.
    - Über die Schaltfläche unten links. <br>
      ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/f760b472-28d5-4428-bc3e-1b7af9d3a84e)
