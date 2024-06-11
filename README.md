@@ -111,8 +111,44 @@ Das Starten der SIDEKICK-Anwendung auf dem jeweiligen Betriebsystem / Enge-rät 
         oder
       - auf die SIDEKICK-Block-Kategorie klicken <br>
         (so wird automatisch zu den Blöcken der Kategorie gescrollt).
- 
-#### 2.2. SIDEKICK-Blöcke
+
+---
+
+#### Laden externer Erweiterungen
+Laden externer, benutzerdefinierter Erweiterungen über eine JavaScript-Datei:
+1. Erweiterungsbibliothek aufrufen.
+   - Über die Schaltfläche unten links. <br>
+     ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/f760b472-28d5-4428-bc3e-1b7af9d3a84e)
+2. Erweiterungs-Manager zum Laden externer, benutzerdefinierter Erweiterungen öffnen.
+   - Über die Schaltfläche „Benutzerdefinierte Erweiterung“ wird das Dialogfenster des Managers geöffnet. <br>
+     ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/5af600e8-ef37-4782-adaa-ce4efb0cf641)
+      - Tipp 1: Über die Suchfunktion oder die Kategorie „Sidekick“ der Erweiterungsbibliothek kann diese Erweiterung einfacher gefunden werden.
+      - Tipp 2: Über den Stern auf der Schaltfläche der Erweiterung wird diese zu Favoriten hinzugefügt.
+         - Dadurch wird, nach erneutem Öffnen der Erweiterungsbiblitothek, dort ganz oben aufgeführt. <br>
+           ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/351cefab-4e0d-48f3-93d9-048fc2d074b6)
+3. In den Bereich des Erweiterungs-Managers zum manuellen Laden von Erweiterungen über JavaScript-Dateien navigieren.
+   - Über den Reiter „Datei“.
+4. Die JavaScript-Erweiterung-Datei laden. <br>
+   ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/8a71db7a-2885-4770-b210-7deabba60964)
+   - Von der Festplatte auswählen
+      - indem auf das gestrichelte Feld geklickt wird
+     oder
+   - per „Drag and Drop“ hineinziehen und zum Laden über dem gestrichelten Feld loslassen.
+6. Wichtig: Häkchen beim Feld „Erweiterung ohne Sandbox ausführen“ setzen!
+7. Die Erweiterung der ausgewählten JavaScript-Erweiterung-Datei in die Anwendung laden.
+   - Über die Schaltfläche „Laden“.
+   - Es wird in der Code-Ansicht der Block-Palette eine neue Kategorie für die geladene Erweiterung hinzugefügt <br>
+     (wenn die programmierung der Erweiterung keine Fehler ausgibt / wirft). <br>
+     ![image](https://github.com/Menersar/sidekick-desktop/assets/48289383/44b147c9-b2e1-4bb9-8305-98f322541fbf)
+      - Um zu den Blöcken der geladenen Erweiterung zu gelangen:
+         - Durch alle Blöcke nach unten scrollen
+           oder
+         - auf die neu hinzugefügte Block-Kategorie gehen <br>
+           (dadurch wird automatisch zu den Blöcken der Kategorie gescrollt).
+
+---
+
+#### SIDEKICK-Blöcke
 Die SIDEKICK-Blöcke in folgende 6 sinnhafte Abschnitte unterteilt.
 
 ##### 2.2.1. GPIO-Pin-Blöcke
