@@ -33,18 +33,20 @@ Kompilierte Versionen (Builds) des SIDEKICK-Autorensystems werden als Veröf-fen
 Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit dem Internet verbunden ist – zunächst separat heruntergeladen und danach – hier per USB-Stick – auf den RPi übertragen.
 
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
-2.	Die .deb-Datei – umrahmt in folgender Abbildung – herunterladen
-(z. B. durch einen Linksklick auf den Dateinamen).
+2.	Die .deb-Datei – umrahmt in folgender Abbildung – herunterladen <br>
+(z. B. durch einen Linksklick auf den Dateinamen). <br>
+<img src="https://github.com/user-attachments/assets/c1cb26f1-da94-49d6-a5c4-202fe7d4f5bf" width=30% height=30%/> <br>
+
       - Info: Über .deb-Pakete sind Programme manuell installierbar <br>
         (unter allen Debian-basierten Linux-Betriebssystemen).
-3.	Diese heruntergeladene Datei auf einen USB-Stick übertragen.
-4.	Diesen USB-Stick in einen freien USB-Anschluss des RPi stecken.
-5.	Die heruntergeladene Datei des USB-Sticks auf den RPi übertragen
+4.	Diese heruntergeladene Datei auf einen USB-Stick übertragen.
+5.	Diesen USB-Stick in einen freien USB-Anschluss des RPi stecken.
+6.	Die heruntergeladene Datei des USB-Sticks auf den RPi übertragen
 (z. B. vom Ordner des Sticks auf den Desktop per Drag-and-Drop kopieren).
-6.	Die SIDEKICK-Anwendung über diese .deb-Datei auf dem RPi installieren.
+7.	Die SIDEKICK-Anwendung über diese .deb-Datei auf dem RPi installieren.
       - Z. B. wie folgt: Rechtsklick auf die Datei  Package Install.
       - Die Installation erfolgt automatisch über den Installationsprozess.
-7.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
+8.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
    - Ausführbar z. B. über das RPi-Anwendungsmenü  Entwicklung.
 
 ---
@@ -52,17 +54,18 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
 #### 1.2. Installation auf einem Windows-PC
 Über die folgenden Schritte ist die Installation der SIDEKICK-Anwendung auf einem Windows-PC durchführbar.
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
-2.	Die Setup-.exe-Datei – umrahmt in folgender Abbildung – herunterladen
-(z. B. durch einen Linksklick auf den Dateinamen).
- 
-3.	Diese heruntergeladene Datei Ausführen und dadurch Installieren
+2.	Die Setup-.exe-Datei – umrahmt in folgender Abbildung – herunterladen <br>
+(z. B. durch einen Linksklick auf den Dateinamen). <br>
+<img src="https://github.com/user-attachments/assets/6990153e-6385-4f3b-8267-8b346b158c23" width=30% height=30%/> <br>
+
+4.	Diese heruntergeladene Datei Ausführen und dadurch Installieren
 (z. B. durch Doppelklick auf die .exe-Datei).
  
-4.	Durch das Setup-Programm gehen und Installation über Install starten.
+5.	Durch das Setup-Programm gehen und Installation über Install starten.
       - Ggf. den Installationsort manuell, wie in der Abbildung, festlegen. <br>
-        ([Benutzer] hierbei durch den eigenen Benutzernamen ersetzen).
+        ([Benutzer] hierbei durch den eigenen Benutzernamen ersetzen). <br>
       - Darauf wird der Installationsprozess automatisch durchgeführt.
-5.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
+6.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
       - Ausführbar z. B. über die angelegte Desktopverknüpfung
         (z. B. durch Doppelklick auf die Verknüpfung)
       - Oder Suche und Ausführen von „SIDEKICK“ per Windows-Suchleiste.
@@ -72,13 +75,16 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
 #### 1.3. Nutzung auf einem Windows-PC (ohne Installation)
 Über die folgenden Schritte ist die Nutzung der SIDEKICK-Anwendung auf einem Windows-PC ohne Installation möglich.
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
-2.	Die Portable-.exe-Datei – umrahmt in folgender Abbildung – herunterladen
-(z. B. durch einen Linksklick auf den Dateinamen).
+2.	Die Portable-.exe-Datei – umrahmt in folgender Abbildung – herunterladen <br>
+(z. B. durch einen Linksklick auf den Dateinamen). <br>
+<img src="https://github.com/user-attachments/assets/95d5e284-39d5-4168-b096-1408014e5a92" width=30% height=30%/> <br>
+
+
  
-3.	Diese heruntergeladene Datei Ausführen
+4.	Diese heruntergeladene Datei Ausführen
 (z. B. durch Doppelklick auf die .exe-Datei).
  
-4.	Durch das Ausführen dieser Datei ist die Anwendung „SIDEKICK“ startbar.
+5.	Durch das Ausführen dieser Datei ist die Anwendung „SIDEKICK“ startbar.
 
 ---
 
