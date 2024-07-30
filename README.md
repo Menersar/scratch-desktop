@@ -30,7 +30,7 @@ Kompilierte Versionen (Builds) des SIDEKICK-Autorensystems werden als Veröf-fen
 
 #### 1.1. Installation auf dem Raspberry Pi (RPi)
 Über die folgenden Schritte ist die Installation der SIDEKICK-Anwendung auf dem PRi durchführbar.
-Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit dem Inter-net verbunden ist – zunächst separat heruntergeladen und danach – hier per USB-Stick – auf den RPi übertragen.
+Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit dem Internet verbunden ist – zunächst separat heruntergeladen und danach – hier per USB-Stick – auf den RPi übertragen.
 
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
 2.	Die .deb-Datei – umrahmt in folgender Abbildung – herunterladen
@@ -50,7 +50,7 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
 ---
 
 #### 1.2. Installation auf einem Windows-PC
-Über die folgenden Schritte ist die Installation der SIDEKICK-Anwendung auf ei-nem Windows-PC durchführbar.
+Über die folgenden Schritte ist die Installation der SIDEKICK-Anwendung auf einem Windows-PC durchführbar.
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
 2.	Die Setup-.exe-Datei – umrahmt in folgender Abbildung – herunterladen
 (z. B. durch einen Linksklick auf den Dateinamen).
@@ -72,7 +72,7 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
 #### 1.3. Nutzung auf einem Windows-PC (ohne Installation)
 Über die folgenden Schritte ist die Nutzung der SIDEKICK-Anwendung auf einem Windows-PC ohne Installation möglich.
 1.	Die Seite https://github.com/Menersar/sidekick-desktop/releases aufrufen.
-2.	Die Portable-.exe-Datei – umrahmt in folgender Abbildung – herunterla-den
+2.	Die Portable-.exe-Datei – umrahmt in folgender Abbildung – herunterladen
 (z. B. durch einen Linksklick auf den Dateinamen).
  
 3.	Diese heruntergeladene Datei Ausführen
@@ -84,13 +84,13 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
 
 ### 2. Bedienung
 
-Das Starten der SIDEKICK-Anwendung auf dem jeweiligen Betriebsystem / Enge-rät / über die jeweilige Anwendungsdatei startet die folgende Bedienoberfläche.
+Das Starten der SIDEKICK-Anwendung auf dem jeweiligen Betriebsystem / Endgerät / über die jeweilige Anwendungsdatei startet die folgende Bedienoberfläche.
  
 - Prinzipiell ist der Programmaufbau der Windows- und RPi-Version der gleiche.
 - Ebenfalls sind alle Blöcke, die spezifisch für das SIDEKICK-Assistenzsystem entwickelt sind, die gleichen.
    - Lediglich werden die Funktionen der neuen SIDEKICK-Programmier-Blöcke, die auf die Hardware des RPi zugreifen (z. B. die GPIO-Blöcke) in der Windows-Version nicht ausgeführt.
       - Diese Blöcke sind jedoch mit in der Block-Liste aufgeführt und kön-nen somit in die SIDEKICK-Block-Programmierung eingebaut werden.
-      - Auf der Windows-Version erstellte Projekte können auf den Raspberry Pi – per USB-Stick – übertragen und über die SIDE-KICK-Anwendung geladen werden.
+      - Auf der Windows-Version erstellte Projekte können auf den Raspberry Pi – per USB-Stick – übertragen und über die SIDEKICK-Anwendung geladen werden.
          - Enthält dieses Projekt GPIO-Blöcke, ist ihre Funktion beim Ausführen auf dem Raspberry Pi gegeben.
 
 ---
@@ -171,19 +171,19 @@ Wenn GPIO-Pin [GPIO-PIN-NUMMER] den Zustand [SIGNAL] hat
 	Sobald am festgelegten GPIO-Pin das angegebene Signal anliegt, wird ein Block, unterhalb dieses Blocks, ausgeführt.
 2.	Wahrheits-Block:
 Ist am GPIO-Pin [GPIO-PIN-NUMMER] der Zustand [SIGNAL]?
-	Gibt, bei Aktivierung einen Wahrheits-Wert darüber zurück, ob der Zu-stand am angegebenen GPIO-Pin dem festgelegten Zustand ent-spricht.
+	Gibt, bei Aktivierung einen Wahrheits-Wert darüber zurück, ob der Zustand am angegebenen GPIO-Pin dem festgelegten Zustand entspricht.
 3.	Stapel-Block:
 Setzte von GPIO-Pin [GPIO-PIN-NUMMER] den Output zu [SIGNAL]?
-	Setzt bei Aktivierung den festgelegten GPIO-Pin auf das ausgewählte Sig-nal und als Output.
+	Setzt bei Aktivierung den festgelegten GPIO-Pin auf das ausgewählte Signal und als Output.
 4.	Stapel-Block:
 Setze von GPIO-Pin [GPIO-PIN-NUMMER] den Input zu [SIGNAL]?
-	Setzt bei Aktivierung den festgelegten GPIO-Pin auf das ausgewählte Sig-nal und als Input.
+	Setzt bei Aktivierung den festgelegten GPIO-Pin auf das ausgewählte Signal und als Input.
  
 ##### 2.2.2. Ablauf-Blöcke
-	Möglichkeiten zum Speichern und Abrufen des aktuellen Assistenz-schritts
+	Möglichkeiten zum Speichern und Abrufen des aktuellen Assistenzschritts
 (eine Nummer des aktuell vorliegenden Assistenzschritt zuweisen).
 	Für eine einfachere und besser lesbare Programmierung.
-	Der Warte-Block: Zur besseren Steuerbarkeit der Assistenzschrit-te.
+	Der Warte-Block: Zur besseren Steuerbarkeit der Assistenzschritte.
 	Folgende SIDEKICK-Blöcke umfasst der Ablauf-Blöcke-Abschnitt. 
 1.	Stapel-Block:
 Setze Assistenzschritt auf [ASSISTENZSCHRITT-NUMMER]
@@ -200,22 +200,22 @@ Warte [ZEITWERT-IN-SEKUNDEN] Sekunden
 	Folgende SIDEKICK-Blöcke umfasst der LED-Blöcke-Abschnitt. 
 1.	Stapel-Block:
 Setze LED-Streifen [LED-STREIFEN-NUMMER] auf Farbe [FARBWERT] (Länge: [LED-PUNKTE-ANZAHL])
-	Bei Aktivierung wird die ausgewählte Anzahl an LED-Punkten des je-weils festgelegten LED-Streifens auf die mitgegebene Farbe gesetzt.
+	Bei Aktivierung wird die ausgewählte Anzahl an LED-Punkten des jeweils festgelegten LED-Streifens auf die mitgegebene Farbe gesetzt.
 2.	Stapel-Block:
 Setze alle LED-Streifen (Anzahl: [LED-STREIFEN-ANZAHL]) auf Farbe [Farbe]
-	Bei Aktivierung wird die ausgewählte Anzahl an LED-Streifen auf die mit-gegebene Farbe gesetzt.
+	Bei Aktivierung wird die ausgewählte Anzahl an LED-Streifen auf die mitgegebene Farbe gesetzt.
  
 ##### 2.2.4. UV-Sensor-Blöcke
 Die Funktionalität dieses Blocks wurde noch nicht problemlos umgesetzt!
-Dennoch wird im Folgenden, der Vollständigkeit halber, die geplante Funktions-weise dargestellt.
-Da der Block somit nicht getestet werden konnte, sind ebenfalls zwei unter-schiedliche, mögliche Implementierungen aufgeführt.
+Dennoch wird im Folgenden, der Vollständigkeit halber, die geplante Funktionsweise dargestellt.
+Da der Block somit nicht getestet werden konnte, sind ebenfalls zwei unterschiedliche, mögliche Implementierungen aufgeführt.
 
 	Ermöglicht das Auslesen und Feedback auf Sensordaten der UV-Sensoren.
 	Den folgenden SIDEKICK-Block umfasst der UV-Sensor-Blöcke-Abschnitt.
  
 1.	Stapel- oder Kopf-Block:
 Wenn die Entfernung zu UV-Sensor [UV-SENSOR-NUMMER] kleiner als [UV-SENSOR-ABSTAND-IN-CENTIMETER] cm ist
-	Bei Aktivierung wird der nächste Block ausgeführt, sobald eine Entfer-nung zum angegebenen UV-Senor kleiner als der mitgegebene Wert ist.
+	Bei Aktivierung wird der nächste Block ausgeführt, sobald eine Entfernung zum angegebenen UV-Senor kleiner als der mitgegebene Wert ist.
 	Oder: Wird aktiviert, sobald eine Entfernung zum angegebenen UV-Senor kleiner als der mitgegebene Wert ist.
  
 ##### 2.2.5. Button-Blöcke
@@ -225,7 +225,7 @@ Abbildung 4.20 zeigt den umgesetzten SIDEKICK-Block der Button-Blöcke-Kategorie
  
 1.	Kopf-Block:
 Wenn Button [NUMMER] [BUTTON-ZUSTAND] wurde
-	Wird aktiviert, sobald der ausgewählte Taster den ausgewählten Zu-stand annimmt („gedrückt“ oder „losgelassen“).
+	Wird aktiviert, sobald der ausgewählte Taster den ausgewählten Zustand annimmt („gedrückt“ oder „losgelassen“).
  
 ##### 2.2.6. Video-Blöcke
 	Ermöglichen das Laden und Steuern von Videomaterial.
@@ -236,16 +236,16 @@ Importiere Video „[VIDEO-NAME].[VIDEO-DATEIENDUNG]“
 	Bei Aktivierung wird ein Video über den angegebenen Namen und der festgelegten Dateiendung in das SIDEKICK-Projekt geladen.
 2.	Stapel-Block
 Starte Video [VIDEO-NAME] auf [SIDEKICK-GUI-OBJEKT]
-	Bei Aktivierung wird ein geladenes Video über den angegebenen Na-men von vorne gestartet und dabei auf dem ausgewählten Objekt dar-gestellt.
+	Bei Aktivierung wird ein geladenes Video über den angegebenen Namen von vorne gestartet und dabei auf dem ausgewählten Objekt dargestellt.
 3.	Stapel-Block:
 Pausiere Video [VIDEO-NAME]
-	Bei Aktivierung wird ein geladenes Video über den angegebenen Na-men pausiert.
+	Bei Aktivierung wird ein geladenes Video über den angegebenen Namen pausiert.
 4.	Stapel-Block:
 Setze Video [VIDEO-NAME] fort
-	Bei Aktivierung wird ein geladenes und pausiertes Video über den an-ge-gebenen Namen fortgeführt.
+	Bei Aktivierung wird ein geladenes und pausiertes Video über den angegebenen Namen fortgeführt.
 5.	Stapel-Block:
 Schließe Video [VIDEO-NAME]
-	Bei Aktivierung wird ein geladenes Video über den angegebenen Na-men gestoppt und vom Objekt, auf dem das entsprechende Video dar-gestellt wird, entfernt.
+	Bei Aktivierung wird ein geladenes Video über den angegebenen Namen gestoppt und vom Objekt, auf dem das entsprechende Video dargestellt wird, entfernt.
 
 ---
 
@@ -270,7 +270,7 @@ Schließe Video [VIDEO-NAME]
 ---
 
 #### 2.4. Bluetooth-Einstellung für die Audioausgabe
-	Um ein Gerät mit dem Bluetooth des verwendeten Raspberry Pi zu ver-binden, muss das entsprechende Gerät lediglich in den Pairing-Modus versetzt werden.
+	Um ein Gerät mit dem Bluetooth des verwendeten Raspberry Pi zu verbinden, muss das entsprechende Gerät lediglich in den Pairing-Modus versetzt werden.
 	Darauf sollte das Gerät über die Bluetooth-Einstellungen des RPi auffindbar sein – sobald Bluetooth eingeschaltet wurde.
 	Die Einstellungen sind unter anderem in der Systemleiste des RPi aufrufbar – wie in folgender Abbildung zu sehen.
  
