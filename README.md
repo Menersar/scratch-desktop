@@ -62,8 +62,9 @@ Hierbei wird die Installationsdatei – für den Fall, dass der RPi nicht mit de
 (z. B. durch Doppelklick auf die .exe-Datei).
  
 5.	Durch das Setup-Programm gehen und Installation über Install starten.
-      - Ggf. den Installationsort manuell, wie in der Abbildung, festlegen. <br>
+      - Ggf. den Installationsort manuell – wie in der Abbildung zu sehen – festlegen. <br>
         ([Benutzer] hierbei durch den eigenen Benutzernamen ersetzen). <br>
+        <img src="https://github.com/user-attachments/assets/8543e5e5-7c4c-43e2-80af-cb08faf0cf80" width=40% height=40%/> <br>
       - Darauf wird der Installationsprozess automatisch durchgeführt.
 6.	Nach abgeschlossener Installation ist die Anwendung „SIDEKICK“ startbar.
       - Ausführbar z. B. über die angelegte Desktopverknüpfung
